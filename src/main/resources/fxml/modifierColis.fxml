@@ -33,52 +33,105 @@
                       -fx-background-color: #eaf4fb; -fx-padding: 8 14;
                       -fx-border-radius: 6; -fx-background-radius: 6;" maxWidth="Infinity"/>
 
-        <!-- Description -->
-        <VBox spacing="6">
-            <Label text="Description" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
-            <TextField fx:id="tfDescription"
-                       style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
-                              -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
-        </VBox>
-
-        <!-- Articles -->
-        <VBox spacing="6">
-            <Label text="Articles" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
-            <TextField fx:id="tfArticles"
-                       style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
-                              -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
-        </VBox>
-
-        <!-- Adresses -->
+        <!-- Description + Articles -->
         <HBox spacing="16">
-            <VBox spacing="6" HBox.hgrow="ALWAYS">
-                <Label text="📍 Adresse de départ" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
-                <TextField fx:id="tfDepart"
+
+            <!-- Description -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Description" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <TextField fx:id="tfDescription" promptText="Min. 5 caractères"
                            style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
                                   -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                <Label fx:id="lblErrDescription" text=""
+                       visible="false" managed="false"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
             </VBox>
-            <VBox spacing="6" HBox.hgrow="ALWAYS">
-                <Label text="🏁 Adresse de destination" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
-                <TextField fx:id="tfDestination"
+
+            <!-- Articles -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Articles" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <TextField fx:id="tfArticles" promptText="Liste des articles"
                            style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
                                   -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                <!-- Pas d'erreur pour articles (facultatif) -->
             </VBox>
+
+        </HBox>
+
+        <!-- Adresses avec boutons carte -->
+        <HBox spacing="16">
+
+            <!-- Adresse de départ -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="📍 Adresse de départ"
+                       style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <HBox spacing="8">
+                    <TextField fx:id="tfDepart"
+                               HBox.hgrow="ALWAYS"
+                               promptText="Ville / adresse de départ"
+                               style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
+                                      -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                    <Button fx:id="btnMapDepart" text="🗺️"
+                            style="-fx-pref-height: 40px; -fx-pref-width: 44px;
+                                   -fx-background-color: #2980b9; -fx-text-fill: white;
+                                   -fx-border-radius: 6; -fx-background-radius: 6;
+                                   -fx-font-size: 16px; -fx-cursor: hand;">
+                        <tooltip><Tooltip text="Rechercher une adresse"/></tooltip>
+                    </Button>
+                </HBox>
+                <Label fx:id="lblErrDepart" text=""
+                       visible="false" managed="false"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+            </VBox>
+
+            <!-- Adresse de destination -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="🏁 Adresse de destination"
+                       style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <HBox spacing="8">
+                    <TextField fx:id="tfDestination"
+                               HBox.hgrow="ALWAYS"
+                               promptText="Ville / adresse de destination"
+                               style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
+                                      -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                    <Button fx:id="btnMapDestination" text="🗺️"
+                            style="-fx-pref-height: 40px; -fx-pref-width: 44px;
+                                   -fx-background-color: #2980b9; -fx-text-fill: white;
+                                   -fx-border-radius: 6; -fx-background-radius: 6;
+                                   -fx-font-size: 16px; -fx-cursor: hand;">
+                        <tooltip><Tooltip text="Rechercher une adresse"/></tooltip>
+                    </Button>
+                </HBox>
+                <Label fx:id="lblErrDestination" text=""
+                       visible="false" managed="false"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+            </VBox>
+
         </HBox>
 
         <!-- Poids & Dimensions -->
         <HBox spacing="16">
-            <VBox spacing="6" HBox.hgrow="ALWAYS">
+
+            <!-- Poids -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
                 <Label text="⚖️ Poids (kg)" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
-                <TextField fx:id="tfPoids"
+                <TextField fx:id="tfPoids" promptText="Ex : 2.5"
                            style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
                                   -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                <Label fx:id="lblErrPoids" text=""
+                       visible="false" managed="false"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
             </VBox>
-            <VBox spacing="6" HBox.hgrow="ALWAYS">
+
+            <!-- Dimensions -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
                 <Label text="📐 Dimensions" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
-                <TextField fx:id="tfDimensions"
+                <TextField fx:id="tfDimensions" promptText="Ex : 30x20x10 cm"
                            style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
                                   -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                <!-- Pas d'erreur pour dimensions (facultatif) -->
             </VBox>
+
         </HBox>
 
         <!-- Note statut -->
@@ -87,7 +140,9 @@
 
         <Separator/>
 
-        <Label fx:id="lblErreur" text=""
+        <!-- Erreur système globale -->
+        <Label fx:id="lblErrGlobal" text=""
+               visible="false" managed="false"
                style="-fx-text-fill: #e74c3c; -fx-font-size: 13px; -fx-wrap-text: true;"
                maxWidth="Infinity"/>
 

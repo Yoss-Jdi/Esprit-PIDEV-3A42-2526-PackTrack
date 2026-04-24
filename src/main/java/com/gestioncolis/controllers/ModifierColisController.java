@@ -2,9 +2,11 @@ package com.gestioncolis.controllers;
 
 import com.gestioncolis.models.Colis;
 import com.gestioncolis.services.ColisService;
+import com.gestioncolis.utils.MapHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -14,92 +16,131 @@ public class ModifierColisController {
 
     @FXML private Label     lblTitre;
     @FXML private Label     lblStatutInfo;
+
     @FXML private TextField tfDescription;
     @FXML private TextField tfArticles;
     @FXML private TextField tfDepart;
     @FXML private TextField tfDestination;
     @FXML private TextField tfPoids;
     @FXML private TextField tfDimensions;
-    @FXML private Label     lblErreur;
 
-    private final ColisService service = new ColisService();
-    private Colis colisAModifier;
+    @FXML private Button    btnMapDepart;
+    @FXML private Button    btnMapDestination;
 
-    public void setColis(Colis c) {
-        this.colisAModifier = c;
+    // ── Labels d'erreur individuels ───────────────────────────────────
+    @FXML private Label lblErrDescription;
+    @FXML private Label lblErrDepart;
+    @FXML private Label lblErrDestination;
+    @FXML private Label lblErrPoids;
+    @FXML private Label lblErrGlobal;
 
-        if (!"en_attente".equals(c.getStatut())) {
-            lblErreur.setText("Modification impossible : le colis est déjà « "
-                    + c.getStatut() + " ».");
-            desactiverFormulaire();
-            return;
+    private final ColisService colisService = new ColisService();
+    private Colis colisEnCours;
+
+    @FXML
+    public void initialize() {
+        configurerBoutonsMap();
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Injection du colis à modifier (appelée depuis ListeColisController)
+    // ─────────────────────────────────────────────────────────────────
+
+    public void setColis(Colis colis) {
+        this.colisEnCours = colis;
+
+        lblTitre.setText("Modifier le colis #" + colis.getId());
+        lblStatutInfo.setText("Statut actuel : " + colis.getStatut());
+
+        tfDescription.setText(nvl(colis.getDescription()));
+        tfArticles   .setText(nvl(colis.getArticles()));
+        tfDepart     .setText(nvl(colis.getAdresseDepart()));
+        tfDestination.setText(nvl(colis.getAdresseDestination()));
+        tfPoids      .setText(String.valueOf(colis.getPoids()));
+        tfDimensions .setText(nvl(colis.getDimensions()));
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Boutons carte — délégation à MapHelper
+    // ─────────────────────────────────────────────────────────────────
+
+    private void configurerBoutonsMap() {
+        if (btnMapDepart != null) {
+            btnMapDepart.setOnAction(e -> {
+                MapHelper.ouvrirCarte("Choisir l'adresse de départ", tfDepart);
+                if (!tfDepart.getText().isBlank()) effacerErreur(lblErrDepart);
+            });
         }
-
-        lblTitre.setText("Modifier le colis ");
-        lblStatutInfo.setText("Statut actuel : " + c.getStatut());
-
-        tfDescription.setText(c.getDescription());
-        tfArticles   .setText(c.getArticles());
-        tfDepart     .setText(c.getAdresseDepart());
-        tfDestination.setText(c.getAdresseDestination());
-        tfPoids      .setText(String.valueOf(c.getPoids()));
-        tfDimensions .setText(c.getDimensions());
+        if (btnMapDestination != null) {
+            btnMapDestination.setOnAction(e -> {
+                MapHelper.ouvrirCarte("Choisir l'adresse de destination", tfDestination);
+                if (!tfDestination.getText().isBlank()) effacerErreur(lblErrDestination);
+            });
+        }
     }
 
-    private void desactiverFormulaire() {
-        lblTitre.setText("Colis non modifiable");
-        tfDescription.setDisable(true);
-        tfArticles   .setDisable(true);
-        tfDepart     .setDisable(true);
-        tfDestination.setDisable(true);
-        tfPoids      .setDisable(true);
-        tfDimensions .setDisable(true);
-
-        //pre-remplissage
-        tfDescription.setText(colisAModifier.getDescription());
-        tfArticles   .setText(colisAModifier.getArticles());
-        tfDepart     .setText(colisAModifier.getAdresseDepart());
-        tfDestination.setText(colisAModifier.getAdresseDestination());
-        tfPoids      .setText(String.valueOf(colisAModifier.getPoids()));
-        tfDimensions .setText(colisAModifier.getDimensions());
-    }
+    // ─────────────────────────────────────────────────────────────────
+    // Validation et enregistrement
+    // ─────────────────────────────────────────────────────────────────
 
     @FXML
     public void enregistrer() {
-        lblErreur.setText("");
+        effacerToutesLesErreurs();
 
-        if (!"en_attente".equals(colisAModifier.getStatut())) {
-            lblErreur.setText("Modification impossible : statut « "
-                    + colisAModifier.getStatut() + " ».");
-            return;
+        boolean valide = true;
+
+        String desc = tfDescription.getText().trim();
+        if (!desc.isBlank() && desc.length() < 5) {
+            afficherErreur(lblErrDescription, "Minimum 5 caractères.");
+            valide = false;
         }
 
-        if (tfDepart.getText().isBlank() || tfDestination.getText().isBlank()
-                || tfPoids.getText().isBlank()) {
-            lblErreur.setText("Départ, destination et poids sont obligatoires.");
-            return;
+        if (tfDepart.getText().isBlank()) {
+            afficherErreur(lblErrDepart, "L'adresse de départ est obligatoire.");
+            valide = false;
         }
 
-        double poids;
+        if (tfDestination.getText().isBlank()) {
+            afficherErreur(lblErrDestination, "L'adresse de destination est obligatoire.");
+            valide = false;
+        }
+
+        double poids = 0;
+        if (tfPoids.getText().isBlank()) {
+            afficherErreur(lblErrPoids, "Le poids est obligatoire.");
+            valide = false;
+        } else {
+            try {
+                poids = Double.parseDouble(tfPoids.getText().trim());
+                if (poids <= 0) {
+                    afficherErreur(lblErrPoids, "Le poids doit être positif.");
+                    valide = false;
+                } else if (poids >= 1000) {
+                    afficherErreur(lblErrPoids, "Le poids ne peut pas dépasser 1000 kg.");
+                    valide = false;
+                }
+            } catch (NumberFormatException e) {
+                afficherErreur(lblErrPoids, "Le poids doit être un nombre décimal (ex : 2.5).");
+                valide = false;
+            }
+        }
+
+        if (!valide) return;
+
+        // Appliquer les modifications sur l'objet existant
+        colisEnCours.setDescription(desc);
+        colisEnCours.setArticles(tfArticles.getText().trim());
+        colisEnCours.setAdresseDepart(tfDepart.getText().trim());
+        colisEnCours.setAdresseDestination(tfDestination.getText().trim());
+        colisEnCours.setPoids(poids);
+        colisEnCours.setDimensions(tfDimensions.getText().trim());
+
         try {
-            poids = Double.parseDouble(tfPoids.getText().trim());
-        } catch (NumberFormatException e) {
-            lblErreur.setText("Le poids doit être un nombre décimal.");
-            return;
-        }
-
-        colisAModifier.setDescription      (tfDescription.getText().trim());
-        colisAModifier.setArticles         (tfArticles.getText().trim());
-        colisAModifier.setAdresseDepart    (tfDepart.getText().trim());
-        colisAModifier.setAdresseDestination(tfDestination.getText().trim());
-        colisAModifier.setPoids            (poids);
-        colisAModifier.setDimensions       (tfDimensions.getText().trim());
-
-        try {
-            service.modifier(colisAModifier);
+            colisService.modifier(colisEnCours);
             retourListe();
         } catch (Exception e) {
-            lblErreur.setText("Erreur : " + e.getMessage());
+            afficherErreur(lblErrGlobal, "Erreur : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -109,7 +150,37 @@ public class ModifierColisController {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/listeColis.fxml"));
             tfDescription.getScene().setRoot(root);
         } catch (IOException e) {
-            lblErreur.setText("Erreur navigation : " + e.getMessage());
+            afficherErreur(lblErrGlobal, "Erreur navigation : " + e.getMessage());
         }
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Helpers
+    // ─────────────────────────────────────────────────────────────────
+
+    private String nvl(String s) {
+        return s != null ? s : "";
+    }
+
+    private void afficherErreur(Label lbl, String msg) {
+        if (lbl == null) return;
+        lbl.setText("⚠ " + msg);
+        lbl.setVisible(true);
+        lbl.setManaged(true);
+    }
+
+    private void effacerErreur(Label lbl) {
+        if (lbl == null) return;
+        lbl.setText("");
+        lbl.setVisible(false);
+        lbl.setManaged(false);
+    }
+
+    private void effacerToutesLesErreurs() {
+        effacerErreur(lblErrDescription);
+        effacerErreur(lblErrDepart);
+        effacerErreur(lblErrDestination);
+        effacerErreur(lblErrPoids);
+        effacerErreur(lblErrGlobal);
     }
 }
