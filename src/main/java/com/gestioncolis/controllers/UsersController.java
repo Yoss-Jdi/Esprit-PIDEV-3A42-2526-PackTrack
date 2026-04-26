@@ -1,6 +1,9 @@
 package com.gestioncolis.controllers;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -18,6 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import com.gestioncolis.entities.Utilisateurs;
@@ -41,12 +45,21 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.animation.Interpolator;
+
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.materialdesign.MaterialDesign;
+import javafx.scene.paint.Color;
+
 public class UsersController implements Initializable,
         DashboardController.UserAware {
 
     // ─── Table ─────────────────────────────────────────────────────────────
     @FXML private TableView<Utilisateurs>            usersTable;
-    @FXML private TableColumn<Utilisateurs, Integer> colId;
     @FXML private TableColumn<Utilisateurs, Void>    colPhoto;
     @FXML private TableColumn<Utilisateurs, String>  colPrenom;
     @FXML private TableColumn<Utilisateurs, String>  colNom;
@@ -130,38 +143,34 @@ public class UsersController implements Initializable,
     // ═════════════════════════════════════════════════════════════════════
     private void setupColumns() {
         // Configuration des largeurs fixes pour chaque colonne
-        colId.setPrefWidth(50);
-        colId.setMinWidth(40);
-        colId.setMaxWidth(60);
-
         colPhoto.setPrefWidth(60);
         colPhoto.setMinWidth(50);
         colPhoto.setMaxWidth(70);
 
-        colPrenom.setPrefWidth(110);
-        colPrenom.setMinWidth(90);
+        colPrenom.setPrefWidth(120);
+        colPrenom.setMinWidth(100);
 
-        colNom.setPrefWidth(110);
-        colNom.setMinWidth(90);
+        colNom.setPrefWidth(120);
+        colNom.setMinWidth(100);
 
-        colEmail.setPrefWidth(200);
-        colEmail.setMinWidth(160);
+        colEmail.setPrefWidth(220);
+        colEmail.setMinWidth(180);
 
-        colTelephone.setPrefWidth(120);
-        colTelephone.setMinWidth(100);
+        colTelephone.setPrefWidth(130);
+        colTelephone.setMinWidth(110);
 
-        colRole.setPrefWidth(110);
-        colRole.setMinWidth(90);
+        colRole.setPrefWidth(130);
+        colRole.setMinWidth(110);
 
-        colCreatedAt.setPrefWidth(100);
-        colCreatedAt.setMinWidth(90);
+        colCreatedAt.setPrefWidth(110);
+        colCreatedAt.setMinWidth(100);
 
-        colActions.setPrefWidth(160);
-        colActions.setMinWidth(140);
-        colActions.setMaxWidth(180);
+        // Colonne Actions plus large pour accueillir les deux boutons
+        colActions.setPrefWidth(220);
+        colActions.setMinWidth(200);
+        colActions.setMaxWidth(250);
 
         // Cell value factories
-        colId.setCellValueFactory(new PropertyValueFactory<>("idUtilisateur"));
         colPrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -209,7 +218,7 @@ public class UsersController implements Initializable,
             }
         });
 
-        // ── Role badge ────────────────────────────────────────────────────
+        // ── Role badge avec icône réelle ────────────────────────────────────
         colRole.setCellValueFactory(c ->
                 new SimpleStringProperty(c.getValue().getRole() != null
                         ? c.getValue().getRole().name() : "—"));
@@ -222,11 +231,26 @@ public class UsersController implements Initializable,
                     setText(null);
                     return;
                 }
-                Label badge = new Label(roleEmoji(role) + "  " + role);
-                badge.getStyleClass().addAll("badge", "badge-" + role.toLowerCase());
-                badge.setMaxWidth(Double.MAX_VALUE);
-                badge.setAlignment(Pos.CENTER);
-                setGraphic(badge);
+
+                Utilisateurs user = getTableRow().getItem();
+                if (user == null) {
+                    setGraphic(null);
+                    return;
+                }
+
+                HBox container = new HBox(8);
+                container.setAlignment(Pos.CENTER);
+
+                FontIcon roleIcon = getRoleIcon(user.getRole());
+                Label roleLabel = new Label(role);
+                roleLabel.getStyleClass().addAll("badge", "badge-" + role.toLowerCase());
+
+                if (roleIcon != null) {
+                    container.getChildren().add(roleIcon);
+                }
+                container.getChildren().add(roleLabel);
+
+                setGraphic(container);
                 setText(null);
             }
         });
@@ -236,36 +260,113 @@ public class UsersController implements Initializable,
                 new SimpleStringProperty(c.getValue().getCreatedAt() != null
                         ? c.getValue().getCreatedAt().format(DATE_FMT) : "—"));
 
-        // ── Actions Column ───────────────────────────────────────────────
+        // ── Actions Column améliorée avec animations et icônes réelles ──
         colActions.setCellFactory(col -> new TableCell<>() {
             private final Button editBtn   = new Button();
             private final Button deleteBtn = new Button();
-            private final HBox   box       = new HBox(8);
+            private final HBox   box       = new HBox(12);
+
+            // Création des icônes réelles - utilisation de int pour la taille
+            private final FontIcon editIcon = new FontIcon(FontAwesomeSolid.PEN);
+            private final FontIcon deleteIcon = new FontIcon(FontAwesomeSolid.TRASH_ALT);
 
             {
-                editBtn.setText("✏ Modifier");
-                editBtn.getStyleClass().addAll("btn-edit", "action-btn");
-                editBtn.setPrefWidth(85);
-                editBtn.setPrefHeight(32);
+                // Configuration des icônes - setIconSize prend un int
+                editIcon.setIconSize(13);
+                editIcon.setIconColor(Color.web("#ffffff"));
 
-                deleteBtn.setText("🗑 Supprimer");
+                deleteIcon.setIconSize(13);
+                deleteIcon.setIconColor(Color.web("#ffffff"));
+
+                // Style moderne pour le bouton Modifier
+                editBtn.setText(" Modifier");
+                editBtn.getStyleClass().addAll("btn-edit", "action-btn");
+                editBtn.setPrefWidth(100);
+                editBtn.setMinWidth(95);
+                editBtn.setMaxWidth(100);
+                editBtn.setPrefHeight(34);
+                editBtn.setGraphic(editIcon);
+                editBtn.setContentDisplay(ContentDisplay.LEFT);
+                editBtn.setGraphicTextGap(8);
+
+                // Style moderne pour le bouton Supprimer
+                deleteBtn.setText(" Supprimer");
                 deleteBtn.getStyleClass().addAll("btn-delete", "action-btn");
-                deleteBtn.setPrefWidth(85);
-                deleteBtn.setPrefHeight(32);
+                deleteBtn.setPrefWidth(100);
+                deleteBtn.setMinWidth(95);
+                deleteBtn.setMaxWidth(100);
+                deleteBtn.setPrefHeight(34);
+                deleteBtn.setGraphic(deleteIcon);
+                deleteBtn.setContentDisplay(ContentDisplay.LEFT);
+                deleteBtn.setGraphicTextGap(8);
+
+                // Animation de pulsation au survol des icônes
+                addIconHoverAnimation(editIcon);
+                addIconHoverAnimation(deleteIcon);
 
                 box.setAlignment(Pos.CENTER);
-                box.setPadding(new Insets(5, 5, 5, 5));
+                box.setPadding(new Insets(8, 10, 8, 10));
                 box.getChildren().addAll(editBtn, deleteBtn);
+
+                addButtonHoverAnimation(editBtn);
+                addButtonHoverAnimation(deleteBtn);
 
                 editBtn.setOnAction(e -> {
                     Utilisateurs user = getTableView().getItems().get(getIndex());
-                    if (user != null) navigateToForm(user);
+                    if (user != null) {
+                        animateButtonClick(editBtn);
+                        navigateToForm(user);
+                    }
                 });
 
                 deleteBtn.setOnAction(e -> {
                     Utilisateurs user = getTableView().getItems().get(getIndex());
-                    if (user != null) confirmDelete(user);
+                    if (user != null) {
+                        animateButtonClick(deleteBtn);
+                        confirmDelete(user);
+                    }
                 });
+            }
+
+            private void addIconHoverAnimation(FontIcon icon) {
+                icon.setOnMouseEntered(ev -> {
+                    ScaleTransition st = new ScaleTransition(Duration.millis(150), icon);
+                    st.setToX(1.2);
+                    st.setToY(1.2);
+                    st.play();
+                });
+
+                icon.setOnMouseExited(ev -> {
+                    ScaleTransition st = new ScaleTransition(Duration.millis(150), icon);
+                    st.setToX(1.0);
+                    st.setToY(1.0);
+                    st.play();
+                });
+            }
+
+            private void addButtonHoverAnimation(Button btn) {
+                btn.setOnMouseEntered(ev -> {
+                    ScaleTransition st = new ScaleTransition(Duration.millis(150), btn);
+                    st.setToX(1.02);
+                    st.setToY(1.02);
+                    st.play();
+                });
+
+                btn.setOnMouseExited(ev -> {
+                    ScaleTransition st = new ScaleTransition(Duration.millis(150), btn);
+                    st.setToX(1.0);
+                    st.setToY(1.0);
+                    st.play();
+                });
+            }
+
+            private void animateButtonClick(Button btn) {
+                ScaleTransition st = new ScaleTransition(Duration.millis(100), btn);
+                st.setToX(0.96);
+                st.setToY(0.96);
+                st.setAutoReverse(true);
+                st.setCycleCount(2);
+                st.play();
             }
 
             @Override
@@ -461,6 +562,7 @@ public class UsersController implements Initializable,
         sorted.comparatorProperty().bind(usersTable.comparatorProperty());
 
         usersTable.setItems(sorted);
+        animateTableRows();
         usersTable.refresh();
 
         paginationInfo.setText(total == 0 ? "Aucun résultat"
@@ -683,5 +785,73 @@ public class UsersController implements Initializable,
         if (cssUrl != null) dp.getStylesheets().add(cssUrl.toExternalForm());
 
         warning.showAndWait();
+    }
+
+    /**
+     * Anime l'apparition des lignes du tableau avec un effet staggered
+     */
+    private void animateTableRows() {
+        if (usersTable.getItems() == null || usersTable.getItems().isEmpty()) return;
+
+        Platform.runLater(() -> {
+            int rowCount = usersTable.getItems().size();
+            for (int i = 0; i < rowCount; i++) {
+                final int index = i;
+                Node row = usersTable.lookup(".table-row-cell");
+                if (row != null) {
+                    row.setOpacity(0);
+                    row.setTranslateX(-20);
+
+                    javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(Duration.millis(index * 40));
+                    pause.setOnFinished(e -> {
+                        FadeTransition ft = new FadeTransition(Duration.millis(300), row);
+                        ft.setFromValue(0);
+                        ft.setToValue(1);
+
+                        TranslateTransition tt = new TranslateTransition(Duration.millis(300), row);
+                        tt.setFromX(-20);
+                        tt.setToX(0);
+                        tt.setInterpolator(Interpolator.SPLINE(0.25, 0.1, 0.25, 1));
+
+                        new ParallelTransition(tt, ft).play();
+                    });
+                    pause.play();
+                }
+            }
+        });
+    }
+
+    private FontIcon getRoleIcon(Role role) {
+        if (role == null) return null;
+        FontIcon icon;
+        int size = 14;  // Utilisation de int au lieu de double
+
+        switch (role) {
+            case ADMIN:
+                icon = new FontIcon(FontAwesomeSolid.SHIELD_ALT);
+                icon.setIconColor(Color.web("#4f46e5"));
+                break;
+            case CLIENT:
+                icon = new FontIcon(FontAwesomeSolid.USER);
+                icon.setIconColor(Color.web("#2563eb"));
+                break;
+            case ENTREPRISE:
+                icon = new FontIcon(FontAwesomeSolid.BUILDING);
+                icon.setIconColor(Color.web("#059669"));
+                break;
+            case LIVREUR:
+                icon = new FontIcon(FontAwesomeSolid.TRUCK);
+                icon.setIconColor(Color.web("#d97706"));
+                break;
+            case TECHNICIEN:
+                icon = new FontIcon(FontAwesomeSolid.WRENCH);
+                icon.setIconColor(Color.web("#dc2626"));
+                break;
+            default:
+                icon = new FontIcon(FontAwesomeSolid.USER_CIRCLE);
+                icon.setIconColor(Color.web("#94a3b8"));
+        }
+        icon.setIconSize(size);
+        return icon;
     }
 }

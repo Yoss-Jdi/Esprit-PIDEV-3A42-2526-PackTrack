@@ -18,6 +18,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <StackPane prefHeight="700" prefWidth="1100" stylesheets="@../css/auth.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestioncolis.controllers.AuthController">
 
@@ -53,7 +54,7 @@
                     <Circle radius="50" styleClass="logo-outer" />
                     <Circle radius="36" styleClass="logo-inner" />
                     <Circle radius="28" styleClass="logo-glow" />
-                    <Text styleClass="logo-text" text="TP" />
+                    <FontIcon iconColor="white" iconSize="32" iconLiteral="fas-boxes" />
                 </StackPane>
 
                 <!-- Brand name -->
@@ -68,7 +69,7 @@
                     <Text fx:id="switchHint" styleClass="switch-hint" text="Pas encore de compte ?" />
                     <Button fx:id="switchBtn" onAction="#handleSwitch" styleClass="switch-btn" text="S'inscrire">
                         <graphic>
-                            <Text text="→" style="-fx-fill: white; -fx-font-size: 16px;" />
+                            <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-arrow-right" />
                         </graphic>
                     </Button>
                 </VBox>
@@ -93,7 +94,7 @@
                         <VBox spacing="6">
                             <Label styleClass="field-label" text="Adresse e-mail">
                                 <graphic>
-                                    <Text text="📧" style="-fx-font-size: 12px;" />
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-envelope" />
                                 </graphic>
                             </Label>
                             <TextField fx:id="loginEmail" promptText="votre@email.com" styleClass="field-input" />
@@ -104,13 +105,17 @@
                         <VBox spacing="6">
                             <Label styleClass="field-label" text="Mot de passe">
                                 <graphic>
-                                    <Text text="🔒" style="-fx-font-size: 12px;" />
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-lock" />
                                 </graphic>
                             </Label>
                             <PasswordField fx:id="loginPassword" promptText="••••••••" styleClass="field-input" />
                             <Label fx:id="loginPassErr" managed="false" styleClass="field-error" visible="false" />
                             <HBox alignment="CENTER_RIGHT">
-                                <Hyperlink fx:id="forgotLink" styleClass="forgot-link" text="Mot de passe oublié ?" onAction="#handleForgotPassword" />
+                                <Hyperlink fx:id="forgotLink" styleClass="forgot-link" text="Mot de passe oublié ?" onAction="#handleForgotPassword">
+                                    <graphic>
+                                        <FontIcon iconColor="#6366f1" iconSize="10" iconLiteral="fas-question-circle" />
+                                    </graphic>
+                                </Hyperlink>
                             </HBox>
                         </VBox>
 
@@ -120,7 +125,7 @@
                         <!-- Bouton Submit -->
                         <Button fx:id="loginBtn" onAction="#handleLogin" prefWidth="400" styleClass="primary-btn" text="Se connecter">
                             <graphic>
-                                <Text text="→" style="-fx-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                                <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-arrow-right" />
                             </graphic>
                         </Button>
 
@@ -128,9 +133,9 @@
                                 onAction="#handleFaceLogin"
                                 prefWidth="400"
                                 styleClass="face-login-btn"
-                                text="🪪  Se connecter avec le visage">
+                                text="  Se connecter avec le visage">
                             <graphic>
-                                <Text text="✨" style="-fx-fill: #6366f1; -fx-font-size: 13px;" />
+                                <FontIcon iconColor="#6366f1" iconSize="16" iconLiteral="fas-user-check" />
                             </graphic>
                         </Button>
 
@@ -142,7 +147,10 @@
                         </HBox>
 
                         <!-- Demo hint -->
-                        <Label text="admin@trackpack.com / 123456" style="-fx-text-fill: #94a3b8; -fx-font-size: 11px; -fx-alignment: center;" />
+                        <HBox alignment="CENTER" spacing="8">
+                            <FontIcon iconColor="#94a3b8" iconSize="12" iconLiteral="fas-info-circle" />
+                            <Label text="admin@trackpack.com / 123456" style="-fx-text-fill: #94a3b8; -fx-font-size: 11px;" />
+                        </HBox>
                     </VBox>
                 </VBox>
             </ScrollPane>
@@ -161,16 +169,20 @@
                         <!-- Nom + Prénom en 2 colonnes -->
                         <HBox spacing="14">
                             <VBox spacing="5" HBox.hgrow="ALWAYS">
-                                <Label styleClass="field-label" text="Nom complet">
+                                <Label styleClass="field-label" text="Nom">
                                     <graphic>
-                                        <Text text="👤" style="-fx-font-size: 12px;" />
+                                        <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-user" />
                                     </graphic>
                                 </Label>
                                 <TextField fx:id="signupNom" promptText="Dupont" styleClass="field-input" />
                                 <Label fx:id="nomErr" managed="false" styleClass="field-error" visible="false" />
                             </VBox>
                             <VBox spacing="5" HBox.hgrow="ALWAYS">
-                                <Label styleClass="field-label" text="Prénom" />
+                                <Label styleClass="field-label" text="Prénom">
+                                    <graphic>
+                                        <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-user-circle" />
+                                    </graphic>
+                                </Label>
                                 <TextField fx:id="signupPrenom" promptText="Jean" styleClass="field-input" />
                                 <Label fx:id="prenomErr" managed="false" styleClass="field-error" visible="false" />
                             </VBox>
@@ -180,7 +192,7 @@
                         <VBox spacing="5">
                             <Label styleClass="field-label" text="Adresse e-mail">
                                 <graphic>
-                                    <Text text="📧" style="-fx-font-size: 12px;" />
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-envelope" />
                                 </graphic>
                             </Label>
                             <TextField fx:id="signupEmail" promptText="jean.dupont@email.com" styleClass="field-input" />
@@ -191,7 +203,7 @@
                         <VBox spacing="5">
                             <Label styleClass="field-label" text="Téléphone">
                                 <graphic>
-                                    <Text text="📱" style="-fx-font-size: 12px;" />
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-phone-alt" />
                                 </graphic>
                             </Label>
                             <TextField fx:id="signupTel" promptText="+33 6 12 34 56 78" styleClass="field-input" />
@@ -202,7 +214,7 @@
                         <VBox spacing="5">
                             <Label styleClass="field-label" text="Rôle">
                                 <graphic>
-                                    <Text text="🎭" style="-fx-font-size: 12px;" />
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-user-tag" />
                                 </graphic>
                             </Label>
                             <ComboBox fx:id="signupRole" prefWidth="400" promptText="Sélectionner un rôle" styleClass="field-combo" />
@@ -213,16 +225,20 @@
                         <VBox spacing="8">
                             <Label styleClass="field-label" text="Photo de profil">
                                 <graphic>
-                                    <Text text="📸" style="-fx-font-size: 12px;" />
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-camera" />
                                 </graphic>
                             </Label>
                             <HBox alignment="CENTER_LEFT" spacing="14">
                                 <StackPane fx:id="photoPreviewCircle" prefHeight="64" prefWidth="64" styleClass="photo-preview-circle">
-                                    <Label fx:id="photoPlaceholderIcon" styleClass="photo-placeholder-icon" text="📷" />
+                                    <FontIcon iconColor="#818cf8" iconSize="32" iconLiteral="fas-user-circle" />
                                     <ImageView fx:id="photoPreviewImg" fitHeight="64" fitWidth="64" managed="false" preserveRatio="false" styleClass="photo-preview-img" visible="false" />
                                 </StackPane>
                                 <VBox spacing="5" HBox.hgrow="ALWAYS">
-                                    <Button fx:id="photoPickerBtn" maxWidth="Infinity" onAction="#handlePhotoPick" styleClass="photo-picker-btn" text="📁  Choisir une photo" />
+                                    <Button fx:id="photoPickerBtn" maxWidth="Infinity" onAction="#handlePhotoPick" styleClass="photo-picker-btn" text="  Choisir une photo">
+                                        <graphic>
+                                            <FontIcon iconColor="#6b7280" iconSize="14" iconLiteral="fas-folder-open" />
+                                        </graphic>
+                                    </Button>
                                     <Label fx:id="photoNameLabel" styleClass="photo-name-label" text="Aucun fichier sélectionné" />
                                 </VBox>
                             </HBox>
@@ -232,7 +248,7 @@
                         <VBox spacing="5">
                             <Label styleClass="field-label" text="Mot de passe">
                                 <graphic>
-                                    <Text text="🔒" style="-fx-font-size: 12px;" />
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-key" />
                                 </graphic>
                             </Label>
                             <PasswordField fx:id="signupPassword" promptText="•••••••• (minimum 6 caractères)" styleClass="field-input" />
@@ -247,7 +263,11 @@
 
                         <!-- Confirmer -->
                         <VBox spacing="5">
-                            <Label styleClass="field-label" text="Confirmer le mot de passe" />
+                            <Label styleClass="field-label" text="Confirmer le mot de passe">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-check-double" />
+                                </graphic>
+                            </Label>
                             <PasswordField fx:id="signupConfirm" promptText="Répéter le mot de passe" styleClass="field-input" />
                             <Label fx:id="confirmErr" managed="false" styleClass="field-error" visible="false" />
                         </VBox>
@@ -268,7 +288,7 @@
                         <!-- Submit -->
                         <Button fx:id="signupBtn" onAction="#handleSignup" prefWidth="400" styleClass="primary-btn" text="Créer mon compte">
                             <graphic>
-                                <Text text="🎉" style="-fx-font-size: 14px;" />
+                                <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-user-plus" />
                             </graphic>
                         </Button>
 

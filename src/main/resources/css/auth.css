@@ -511,3 +511,36 @@
     -fx-scale-x: 0.98;
     -fx-scale-y: 0.98;
 }
+
+/* ═══ ANIMATIONS POUR LES ICÔNES (JavaFX compatibles) ═══ */
+.primary-btn FontIcon {
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
+}
+
+.primary-btn:hover FontIcon {
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.3), 4, 0, 0, 0);
+}
+
+.photo-picker-btn FontIcon {
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
+}
+
+.photo-picker-btn:hover FontIcon {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 6, 0, 0, 0);
+}
+
+.face-login-btn FontIcon {
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
+}
+
+.face-login-btn:hover FontIcon {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 6, 0, 0, 0);
+}
+
+.forgot-link FontIcon {
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
+}
+
+.forgot-link:hover FontIcon {
+    -fx-effect: dropshadow(gaussian, rgba(79, 70, 229, 0.4), 4, 0, 0, 0);
+}

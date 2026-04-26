@@ -5,12 +5,8 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.geometry.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<!--
-    DashboardHomeView.fxml v2
-    Unified design: dark welcome banner, KPI cards, chart cards, activity list.
-    Controller : DashboardHomeController
--->
 <ScrollPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.gestioncolis.controllers.DashboardHomeController"
@@ -21,20 +17,16 @@
 
     <VBox styleClass="content-body" spacing="22">
 
-        <!-- ══════════════════════════════════════════════
-             ROW 1 — Welcome banner (dark gradient)
-             ══════════════════════════════════════════════ -->
+        <!-- ROW 1 — Welcome banner -->
         <HBox styleClass="welcome-banner" alignment="CENTER_LEFT" spacing="20">
 
-            <!-- Left text -->
             <VBox spacing="6" HBox.hgrow="ALWAYS">
-                <Label fx:id="welcomeTitle" text="Bonjour, Admin 👋"
+                <Label fx:id="welcomeTitle" text="Bonjour, Admin"
                        styleClass="welcome-title"/>
                 <Label fx:id="welcomeDate"  text=""
                        styleClass="welcome-date"/>
             </VBox>
 
-            <!-- Quick-stat pills -->
             <HBox spacing="12" alignment="CENTER">
 
                 <VBox alignment="CENTER" spacing="3"
@@ -43,8 +35,7 @@
                              -fx-padding:14 20;
                              -fx-border-color:rgba(255,255,255,0.15);
                              -fx-border-width:1; -fx-border-radius:16;">
-                    <Label fx:id="bannerTotal" text="—"
-                           style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:white;"/>
+                    <FontIcon iconColor="white" iconSize="22" iconLiteral="fas-users"/>
                     <Label text="Utilisateurs"
                            style="-fx-font-size:11px; -fx-text-fill:#c7d2fe;"/>
                 </VBox>
@@ -55,7 +46,7 @@
                              -fx-padding:14 20;
                              -fx-border-color:rgba(255,255,255,0.15);
                              -fx-border-width:1; -fx-border-radius:16;">
-                    <Label text="🚀" style="-fx-font-size:20px;"/>
+                    <FontIcon iconColor="white" iconSize="22" iconLiteral="fas-rocket"/>
                     <Label text="TrackPack v1.0"
                            style="-fx-font-size:11px; -fx-text-fill:#c7d2fe; -fx-font-weight:bold;"/>
                 </VBox>
@@ -63,9 +54,7 @@
             </HBox>
         </HBox>
 
-        <!-- ══════════════════════════════════════════════
-             ROW 2 — KPI Cards
-             ══════════════════════════════════════════════ -->
+        <!-- ROW 2 — KPI Cards -->
         <HBox spacing="16" alignment="CENTER_LEFT">
 
             <!-- Total utilisateurs -->
@@ -73,7 +62,7 @@
                   style="-fx-border-color:#e0e7ff; -fx-border-width:0 0 0 4; -fx-border-radius:20;">
                 <HBox alignment="CENTER_LEFT" spacing="14">
                     <StackPane styleClass="kpi-icon-box,kpi-icon-indigo">
-                        <Text text="👥" style="-fx-font-size:20px;"/>
+                        <FontIcon iconColor="#4f46e5" iconSize="22" iconLiteral="fas-users"/>
                     </StackPane>
                     <VBox spacing="2" HBox.hgrow="ALWAYS">
                         <Label text="Utilisateurs" styleClass="kpi-label"/>
@@ -95,7 +84,7 @@
                   style="-fx-border-color:#e9d5ff; -fx-border-width:0 0 0 4; -fx-border-radius:20;">
                 <HBox alignment="CENTER_LEFT" spacing="14">
                     <StackPane styleClass="kpi-icon-box,kpi-icon-purple">
-                        <Text text="🛡️" style="-fx-font-size:20px;"/>
+                        <FontIcon iconColor="#7c3aed" iconSize="22" iconLiteral="fas-shield-alt"/>
                     </StackPane>
                     <VBox spacing="2" HBox.hgrow="ALWAYS">
                         <Label text="Admins" styleClass="kpi-label"/>
@@ -117,7 +106,7 @@
                   style="-fx-border-color:#bfdbfe; -fx-border-width:0 0 0 4; -fx-border-radius:20;">
                 <HBox alignment="CENTER_LEFT" spacing="14">
                     <StackPane styleClass="kpi-icon-box,kpi-icon-blue">
-                        <Text text="👤" style="-fx-font-size:20px;"/>
+                        <FontIcon iconColor="#2563eb" iconSize="22" iconLiteral="fas-user"/>
                     </StackPane>
                     <VBox spacing="2" HBox.hgrow="ALWAYS">
                         <Label text="Clients" styleClass="kpi-label"/>
@@ -139,7 +128,7 @@
                   style="-fx-border-color:#fde68a; -fx-border-width:0 0 0 4; -fx-border-radius:20;">
                 <HBox alignment="CENTER_LEFT" spacing="14">
                     <StackPane styleClass="kpi-icon-box,kpi-icon-amber">
-                        <Text text="🚚" style="-fx-font-size:20px;"/>
+                        <FontIcon iconColor="#d97706" iconSize="22" iconLiteral="fas-truck"/>
                     </StackPane>
                     <VBox spacing="2" HBox.hgrow="ALWAYS">
                         <Label text="Livreurs" styleClass="kpi-label"/>
@@ -158,12 +147,10 @@
 
         </HBox>
 
-        <!-- ══════════════════════════════════════════════
-             ROW 3 — Charts
-             ══════════════════════════════════════════════ -->
+        <!-- ROW 3 — Charts -->
         <HBox spacing="16">
 
-            <!-- Donut — répartition rôles -->
+            <!-- Donut chart -->
             <VBox styleClass="chart-card" spacing="16" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <VBox HBox.hgrow="ALWAYS" spacing="2">
@@ -173,7 +160,7 @@
                     </VBox>
                     <StackPane
                             style="-fx-background-color:#eef2ff; -fx-background-radius:10; -fx-padding:6 10;">
-                        <Label text="🔵" style="-fx-font-size:14px;"/>
+                        <FontIcon iconColor="#4f46e5" iconSize="16" iconLiteral="fas-chart-pie"/>
                     </StackPane>
                 </HBox>
                 <StackPane alignment="CENTER">
@@ -189,7 +176,7 @@
                       style="-fx-padding:0 4 4 4;"/>
             </VBox>
 
-            <!-- Bar — inscriptions par mois -->
+            <!-- Bar chart -->
             <VBox styleClass="chart-card" spacing="16" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <VBox HBox.hgrow="ALWAYS" spacing="2">
@@ -199,7 +186,7 @@
                     </VBox>
                     <StackPane
                             style="-fx-background-color:#f0fdf4; -fx-background-radius:10; -fx-padding:6 10;">
-                        <Label text="📈" style="-fx-font-size:14px;"/>
+                        <FontIcon iconColor="#10b981" iconSize="16" iconLiteral="fas-chart-line"/>
                     </StackPane>
                 </HBox>
                 <Canvas fx:id="barCanvas" width="380" height="220"/>
@@ -207,9 +194,7 @@
 
         </HBox>
 
-        <!-- ══════════════════════════════════════════════
-             ROW 4 — Recent activity + Role breakdown
-             ══════════════════════════════════════════════ -->
+        <!-- ROW 4 — Recent activity + Role breakdown -->
         <HBox spacing="16">
 
             <!-- Recent users -->
@@ -223,7 +208,7 @@
                     <StackPane
                             style="-fx-background-color:#fafbfc; -fx-background-radius:10; -fx-padding:6 10;
                                -fx-border-color:#f1f5f9; -fx-border-width:1; -fx-border-radius:10;">
-                        <Label text="🕐" style="-fx-font-size:14px;"/>
+                        <FontIcon iconColor="#64748b" iconSize="16" iconLiteral="fas-history"/>
                     </StackPane>
                 </HBox>
                 <VBox fx:id="recentList" spacing="0"/>
@@ -241,7 +226,6 @@
 
         </HBox>
 
-        <!-- Bottom padding -->
         <Region prefHeight="12"/>
 
     </VBox>

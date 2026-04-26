@@ -488,3 +488,192 @@
 .match-card-divider {
     -fx-background-color: #e2e8f0;
 }
+
+/* ═══ AMÉLIORATIONS BIOMÉTRIQUES ET ANIMATIONS ═══ */
+
+/* Effet de lueur périphérique pour la webcam */
+.webcam-glow {
+    -fx-background-color: transparent;
+    -fx-border-color: #6366f1;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.5), 20, 0, 0, 0);
+    -fx-opacity: 0;
+}
+
+.webcam-container:hover .webcam-glow {
+    -fx-opacity: 0.6;
+    -fx-animation: glowPulse 1.5s infinite;
+}
+
+@keyframes glowPulse {
+    0% { -fx-opacity: 0.3; -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.3), 10, 0, 0, 0); }
+    50% { -fx-opacity: 0.7; -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.7), 20, 0, 0, 0); }
+    100% { -fx-opacity: 0.3; -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.3), 10, 0, 0, 0); }
+}
+
+/* Points biométriques avec effet de pulsation */
+.biometric-dot {
+    -fx-fill: rgba(99, 102, 241, 0.9);
+    -fx-stroke: rgba(165, 180, 252, 0.8);
+    -fx-stroke-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.8), 8, 0, 0, 0);
+    -fx-animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+    0% { -fx-scale-x: 1; -fx-scale-y: 1; -fx-opacity: 0.7; }
+    50% { -fx-scale-x: 1.2; -fx-scale-y: 1.2; -fx-opacity: 1; }
+    100% { -fx-scale-x: 1; -fx-scale-y: 1; -fx-opacity: 0.7; }
+}
+
+/* Lignes biométriques avec effet de tracé */
+.biometric-line {
+    -fx-stroke: rgba(99, 102, 241, 0.5);
+    -fx-stroke-width: 1.5;
+    -fx-stroke-dash-array: 6 4;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.3), 4, 0, 0, 0);
+}
+
+/* Scan line améliorée */
+.scan-line {
+    -fx-background-color: linear-gradient(from 0% 50% to 100% 50%,
+    transparent, rgba(99, 102, 241, 0.8), #a855f7, rgba(99, 102, 241, 0.8), transparent);
+    -fx-background-radius: 2;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.6), 10, 0, 0, 0);
+}
+
+/* Coins de scan avec effet néon */
+.corner-tl, .corner-tr, .corner-bl, .corner-br {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.6), 6, 0, 0, 0);
+}
+
+/* Animation de la barre de progression */
+.progress-fill {
+    -fx-background-color: linear-gradient(from 0% 50% to 100% 50%, #6366f1, #a855f7);
+    -fx-background-radius: 4;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 6, 0, 0, 0);
+}
+
+/* Badge de pourcentage de correspondance */
+.match-pct-badge {
+    -fx-background-color: rgba(0, 0, 0, 0.75);
+    -fx-background-radius: 20;
+    -fx-padding: 6 12 6 12;
+    -fx-border-color: rgba(99, 102, 241, 0.5);
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 8, 0, 0, 0);
+}
+
+.match-pct-text {
+    -fx-text-fill: #a5b4fc;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Courier New", monospace;
+}
+
+/* Effet d'écriture pour le pourcentage */
+@keyframes countUp {
+    from { -fx-opacity: 0; -fx-scale-x: 0.5; }
+    to { -fx-opacity: 1; -fx-scale-x: 1; }
+}
+
+/* Animation du cercle de la caméra */
+.spinner-ring {
+    -fx-fill: null;
+    -fx-stroke: linear-gradient(from 0% 0% to 100% 100%, #6366f1, #a855f7);
+    -fx-stroke-width: 3;
+    -fx-stroke-dash-array: 50 30;
+    -fx-rotation: 0;
+    -fx-animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    from { -fx-rotation: 0; }
+    to { -fx-rotation: 360; }
+}
+
+/* Effet de succès sur l'icône résultat */
+.result-icon-bg-success {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #d1fae5, #a7f3d0);
+    -fx-background-radius: 60;
+    -fx-border-color: #6ee7b7;
+    -fx-border-width: 3;
+    -fx-border-radius: 60;
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.4), 25, 0, 0, 8);
+    -fx-animation: successGlow 1s ease-out;
+}
+
+@keyframes successGlow {
+    0% { -fx-scale-x: 0; -fx-scale-y: 0; -fx-opacity: 0; }
+    50% { -fx-scale-x: 1.1; -fx-scale-y: 1.1; }
+    100% { -fx-scale-x: 1; -fx-scale-y: 1; -fx-opacity: 1; }
+}
+
+/* Effet d'erreur sur l'icône résultat */
+.result-icon-bg-error {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #fee2e2, #fecaca);
+    -fx-background-radius: 60;
+    -fx-border-color: #fca5a5;
+    -fx-border-width: 3;
+    -fx-border-radius: 60;
+    -fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.4), 25, 0, 0, 8);
+    -fx-animation: errorShake 0.4s ease-in-out;
+}
+
+@keyframes errorShake {
+    0%, 100% { -fx-translate-x: 0; }
+    25% { -fx-translate-x: -8; }
+    75% { -fx-translate-x: 8; }
+}
+
+/* Animation des lignes de connexion */
+@keyframes dashDraw {
+    from { -fx-stroke-dash-offset: 20; }
+    to { -fx-stroke-dash-offset: 0; }
+}
+
+.biometric-line {
+    -fx-stroke-dash-offset: 20;
+    -fx-animation: dashDraw 0.8s ease-out forwards;
+}
+
+/* Animation des étapes */
+.step-circle FontIcon {
+    -fx-transition: all 0.3s ease;
+}
+
+.step-circle.step-active FontIcon {
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.5), 8, 0, 0, 0);
+    -fx-animation: stepPulse 1.5s infinite;
+}
+
+@keyframes stepPulse {
+    0%, 100% { -fx-opacity: 0.8; -fx-scale-x: 1; -fx-scale-y: 1; }
+    50% { -fx-opacity: 1; -fx-scale-x: 1.1; -fx-scale-y: 1.1; }
+}
+
+/* Animation du bouton capture */
+.face-capture-btn {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 12, 0, 0, 3);
+    -fx-transition: all 0.2s ease;
+}
+
+.face-capture-btn:hover {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.7), 20, 0, 0, 5);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* Animation du statut en temps réel */
+.scan-dot-active {
+    -fx-fill: #22c55e;
+    -fx-effect: dropshadow(gaussian, rgba(34, 197, 94, 0.6), 6, 0, 0, 0);
+    -fx-animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { -fx-opacity: 1; -fx-scale-x: 1; -fx-scale-y: 1; }
+    50% { -fx-opacity: 0.4; -fx-scale-x: 0.8; -fx-scale-y: 0.8; }
+}

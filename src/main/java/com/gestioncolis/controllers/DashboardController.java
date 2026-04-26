@@ -93,11 +93,19 @@ public class DashboardController implements Initializable {
     private void handleLogout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthView.fxml"));
-            Scene scene = new Scene(loader.load(), 960, 640);
+            Scene scene = new Scene(loader.load(), 1100, 700);
             Stage stage = (Stage) contentArea.getScene().getWindow();
-            stage.setTitle("TrackPack — Connexion");
+
+            // Réinitialiser complètement la fenêtre comme dans MainFX
+            stage.setTitle("TrackPack — Authentification");
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setResizable(true);      // Permettre le redimensionnement
+            stage.setWidth(1100);
+            stage.setHeight(700);
+            stage.setMinWidth(900);        // Taille minimale comme dans MainFX
+            stage.setMinHeight(600);
+            stage.centerOnScreen();
+
         } catch (IOException e) {
             System.err.println("❌ Erreur logout : " + e.getMessage());
         }
@@ -128,7 +136,7 @@ public class DashboardController implements Initializable {
             view.setUserData(ctrl instanceof UserAware ? ctrl : null);
             fadeSwap(view);
         } catch (IOException e) {
-            e.printStackTrace();  // affiche la cause racine complète
+            e.printStackTrace();
             loadPlaceholder("Erreur de chargement");
         }
     }

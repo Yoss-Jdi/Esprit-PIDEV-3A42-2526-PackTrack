@@ -516,9 +516,18 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.03), 6, 0, 0, 1);
 }
 
+.search-field-container:focused {
+    -fx-border-color: #6366f1;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.15), 8, 0, 0, 2);
+}
+
 .search-icon-premium {
     -fx-font-size: 14px;
     -fx-fill: #94a3b8;
+}
+
+.search-field-container:focused .search-icon-premium {
+    -fx-fill: #6366f1;
 }
 
 .search-input-premium {
@@ -538,6 +547,15 @@
     -fx-padding: 0 0 0 12;
     -fx-alignment: CENTER_LEFT;
     -fx-spacing: 6;
+}
+
+.filter-field-container:focused {
+    -fx-border-color: #6366f1;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.15), 8, 0, 0, 2);
+}
+
+.filter-field-container:hover {
+    -fx-border-color: #c7d2fe;
 }
 
 .filter-icon-premium {
@@ -1187,4 +1205,564 @@
     -fx-border-color: rgba(226, 232, 240, 0.5);
     -fx-border-width: 1px;
     -fx-border-radius: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   USERS VIEW - ENHANCED MODERN STYLES
+   Boutons stylisés, animations fluides, design premium
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Boutons d'action améliorés (Modifier / Supprimer) ───────────── */
+.action-btn {
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 6 12 6 12;
+    -fx-cursor: hand;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-transition: all 0.2s ease-out;
+}
+
+.btn-edit {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #6366f1);
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(79, 70, 229, 0.3), 8, 0, 0, 2);
+}
+
+.btn-edit:hover {
+    -fx-background-color: linear-gradient(to right, #4338ca, #4f46e5);
+    -fx-effect: dropshadow(gaussian, rgba(79, 70, 229, 0.5), 12, 0, 0, 4);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.btn-edit:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.btn-delete {
+    -fx-background-color: linear-gradient(to right, #ef4444, #dc2626);
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.3), 8, 0, 0, 2);
+}
+
+.btn-delete:hover {
+    -fx-background-color: linear-gradient(to right, #dc2626, #b91c1c);
+    -fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.5), 12, 0, 0, 4);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.btn-delete:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Style pour le label icône dans les boutons */
+.btn-edit .label, .btn-delete .label {
+    -fx-text-fill: white;
+}
+
+/* ── Boutons de filtre améliorés ─────────────────────────────────── */
+.filter-field-container {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 0 0 0 14;
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 4, 0, 0, 1);
+    -fx-transition: all 0.2s ease;
+}
+
+.filter-field-container:focused {
+    -fx-border-color: #6366f1;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.15), 8, 0, 0, 2);
+}
+
+.filter-field-container:hover {
+    -fx-border-color: #c7d2fe;
+}
+
+.filter-icon-premium {
+    -fx-font-size: 13px;
+    -fx-fill: #94a3b8;
+}
+
+.filter-select-premium {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-pref-height: 42;
+    -fx-font-size: 13px;
+    -fx-text-fill: #1e293b;
+    -fx-padding: 0 32 0 0;
+}
+
+.filter-select-premium .list-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1e293b;
+}
+
+.filter-select-premium .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.filter-select-premium .arrow {
+    -fx-background-color: #94a3b8;
+}
+
+/* ── Bouton Réinitialiser amélioré ───────────────────────────────── */
+.btn-reset-premium {
+    -fx-background-color: #fef2f2;
+    -fx-background-radius: 14;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+    -fx-border-color: #fecaca;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 14;
+    -fx-transition: all 0.2s ease;
+    -fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.1), 4, 0, 0, 1);
+}
+
+.btn-reset-premium:hover {
+    -fx-background-color: #fee2e2;
+    -fx-border-color: #fca5a5;
+    -fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.25), 8, 0, 0, 3);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.btn-reset-premium:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.reset-icon {
+    -fx-font-size: 12px;
+    -fx-fill: #dc2626;
+    -fx-transition: rotate 0.2s ease;
+}
+
+.btn-reset-premium:hover .reset-icon {
+    -fx-rotate: 180;
+}
+
+.reset-text {
+    -fx-font-size: 12px;
+    -fx-fill: #dc2626;
+    -fx-font-weight: bold;
+}
+
+/* ── Boutons d'export améliorés ──────────────────────────────────── */
+.btn-export-pdf-premium, .btn-export-csv-premium {
+    -fx-background-radius: 14;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 6, 0, 0, 1);
+}
+
+.btn-export-pdf-premium {
+    -fx-background-color: linear-gradient(to right, #ef4444, #dc2626);
+    -fx-border-color: transparent;
+}
+
+.btn-export-pdf-premium:hover {
+    -fx-background-color: linear-gradient(to right, #dc2626, #b91c1c);
+    -fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.35), 10, 0, 0, 4);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.btn-export-csv-premium {
+    -fx-background-color: linear-gradient(to right, #10b981, #059669);
+    -fx-border-color: transparent;
+}
+
+.btn-export-csv-premium:hover {
+    -fx-background-color: linear-gradient(to right, #059669, #047857);
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.35), 10, 0, 0, 4);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.btn-export-pdf-premium:pressed,
+.btn-export-csv-premium:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.export-icon {
+    -fx-font-size: 12px;
+    -fx-fill: #ffffff;
+}
+
+.export-text {
+    -fx-font-size: 12px;
+    -fx-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+/* ── Champ de recherche amélioré ─────────────────────────────────── */
+.search-field-container {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 0 16 0 14;
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 4, 0, 0, 1);
+    -fx-transition: all 0.2s ease;
+}
+
+.search-field-container:focused {
+    -fx-border-color: #6366f1;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.15), 8, 0, 0, 2);
+}
+
+.search-icon-premium {
+    -fx-font-size: 14px;
+    -fx-fill: #94a3b8;
+    -fx-transition: fill 0.2s ease;
+}
+
+.search-field-container:focused .search-icon-premium {
+    -fx-fill: #6366f1;
+}
+
+.search-input-premium {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #1e293b;
+    -fx-prompt-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+    -fx-padding: 12 0 12 0;
+}
+
+/* ── Hover amélioré sur les lignes du tableau ────────────────────── */
+.table-premium .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #f8fafc transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 0;
+    -fx-pref-height: 64;
+}
+
+.table-premium .table-row-cell:hover {
+    -fx-background-color: #f8fafc;
+    -fx-cursor: hand;
+}
+
+.table-premium .table-row-cell:selected {
+    -fx-background-color: #eef2ff;
+}
+
+.table-premium .table-row-cell:selected:hover {
+    -fx-background-color: #e0e7ff;
+}
+
+/* ── Boutons de pagination améliorés ─────────────────────────────── */
+.pagination-nav-premium {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-text-fill: #475569;
+    -fx-min-width: 38;
+    -fx-pref-height: 38;
+    -fx-cursor: hand;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 12;
+    -fx-transition: all 0.2s ease;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 4, 0, 0, 1);
+}
+
+.pagination-nav-premium:hover {
+    -fx-background-color: #eef2ff;
+    -fx-border-color: #c7d2fe;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.2), 8, 0, 0, 2);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.pagination-nav-premium:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+.btn-page {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-text-fill: #475569;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-min-width: 36;
+    -fx-pref-height: 36;
+    -fx-cursor: hand;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-transition: all 0.15s ease;
+}
+
+.btn-page:hover {
+    -fx-background-color: #eef2ff;
+    -fx-text-fill: #4f46e5;
+    -fx-border-color: #c7d2fe;
+    -fx-scale-x: 1.08;
+    -fx-scale-y: 1.08;
+}
+
+.btn-page-active {
+    -fx-background-color: linear-gradient(to bottom right, #6366f1, #4f46e5);
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-min-width: 36;
+    -fx-pref-height: 36;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.45), 10, 0, 0, 3);
+    -fx-transition: all 0.15s ease;
+}
+
+.btn-page-active:hover {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.6), 14, 0, 0, 5);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* ── Selecteur de taille de page amélioré ────────────────────────── */
+.page-size-wrapper-premium {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-padding: 8 14 8 14;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 12;
+    -fx-spacing: 8;
+    -fx-transition: all 0.2s ease;
+}
+
+.page-size-wrapper-premium:hover {
+    -fx-border-color: #c7d2fe;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.1), 6, 0, 0, 1);
+}
+
+.page-size-icon {
+    -fx-font-size: 12px;
+    -fx-fill: #94a3b8;
+}
+
+.page-size-label {
+    -fx-font-size: 12px;
+    -fx-fill: #64748b;
+    -fx-font-weight: 500;
+}
+
+.page-size-select-premium {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-pref-height: 30;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4f46e5;
+}
+
+/* ── Badge de statut amélioré ────────────────────────────────────── */
+.status-badge {
+    -fx-background-color: #f0fdf4;
+    -fx-background-radius: 24;
+    -fx-padding: 6 16 6 16;
+    -fx-border-color: #bbf7d0;
+    -fx-border-width: 1;
+    -fx-border-radius: 24;
+    -fx-effect: dropshadow(gaussian, rgba(34, 197, 94, 0.1), 4, 0, 0, 1);
+}
+
+.status-dot-active {
+    -fx-fill: #22c55e;
+    -fx-effect: dropshadow(gaussian, rgba(34, 197, 94, 0.5), 4, 0, 0, 0);
+}
+
+.status-text-premium {
+    -fx-font-size: 11px;
+    -fx-fill: #16a34a;
+    -fx-font-weight: bold;
+}
+
+/* ── Carte d'en-tête améliorée ───────────────────────────────────── */
+.header-premium {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 20, 0, 0, 4);
+    -fx-padding: 24 28 24 28;
+    -fx-border-color: #f1f5f9;
+    -fx-border-width: 1;
+    -fx-border-radius: 24;
+    -fx-transition: all 0.3s ease;
+}
+
+.header-premium:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 24, 0, 0, 6);
+}
+
+.header-icon-premium {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.3), 12, 0, 0, 2);
+}
+
+.header-icon-circle {
+    -fx-fill: linear-gradient(to bottom right, #6366f1, #4f46e5);
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 10, 0, 0, 3);
+}
+
+/* ── Conteneur du tableau amélioré ───────────────────────────────── */
+.table-container-premium {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 20, 0, 0, 4);
+    -fx-border-color: #f1f5f9;
+    -fx-border-width: 1;
+    -fx-border-radius: 24;
+    -fx-transition: all 0.3s ease;
+}
+
+/* ── Animation de notification toast ─────────────────────────────── */
+.toast-premium {
+    -fx-background-color: linear-gradient(to right, #1e293b, #0f172a);
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 30, 0, 0, 12);
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 14 28 14 28;
+    -fx-alignment: center;
+    -fx-transition: all 0.3s ease;
+}
+
+/* ── Badges de rôle améliorés ────────────────────────────────────── */
+.role-badge {
+    -fx-background-radius: 24;
+    -fx-padding: 6 14 6 14;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 4, 0, 0, 1);
+    -fx-transition: all 0.2s ease;
+}
+
+.role-badge:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.role-ADMIN {
+    -fx-background-color: #eef2ff;
+    -fx-text-fill: #4f46e5;
+}
+
+.role-CLIENT {
+    -fx-background-color: #eff6ff;
+    -fx-text-fill: #2563eb;
+}
+
+.role-LIVREUR {
+    -fx-background-color: #fffbeb;
+    -fx-text-fill: #d97706;
+}
+
+.role-ENTREPRISE {
+    -fx-background-color: #f0fdf4;
+    -fx-text-fill: #16a34a;
+}
+
+.role-TECHNICIEN {
+    -fx-background-color: #fdf4ff;
+    -fx-text-fill: #9333ea;
+}
+
+/* ── Animations pour les icônes ────────────────────────────────────── */
+@keyframes iconPulse {
+    0% { -fx-scale-x: 1; -fx-scale-y: 1; }
+    50% { -fx-scale-x: 1.1; -fx-scale-y: 1.1; }
+    100% { -fx-scale-x: 1; -fx-scale-y: 1; }
+}
+
+.icon-pulse {
+    -fx-animation: iconPulse 0.5s ease-out;
+}
+
+/* ── Effet de rotation pour les icônes de rafraîchissement ─────────── */
+.btn-reset-premium:hover .reset-icon {
+    /* Rotation non supportée en JavaFX CSS, gardé pour référence */
+}
+
+/* ── Animation pour l'icône d'ajout ──────────────────────── */
+.btn-premium-action:hover FontIcon {
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.3), 6, 0, 0, 0);
+}
+
+/* ── Animations pour les icônes de navigation ───────────────────────────────── */
+.nav-btn FontIcon {
+    -fx-transition: all 0.2s ease-out;
+}
+
+.nav-btn:hover FontIcon {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.5), 8, 0, 0, 2);
+}
+
+.nav-btn-active FontIcon {
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.3), 6, 0, 0, 1);
+}
+
+/* ── Animation pour l'icône de déconnexion ─────────────────────────────────── */
+.sidebar-logout-btn FontIcon {
+    -fx-transition: all 0.2s ease;
+}
+
+.sidebar-logout-btn:hover FontIcon {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+    -fx-rotate: 180;
+}
+
+/* ── Animation pour les icônes KPI ─────────────────────────────────────────── */
+.kpi-icon-box FontIcon {
+    -fx-transition: all 0.2s ease;
+}
+
+.kpi-card:hover .kpi-icon-box FontIcon {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* ── Animation pour les icônes de chart ────────────────────────────────────── */
+.chart-card:hover StackPane FontIcon {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+    -fx-transition: all 0.2s ease;
+}
+
+/* ── Icône de bienvenue dans la bannière ───────────────────────────────────── */
+.welcome-banner FontIcon {
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.3), 10, 0, 0, 2);
+}
+
+/* ── Animation de pulsation pour le point de statut ────────────────────────── */
+@keyframes pulse {
+    0% { -fx-scale-x: 1; -fx-scale-y: 1; -fx-opacity: 1; }
+    50% { -fx-scale-x: 1.2; -fx-scale-y: 1.2; -fx-opacity: 0.7; }
+    100% { -fx-scale-x: 1; -fx-scale-y: 1; -fx-opacity: 1; }
+}
+
+.status-dot-active {
+    -fx-fill: #22c55e;
+    -fx-effect: dropshadow(gaussian, rgba(34, 197, 94, 0.5), 4, 0, 0, 0);
+    -fx-animation: pulse 1.5s infinite;
 }

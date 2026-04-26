@@ -328,11 +328,19 @@ public class AuthController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/FaceLoginView.fxml"));
-            Scene scene = new Scene(loader.load(), 1100, 700);
+            Scene scene = new Scene(loader.load(), 1100, 700);  // Même taille que AuthView
             Stage stage = (Stage) cardContainer.getScene().getWindow();
+
+            // Appliquer les mêmes propriétés que AuthView
             stage.setTitle("TrackPack — Reconnaissance Faciale");
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setResizable(true);      // Permettre le redimensionnement
+            stage.setMinWidth(900);
+            stage.setMinHeight(600);
+            stage.setWidth(1100);
+            stage.setHeight(700);
+            stage.centerOnScreen();
+
         } catch (IOException e) {
             System.err.println("❌ Erreur ouverture FaceLogin : " + e.getMessage());
             e.printStackTrace();
@@ -370,7 +378,7 @@ public class AuthController implements Initializable {
             ft.setOnFinished(e -> {
                 stage.setTitle("TrackPack — Dashboard Admin");
                 stage.setScene(scene);
-                stage.setResizable(true);
+                stage.setResizable(true);      // Dashboard redimensionnable
                 stage.setMinWidth(900);
                 stage.setMinHeight(600);
                 stage.centerOnScreen();
