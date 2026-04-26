@@ -1,0 +1,490 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TrackPack — Face Login CSS
+   Design: Glassmorphism + Biometric Sci-Fi + Smooth Animations
+   Compatible JavaFX 21
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ═══ MAIN CARD ═══ */
+.face-card {
+    -fx-background-color: rgba(255, 255, 255, 0.97);
+    -fx-background-radius: 32;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.28), 60, 0, 0, 30);
+}
+
+/* ═══ LEFT PANEL ═══ */
+.face-left-panel {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #4f46e5, #7c3aed, #9333ea);
+    -fx-background-radius: 32 0 0 32;
+}
+
+.face-panel-title {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-fill: #ffffff;
+}
+
+.face-panel-subtitle {
+    -fx-font-size: 13px;
+    -fx-fill: rgba(255, 255, 255, 0.78);
+    -fx-text-alignment: center;
+}
+
+/* ═══ STEP INDICATOR ═══ */
+.step-circle {
+    -fx-background-radius: 16;
+}
+
+.step-active {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-border-color: rgba(255, 255, 255, 0.8);
+    -fx-border-width: 2;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 8, 0, 0, 0);
+}
+
+.step-done {
+    -fx-background-color: rgba(34, 197, 94, 0.9);
+    -fx-border-color: #86efac;
+    -fx-border-width: 2;
+    -fx-border-radius: 16;
+}
+
+.step-inactive {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-border-color: rgba(255, 255, 255, 0.25);
+    -fx-border-width: 1.5;
+    -fx-border-radius: 16;
+}
+
+.step-number {
+    -fx-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.step-label-active {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.step-label-done {
+    -fx-text-fill: #86efac;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.step-label-inactive {
+    -fx-text-fill: rgba(255, 255, 255, 0.5);
+    -fx-font-size: 13px;
+}
+
+.step-sublabel {
+    -fx-text-fill: rgba(255, 255, 255, 0.45);
+    -fx-font-size: 10px;
+}
+
+.step-connector {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 1;
+}
+
+/* ═══ BACK BUTTON ═══ */
+.face-back-btn {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1.5;
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-text-fill: rgba(255, 255, 255, 0.85);
+    -fx-font-size: 12px;
+    -fx-padding: 10 24 10 24;
+    -fx-cursor: hand;
+}
+
+.face-back-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.22);
+    -fx-border-color: rgba(255, 255, 255, 0.6);
+    -fx-text-fill: #ffffff;
+}
+
+/* ═══ RIGHT PANEL ═══ */
+.face-right-panel {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0 32 32 0;
+}
+
+/* ═══ STEP ICON ═══ */
+.step-icon-container {
+    -fx-background-color: #eef2ff;
+    -fx-background-radius: 40;
+    -fx-border-color: #c7d2fe;
+    -fx-border-width: 2;
+    -fx-border-radius: 40;
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.2), 12, 0, 0, 4);
+}
+
+.step-icon {
+    -fx-font-size: 34px;
+}
+
+.face-step-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e1b4b;
+}
+
+.face-step-sub {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+}
+
+/* ═══ INFO BOX ═══ */
+.face-info-box {
+    -fx-background-color: #eff6ff;
+    -fx-border-color: #bfdbfe;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 14 18 14 18;
+}
+
+.face-info-text {
+    -fx-text-fill: #1d4ed8;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+}
+
+/* ═══ EMAIL INPUT EXTRA ═══ */
+.face-email-input {
+    -fx-font-size: 14px;
+    -fx-pref-height: 48;
+}
+
+/* ═══ PRIMARY / SECONDARY BUTTONS ═══ */
+.face-primary-btn {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #6366f1, #4f46e5);
+    -fx-background-radius: 14;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 15 0 15 0;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.45), 18, 0, 0, 5);
+}
+
+.face-primary-btn:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #4f46e5, #4338ca);
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.65), 24, 0, 0, 7);
+}
+
+.face-primary-btn:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.face-secondary-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-text-fill: #64748b;
+    -fx-font-size: 13px;
+    -fx-padding: 13 0 13 0;
+    -fx-cursor: hand;
+}
+
+.face-secondary-btn:hover {
+    -fx-border-color: #6366f1;
+    -fx-text-fill: #4f46e5;
+    -fx-background-color: #eef2ff;
+}
+
+/* ═══ WEBCAM CONTAINER ═══ */
+.webcam-container {
+    -fx-background-color: #0f0f1a;
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(99,102,241,0.4);
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.3), 20, 0, 0, 6);
+}
+
+.webcam-feed {
+    -fx-background-radius: 20;
+}
+
+.webcam-overlay {
+    -fx-background-color: rgba(0,0,0,0.75);
+    -fx-background-radius: 20;
+}
+
+/* ═══ CAMERA LOADING ═══ */
+.camera-loading-box {
+    -fx-background-color: transparent;
+}
+
+.spinner-ring-container {
+    -fx-background-color: transparent;
+}
+
+.spinner-ring {
+    -fx-fill: null;
+    -fx-stroke: rgba(99,102,241,0.7);
+    -fx-stroke-width: 3;
+    -fx-stroke-dash-array: 50 30;
+}
+
+.camera-loading-text {
+    -fx-text-fill: rgba(255,255,255,0.7);
+    -fx-font-size: 13px;
+}
+
+/* ═══ BIOMETRIC SCAN FRAME — Corner brackets ═══ */
+.scan-corner {
+    -fx-border-color: transparent;
+}
+
+/* TL corner: top + left borders */
+.corner-tl {
+    -fx-border-color: #6366f1 transparent transparent #6366f1;
+    -fx-border-width: 3 0 0 3;
+    -fx-border-radius: 4 0 0 0;
+}
+
+/* TR corner: top + right borders */
+.corner-tr {
+    -fx-border-color: #6366f1 #6366f1 transparent transparent;
+    -fx-border-width: 3 3 0 0;
+    -fx-border-radius: 0 4 0 0;
+}
+
+/* BL corner: bottom + left borders */
+.corner-bl {
+    -fx-border-color: transparent transparent #6366f1 #6366f1;
+    -fx-border-width: 0 0 3 3;
+    -fx-border-radius: 0 0 0 4;
+}
+
+/* BR corner: bottom + right borders */
+.corner-br {
+    -fx-border-color: transparent #6366f1 #6366f1 transparent;
+    -fx-border-width: 0 3 3 0;
+    -fx-border-radius: 0 0 4 0;
+}
+
+/* ═══ FACE OVAL ═══ */
+.face-oval {
+    -fx-border-color: rgba(99,102,241,0.6);
+    -fx-border-width: 1.5;
+    -fx-border-radius: 110;
+    -fx-background-radius: 110;
+    -fx-background-color: transparent;
+}
+
+/* ═══ SCAN LINE ═══ */
+.scan-line {
+    -fx-background-color: linear-gradient(from 0% 50% to 100% 50%,
+    transparent, rgba(99,102,241,0.9), transparent);
+    -fx-background-radius: 2;
+}
+
+/* ═══ BIOMETRIC DOTS ═══ */
+.biometric-dot {
+    -fx-fill: rgba(99,102,241,0.85);
+    -fx-stroke: rgba(165,180,252,0.6);
+    -fx-stroke-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.8), 6, 0, 0, 0);
+}
+
+/* ═══ BIOMETRIC LINES ═══ */
+.biometric-line {
+    -fx-stroke: rgba(99,102,241,0.35);
+    -fx-stroke-width: 1;
+    -fx-stroke-dash-array: 4 4;
+}
+
+/* ═══ STATUS DOT ═══ */
+.scan-status-dot {
+    -fx-background-color: transparent;
+}
+
+.scan-dot-active {
+    -fx-fill: #22c55e;
+    -fx-effect: dropshadow(gaussian, rgba(34,197,94,0.8), 8, 0, 0, 0);
+}
+
+.scan-dot-error {
+    -fx-fill: #ef4444;
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.8), 8, 0, 0, 0);
+}
+
+.scan-status-text {
+    -fx-text-fill: #374151;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* ═══ MATCH PCT BADGE ═══ */
+.match-pct-badge {
+    -fx-background-color: rgba(0,0,0,0.65);
+    -fx-background-radius: 10;
+    -fx-padding: 6 12 6 12;
+}
+
+.match-pct-text {
+    -fx-text-fill: #a5b4fc;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Courier New", monospace;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-label {
+    -fx-text-fill: #374151;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.progress-pct {
+    -fx-text-fill: #6366f1;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.progress-track {
+    -fx-background-color: #e2e8f0;
+    -fx-background-radius: 4;
+}
+
+.progress-fill {
+    -fx-background-color: linear-gradient(from 0% 50% to 100% 50%, #6366f1, #a855f7);
+    -fx-background-radius: 4;
+}
+
+/* ═══ CAPTURE / CANCEL BUTTONS ═══ */
+.face-capture-btn {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #6366f1, #4f46e5);
+    -fx-background-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 12 28 12 28;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.4), 12, 0, 0, 3);
+}
+
+.face-capture-btn:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #4f46e5, #4338ca);
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.6), 18, 0, 0, 5);
+}
+
+.face-cancel-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: #cbd5e1;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-text-fill: #64748b;
+    -fx-font-size: 13px;
+    -fx-padding: 10.5 22 10.5 22;
+    -fx-cursor: hand;
+}
+
+.face-cancel-btn:hover {
+    -fx-border-color: #ef4444;
+    -fx-text-fill: #ef4444;
+    -fx-background-color: #fef2f2;
+}
+
+/* ═══ RESULT STEP ═══ */
+.result-icon-bg-success {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #d1fae5, #a7f3d0);
+    -fx-background-radius: 60;
+    -fx-border-color: #6ee7b7;
+    -fx-border-width: 3;
+    -fx-border-radius: 60;
+    -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.35), 20, 0, 0, 6);
+}
+
+.result-icon-bg-error {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #fee2e2, #fecaca);
+    -fx-background-radius: 60;
+    -fx-border-color: #fca5a5;
+    -fx-border-width: 3;
+    -fx-border-radius: 60;
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.3), 20, 0, 0, 6);
+}
+
+.result-icon-text {
+    -fx-font-size: 52px;
+    -fx-text-fill: #059669;
+    -fx-font-weight: bold;
+}
+
+.result-icon-text-error {
+    -fx-font-size: 52px;
+    -fx-text-fill: #dc2626;
+    -fx-font-weight: bold;
+}
+
+.result-title-success {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #065f46;
+}
+
+.result-title-error {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #991b1b;
+}
+
+.result-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6b7280;
+}
+
+/* ═══ MATCH CARD ═══ */
+.match-card {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 16;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 16;
+    -fx-padding: 20 24 20 24;
+}
+
+.match-card-label {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 12px;
+}
+
+.match-card-score {
+    -fx-text-fill: #4f46e5;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.match-card-value {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.match-card-status {
+    -fx-text-fill: #059669;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.match-card-status-error {
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.match-card-divider {
+    -fx-background-color: #e2e8f0;
+}
