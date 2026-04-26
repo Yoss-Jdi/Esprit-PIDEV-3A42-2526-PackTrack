@@ -485,14 +485,30 @@ public class AuthController implements Initializable {
 
     private void resetPhotoPreview() {
         selectedPhotoFile = null;
-        savedPhotoPath    = null;
-        photoPreviewImg.setImage(null);
-        photoPreviewImg.setVisible(false);
-        photoPreviewImg.setManaged(false);
-        photoPlaceholderIcon.setVisible(true);
-        photoPlaceholderIcon.setManaged(true);
-        photoPickerBtn.setText("📁  Choisir une photo");
-        photoNameLabel.setText("Aucun fichier sélectionné");
+        savedPhotoPath = null;
+
+        // Réinitialiser l'aperçu de l'image
+        if (photoPreviewImg != null) {
+            photoPreviewImg.setImage(null);
+            photoPreviewImg.setVisible(false);
+            photoPreviewImg.setManaged(false);
+        }
+
+        // Réinitialiser l'icône placeholder (si elle existe)
+        if (photoPlaceholderIcon != null) {
+            photoPlaceholderIcon.setVisible(true);
+            photoPlaceholderIcon.setManaged(true);
+        }
+
+        // Réinitialiser le texte du bouton
+        if (photoPickerBtn != null) {
+            photoPickerBtn.setText("📁  Choisir une photo");
+        }
+
+        // Réinitialiser le label du nom du fichier
+        if (photoNameLabel != null) {
+            photoNameLabel.setText("Aucun fichier sélectionné");
+        }
     }
 
     // ═════════════════════════════════════════════════════════════════════════

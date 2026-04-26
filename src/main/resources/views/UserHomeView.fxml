@@ -48,6 +48,12 @@
                 <Label fx:id="userNameLabel" text="Utilisateur" styleClass="user-name-session" />
                 <Label fx:id="userRoleLabel" text="CLIENT" styleClass="user-role-session" />
             </VBox>
+            <!-- Bouton Messenger dans le navbar -->
+            <Button styleClass="chat-nav-btn" onAction="#handleOpenChat">
+                <graphic>
+                    <FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fab-facebook-messenger" />
+                </graphic>
+            </Button>
             <Button styleClass="logout-icon-btn" onAction="#handleLogout">
                 <graphic>
                     <FontIcon iconColor="#ef4444" iconSize="16" iconLiteral="fas-sign-out-alt" />

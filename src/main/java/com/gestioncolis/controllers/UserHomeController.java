@@ -1,5 +1,6 @@
 package com.gestioncolis.controllers;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -235,6 +236,34 @@ public class UserHomeController implements Initializable {
             stage.centerOnScreen();
         } catch (IOException e) {
             System.err.println("Erreur logout: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleOpenChat() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChatView.fxml"));
+            Scene scene = new Scene(loader.load(), 1280, 760);
+            String cssUrl = getClass().getResource("/css/user-home.css").toExternalForm();
+            if (cssUrl != null) scene.getStylesheets().add(cssUrl);
+
+            ChatController chatCtrl = loader.getController();
+            chatCtrl.setCurrentUser(currentUser);
+
+            Stage stage = (Stage) userNameLabel.getScene().getWindow();
+            FadeTransition ft = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
+            ft.setToValue(0);
+            ft.setOnFinished(e -> {
+                stage.setScene(scene);
+                stage.setTitle("TrackPack — Messenger");
+                FadeTransition ftIn = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
+                ftIn.setFromValue(0);
+                ftIn.setToValue(1);
+                ftIn.play();
+            });
+            ft.play();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
