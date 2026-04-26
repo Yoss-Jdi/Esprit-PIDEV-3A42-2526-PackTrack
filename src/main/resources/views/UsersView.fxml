@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.Circle?>
+
+<!--
+    UsersView.fxml v2 — Unified premium design
+    Controller : UsersController
+-->
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestioncolis.controllers.UsersController"
+      styleClass="users-view-root-premium"
+      spacing="20">
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE HEADER
+         ═══════════════════════════════════════════════════════ -->
+    <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-premium">
+
+        <HBox alignment="CENTER_LEFT" spacing="16" HBox.hgrow="ALWAYS">
+
+            <!-- Icon badge -->
+            <StackPane styleClass="header-icon-premium">
+                <Circle radius="26" styleClass="header-icon-circle"/>
+                <Text text="👥" style="-fx-font-size:20px;"/>
+            </StackPane>
+
+            <VBox spacing="3">
+                <Label text="Gestion des utilisateurs"
+                       styleClass="header-title-premium"/>
+                <Label text="Gérez tous les comptes de la plateforme TrackPack"
+                       styleClass="header-subtitle-premium"/>
+            </VBox>
+        </HBox>
+
+        <!-- Add button -->
+        <Button styleClass="btn-premium-action" onAction="#handleAdd">
+            <graphic>
+                <HBox alignment="CENTER" spacing="8">
+                    <Text text="＋" styleClass="btn-icon"/>
+                    <Text text="Nouvel utilisateur" styleClass="btn-text"/>
+                </HBox>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <!-- ═══════════════════════════════════════════════════════
+         TABLE CARD
+         ═══════════════════════════════════════════════════════ -->
+    <VBox styleClass="table-container-premium" VBox.vgrow="ALWAYS">
+
+        <!-- Filter bar -->
+        <HBox styleClass="filter-bar-premium" alignment="CENTER_LEFT" spacing="12">
+
+            <!-- Search -->
+            <HBox styleClass="search-field-container" HBox.hgrow="ALWAYS">
+                <Text text="🔍" styleClass="search-icon-premium"/>
+                <TextField fx:id="searchField"
+                           promptText="Rechercher par nom, email ou rôle..."
+                           styleClass="search-input-premium"
+                           onKeyReleased="#handleSearch"/>
+            </HBox>
+
+            <!-- Role filter -->
+            <HBox styleClass="filter-field-container">
+                <Text text="🎭" styleClass="filter-icon-premium"/>
+                <ComboBox fx:id="filterRole"
+                          promptText="Tous les rôles"
+                          styleClass="filter-select-premium"
+                          onAction="#handleFilter"/>
+            </HBox>
+
+            <!-- Date filter -->
+            <HBox styleClass="filter-field-container">
+                <Text text="📅" styleClass="filter-icon-premium"/>
+                <ComboBox fx:id="filterDate"
+                          promptText="Toutes les dates"
+                          styleClass="filter-select-premium"
+                          onAction="#handleFilter"/>
+            </HBox>
+
+            <!-- Reset -->
+            <Button fx:id="btnResetFilters"
+                    styleClass="btn-reset-premium"
+                    visible="false" managed="false"
+                    onAction="#handleResetFilters">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="6">
+                        <Text text="↺" styleClass="reset-icon"/>
+                        <Text text="Réinitialiser" styleClass="reset-text"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <!-- Export buttons - remplacez la section existante -->
+            <Button fx:id="btnExportPDF"
+                    styleClass="btn-export-pdf-premium"
+                    onAction="#handleExportPDF">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="6">
+                        <Text text="📄" styleClass="export-icon"/>
+                        <Text text="PDF" styleClass="export-text"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnExportCSV"
+                    styleClass="btn-export-csv-premium"
+                    onAction="#handleExportCSV">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="6">
+                        <Text text="📊" styleClass="export-icon"/>
+                        <Text text="CSV" styleClass="export-text"/>
+                    </HBox>
+                </graphic>
+            </Button>
+        </HBox>
+
+        <!-- Info bar -->
+        <HBox styleClass="table-info-bar" alignment="CENTER_LEFT">
+            <Label fx:id="tableSubtitle" styleClass="table-info-text"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <HBox alignment="CENTER" spacing="8" styleClass="status-badge">
+                <Circle radius="4" styleClass="status-dot-active"/>
+                <Text text="Système actif" styleClass="status-text-premium"/>
+            </HBox>
+        </HBox>
+
+        <!-- Table -->
+        <TableView fx:id="usersTable" styleClass="table-premium" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colPhoto"     text=""           prefWidth="68"  minWidth="60"  sortable="false"/>
+                <TableColumn fx:id="colId"        text="#"          prefWidth="54"  minWidth="44"/>
+                <TableColumn fx:id="colPrenom"    text="PRÉNOM"     prefWidth="120" minWidth="100"/>
+                <TableColumn fx:id="colNom"       text="NOM"        prefWidth="120" minWidth="100"/>
+                <TableColumn fx:id="colEmail"     text="EMAIL"      prefWidth="210" minWidth="170"/>
+                <TableColumn fx:id="colTelephone" text="TÉLÉPHONE"  prefWidth="125" minWidth="100" sortable="false"/>
+                <TableColumn fx:id="colRole"      text="RÔLE"       prefWidth="130" minWidth="110"/>
+                <TableColumn fx:id="colCreatedAt" text="INSCRIT LE" prefWidth="120" minWidth="100"/>
+                <TableColumn fx:id="colActions"   text="ACTIONS"    prefWidth="190" minWidth="170" sortable="false"/>
+            </columns>
+            <placeholder>
+                <VBox alignment="CENTER" spacing="18" styleClass="empty-state-premium">
+                    <StackPane>
+                        <Circle radius="48" styleClass="empty-circle-bg"/>
+                        <Text text="🔍" style="-fx-font-size:30px;"/>
+                    </StackPane>
+                    <Label text="Aucun utilisateur trouvé"
+                           styleClass="empty-title-premium"/>
+                    <Label fx:id="emptySubtitle"
+                           text="Aucun résultat ne correspond à vos critères"
+                           styleClass="empty-subtitle-premium"/>
+                    <Button text="↺  Réinitialiser les filtres"
+                            styleClass="btn-empty-action-premium"
+                            onAction="#handleResetFilters"/>
+                </VBox>
+            </placeholder>
+        </TableView>
+
+        <!-- Pagination bar -->
+        <HBox styleClass="pagination-bar-premium" alignment="CENTER_LEFT" spacing="16">
+            <Label fx:id="paginationInfo" text=""
+                   styleClass="pagination-info-premium" HBox.hgrow="ALWAYS"/>
+
+            <HBox spacing="6" alignment="CENTER">
+                <Button fx:id="btnPrevPage" styleClass="pagination-nav-premium"
+                        onAction="#handlePrevPage">
+                    <graphic><Text text="‹" styleClass="nav-icon"/></graphic>
+                </Button>
+                <HBox fx:id="pageButtons" spacing="4" alignment="CENTER"/>
+                <Button fx:id="btnNextPage" styleClass="pagination-nav-premium"
+                        onAction="#handleNextPage">
+                    <graphic><Text text="›" styleClass="nav-icon"/></graphic>
+                </Button>
+            </HBox>
+
+            <HBox spacing="8" alignment="CENTER" styleClass="page-size-wrapper-premium">
+                <Text text="☰" styleClass="page-size-icon"/>
+                <Text text="Lignes / page" styleClass="page-size-label"/>
+                <ComboBox fx:id="pageSizeCombo"
+                          styleClass="page-size-select-premium"
+                          onAction="#handlePageSizeChange"/>
+            </HBox>
+        </HBox>
+
+    </VBox>
+
+    <!-- Toast notification -->
+    <Label fx:id="notifLabel" styleClass="toast-premium"
+           visible="false" managed="false" wrapText="true"/>
+
+</VBox>
