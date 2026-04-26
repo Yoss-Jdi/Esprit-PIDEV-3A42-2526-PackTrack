@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.*?>
+
+<!--
+    DashboardHomeView.fxml v2
+    Unified design: dark welcome banner, KPI cards, chart cards, activity list.
+    Controller : DashboardHomeController
+-->
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gestioncolis.controllers.DashboardHomeController"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            styleClass="content-scroll">
+
+    <VBox styleClass="content-body" spacing="22">
+
+        <!-- ══════════════════════════════════════════════
+             ROW 1 — Welcome banner (dark gradient)
+             ══════════════════════════════════════════════ -->
+        <HBox styleClass="welcome-banner" alignment="CENTER_LEFT" spacing="20">
+
+            <!-- Left text -->
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label fx:id="welcomeTitle" text="Bonjour, Admin 👋"
+                       styleClass="welcome-title"/>
+                <Label fx:id="welcomeDate"  text=""
+                       styleClass="welcome-date"/>
+            </VBox>
+
+            <!-- Quick-stat pills -->
+            <HBox spacing="12" alignment="CENTER">
+
+                <VBox alignment="CENTER" spacing="3"
+                      style="-fx-background-color:rgba(255,255,255,0.10);
+                             -fx-background-radius:16;
+                             -fx-padding:14 20;
+                             -fx-border-color:rgba(255,255,255,0.15);
+                             -fx-border-width:1; -fx-border-radius:16;">
+                    <Label fx:id="bannerTotal" text="—"
+                           style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:white;"/>
+                    <Label text="Utilisateurs"
+                           style="-fx-font-size:11px; -fx-text-fill:#c7d2fe;"/>
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="3"
+                      style="-fx-background-color:rgba(255,255,255,0.10);
+                             -fx-background-radius:16;
+                             -fx-padding:14 20;
+                             -fx-border-color:rgba(255,255,255,0.15);
+                             -fx-border-width:1; -fx-border-radius:16;">
+                    <Label text="🚀" style="-fx-font-size:20px;"/>
+                    <Label text="TrackPack v1.0"
+                           style="-fx-font-size:11px; -fx-text-fill:#c7d2fe; -fx-font-weight:bold;"/>
+                </VBox>
+
+            </HBox>
+        </HBox>
+
+        <!-- ══════════════════════════════════════════════
+             ROW 2 — KPI Cards
+             ══════════════════════════════════════════════ -->
+        <HBox spacing="16" alignment="CENTER_LEFT">
+
+            <!-- Total utilisateurs -->
+            <VBox styleClass="kpi-card" spacing="14" HBox.hgrow="ALWAYS"
+                  style="-fx-border-color:#e0e7ff; -fx-border-width:0 0 0 4; -fx-border-radius:20;">
+                <HBox alignment="CENTER_LEFT" spacing="14">
+                    <StackPane styleClass="kpi-icon-box,kpi-icon-indigo">
+                        <Text text="👥" style="-fx-font-size:20px;"/>
+                    </StackPane>
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label text="Utilisateurs" styleClass="kpi-label"/>
+                        <Label fx:id="kpiTotal" text="0" styleClass="kpi-value"/>
+                    </VBox>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label fx:id="kpiTotalTrend" text="↑ 0%" styleClass="kpi-trend-up"/>
+                    <Label text="ce mois" styleClass="kpi-trend-sub"/>
+                </HBox>
+                <StackPane prefHeight="4" styleClass="kpi-bar-bg">
+                    <HBox fx:id="kpiTotalBar" styleClass="kpi-bar,kpi-bar-indigo"
+                          prefHeight="4" prefWidth="0" maxWidth="1.7976931348623157E308"/>
+                </StackPane>
+            </VBox>
+
+            <!-- Admins -->
+            <VBox styleClass="kpi-card" spacing="14" HBox.hgrow="ALWAYS"
+                  style="-fx-border-color:#e9d5ff; -fx-border-width:0 0 0 4; -fx-border-radius:20;">
+                <HBox alignment="CENTER_LEFT" spacing="14">
+                    <StackPane styleClass="kpi-icon-box,kpi-icon-purple">
+                        <Text text="🛡️" style="-fx-font-size:20px;"/>
+                    </StackPane>
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label text="Admins" styleClass="kpi-label"/>
+                        <Label fx:id="kpiAdmins" text="0" styleClass="kpi-value"/>
+                    </VBox>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label fx:id="kpiAdminsPct" text="0%" styleClass="kpi-trend-neutral"/>
+                    <Label text="du total" styleClass="kpi-trend-sub"/>
+                </HBox>
+                <StackPane prefHeight="4" styleClass="kpi-bar-bg">
+                    <HBox fx:id="kpiAdminsBar" styleClass="kpi-bar,kpi-bar-purple"
+                          prefHeight="4" prefWidth="0" maxWidth="1.7976931348623157E308"/>
+                </StackPane>
+            </VBox>
+
+            <!-- Clients -->
+            <VBox styleClass="kpi-card" spacing="14" HBox.hgrow="ALWAYS"
+                  style="-fx-border-color:#bfdbfe; -fx-border-width:0 0 0 4; -fx-border-radius:20;">
+                <HBox alignment="CENTER_LEFT" spacing="14">
+                    <StackPane styleClass="kpi-icon-box,kpi-icon-blue">
+                        <Text text="👤" style="-fx-font-size:20px;"/>
+                    </StackPane>
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label text="Clients" styleClass="kpi-label"/>
+                        <Label fx:id="kpiClients" text="0" styleClass="kpi-value"/>
+                    </VBox>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label fx:id="kpiClientsPct" text="0%" styleClass="kpi-trend-neutral"/>
+                    <Label text="du total" styleClass="kpi-trend-sub"/>
+                </HBox>
+                <StackPane prefHeight="4" styleClass="kpi-bar-bg">
+                    <HBox fx:id="kpiClientsBar" styleClass="kpi-bar,kpi-bar-blue"
+                          prefHeight="4" prefWidth="0" maxWidth="1.7976931348623157E308"/>
+                </StackPane>
+            </VBox>
+
+            <!-- Livreurs -->
+            <VBox styleClass="kpi-card" spacing="14" HBox.hgrow="ALWAYS"
+                  style="-fx-border-color:#fde68a; -fx-border-width:0 0 0 4; -fx-border-radius:20;">
+                <HBox alignment="CENTER_LEFT" spacing="14">
+                    <StackPane styleClass="kpi-icon-box,kpi-icon-amber">
+                        <Text text="🚚" style="-fx-font-size:20px;"/>
+                    </StackPane>
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label text="Livreurs" styleClass="kpi-label"/>
+                        <Label fx:id="kpiLivreurs" text="0" styleClass="kpi-value"/>
+                    </VBox>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label fx:id="kpiLivreursPct" text="0%" styleClass="kpi-trend-neutral"/>
+                    <Label text="du total" styleClass="kpi-trend-sub"/>
+                </HBox>
+                <StackPane prefHeight="4" styleClass="kpi-bar-bg">
+                    <HBox fx:id="kpiLivreursBar" styleClass="kpi-bar,kpi-bar-amber"
+                          prefHeight="4" prefWidth="0" maxWidth="1.7976931348623157E308"/>
+                </StackPane>
+            </VBox>
+
+        </HBox>
+
+        <!-- ══════════════════════════════════════════════
+             ROW 3 — Charts
+             ══════════════════════════════════════════════ -->
+        <HBox spacing="16">
+
+            <!-- Donut — répartition rôles -->
+            <VBox styleClass="chart-card" spacing="16" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <VBox HBox.hgrow="ALWAYS" spacing="2">
+                        <Label text="Répartition des rôles" styleClass="chart-title"/>
+                        <Label text="Distribution par type de compte"
+                               styleClass="chart-subtitle"/>
+                    </VBox>
+                    <StackPane
+                            style="-fx-background-color:#eef2ff; -fx-background-radius:10; -fx-padding:6 10;">
+                        <Label text="🔵" style="-fx-font-size:14px;"/>
+                    </StackPane>
+                </HBox>
+                <StackPane alignment="CENTER">
+                    <Canvas fx:id="donutCanvas" width="260" height="220"/>
+                    <VBox fx:id="donutCenter" alignment="CENTER" spacing="2"
+                          prefWidth="80" prefHeight="80" mouseTransparent="true">
+                        <Label fx:id="donutCenterValue" text="0"
+                               styleClass="donut-center-value"/>
+                        <Label text="Total" styleClass="donut-center-label"/>
+                    </VBox>
+                </StackPane>
+                <VBox fx:id="donutLegend" spacing="8"
+                      style="-fx-padding:0 4 4 4;"/>
+            </VBox>
+
+            <!-- Bar — inscriptions par mois -->
+            <VBox styleClass="chart-card" spacing="16" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <VBox HBox.hgrow="ALWAYS" spacing="2">
+                        <Label text="Inscriptions par mois" styleClass="chart-title"/>
+                        <Label text="Nouveaux comptes · 6 derniers mois"
+                               styleClass="chart-subtitle"/>
+                    </VBox>
+                    <StackPane
+                            style="-fx-background-color:#f0fdf4; -fx-background-radius:10; -fx-padding:6 10;">
+                        <Label text="📈" style="-fx-font-size:14px;"/>
+                    </StackPane>
+                </HBox>
+                <Canvas fx:id="barCanvas" width="380" height="220"/>
+            </VBox>
+
+        </HBox>
+
+        <!-- ══════════════════════════════════════════════
+             ROW 4 — Recent activity + Role breakdown
+             ══════════════════════════════════════════════ -->
+        <HBox spacing="16">
+
+            <!-- Recent users -->
+            <VBox styleClass="chart-card" spacing="14" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <VBox HBox.hgrow="ALWAYS" spacing="2">
+                        <Label text="Dernières inscriptions" styleClass="chart-title"/>
+                        <Label text="5 comptes les plus récents"
+                               styleClass="chart-subtitle"/>
+                    </VBox>
+                    <StackPane
+                            style="-fx-background-color:#fafbfc; -fx-background-radius:10; -fx-padding:6 10;
+                               -fx-border-color:#f1f5f9; -fx-border-width:1; -fx-border-radius:10;">
+                        <Label text="🕐" style="-fx-font-size:14px;"/>
+                    </StackPane>
+                </HBox>
+                <VBox fx:id="recentList" spacing="0"/>
+            </VBox>
+
+            <!-- Role progress bars -->
+            <VBox styleClass="chart-card" spacing="16" prefWidth="300" minWidth="240">
+                <VBox spacing="2">
+                    <Label text="Détail par rôle" styleClass="chart-title"/>
+                    <Label text="Proportion de chaque rôle"
+                           styleClass="chart-subtitle"/>
+                </VBox>
+                <VBox fx:id="roleBarList" spacing="14"/>
+            </VBox>
+
+        </HBox>
+
+        <!-- Bottom padding -->
+        <Region prefHeight="12"/>
+
+    </VBox>
+</ScrollPane>
