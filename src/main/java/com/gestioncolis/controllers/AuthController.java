@@ -306,14 +306,13 @@ public class AuthController implements Initializable {
                 loginBtn.setText(originalText);
                 loginBtn.setDisable(false);
             } else {
+                // Vérifier le rôle et rediriger vers le dashboard approprié
                 if (found.getRole() == Role.ADMIN) {
-                    // Animation de transition vers dashboard
-                    animateLoginSuccess(() -> redirectToDashboard(found));
+                    // Animation de transition vers dashboard admin
+                    animateLoginSuccess(() -> redirectToAdminDashboard(found));
                 } else {
-                    showGlobalError(loginGlobalErr,
-                            "⛔ Accès refusé. Le dashboard est réservé aux administrateurs.");
-                    loginBtn.setText(originalText);
-                    loginBtn.setDisable(false);
+                    // Rediriger vers le dashboard utilisateur normal
+                    animateLoginSuccess(() -> redirectToUserDashboard(found));
                 }
             }
         } catch (SQLException ex) {
@@ -361,26 +360,41 @@ public class AuthController implements Initializable {
         ft.play();
     }
 
-    private void redirectToDashboard(Utilisateurs admin) {
+    private void redirectToDashboard(Utilisateurs user) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/views/DashboardLayout.fxml"));
-            Scene scene = new Scene(loader.load(), 1200, 720);
+            FXMLLoader loader;
+            if (user.getRole() == Role.ADMIN) {
+                loader = new FXMLLoader(getClass().getResource("/views/DashboardLayout.fxml"));
+            } else {
+                loader = new FXMLLoader(getClass().getResource("/views/UserHomeView.fxml"));
+            }
 
-            DashboardController dashCtrl = loader.getController();
-            dashCtrl.setCurrentUser(admin);
+            Scene scene = new Scene(loader.load(), 1280, 760);
+
+            if (user.getRole() == Role.ADMIN) {
+                DashboardController dashCtrl = loader.getController();
+                dashCtrl.setCurrentUser(user);
+            } else {
+                // Charger le CSS pour l'interface utilisateur
+                String cssUrl = getClass().getResource("/css/user-home.css").toExternalForm();
+                if (cssUrl != null) {
+                    scene.getStylesheets().add(cssUrl);
+                }
+
+                UserHomeController userCtrl = loader.getController();
+                userCtrl.setCurrentUser(user);
+            }
 
             Stage stage = (Stage) loginEmail.getScene().getWindow();
 
-            // Animation de transition
             FadeTransition ft = new FadeTransition(Duration.millis(400), stage.getScene().getRoot());
             ft.setToValue(0);
             ft.setOnFinished(e -> {
-                stage.setTitle("TrackPack — Dashboard Admin");
+                stage.setTitle("TrackPack — " + (user.getRole() == Role.ADMIN ? "Dashboard Admin" : "Espace " + user.getRole().name()));
                 stage.setScene(scene);
-                stage.setResizable(true);      // Dashboard redimensionnable
-                stage.setMinWidth(900);
-                stage.setMinHeight(600);
+                stage.setResizable(true);
+                stage.setMinWidth(1024);
+                stage.setMinHeight(700);
                 stage.centerOnScreen();
 
                 FadeTransition ftIn = new FadeTransition(Duration.millis(400), stage.getScene().getRoot());
@@ -769,5 +783,84 @@ public class AuthController implements Initializable {
                 blob4.setCenterY(height - 80);
             }
         });
+    }
+
+    /**
+     * Redirige vers le dashboard administrateur
+     */
+    private void redirectToAdminDashboard(Utilisateurs admin) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/DashboardLayout.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 720);
+
+            DashboardController dashCtrl = loader.getController();
+            dashCtrl.setCurrentUser(admin);
+
+            Stage stage = (Stage) loginEmail.getScene().getWindow();
+
+            // Animation de transition
+            FadeTransition ft = new FadeTransition(Duration.millis(400), stage.getScene().getRoot());
+            ft.setToValue(0);
+            ft.setOnFinished(e -> {
+                stage.setTitle("TrackPack — Dashboard Admin");
+                stage.setScene(scene);
+                stage.setResizable(true);
+                stage.setMinWidth(900);
+                stage.setMinHeight(600);
+                stage.centerOnScreen();
+
+                FadeTransition ftIn = new FadeTransition(Duration.millis(400), stage.getScene().getRoot());
+                ftIn.setFromValue(0);
+                ftIn.setToValue(1);
+                ftIn.play();
+            });
+            ft.play();
+        } catch (IOException e) {
+            showGlobalError(loginGlobalErr, "Erreur chargement dashboard admin : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Redirige vers le dashboard utilisateur normal (CLIENT, ENTREPRISE, LIVREUR, TECHNICIEN)
+     */
+    private void redirectToUserDashboard(Utilisateurs user) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/UserHomeView.fxml"));
+            Scene scene = new Scene(loader.load(), 1280, 760);
+
+            // Ajouter le CSS
+            String cssUrl = getClass().getResource("/css/user-home.css").toExternalForm();
+            if (cssUrl != null) {
+                scene.getStylesheets().add(cssUrl);
+            }
+
+            UserHomeController userCtrl = loader.getController();
+            userCtrl.setCurrentUser(user);
+
+            Stage stage = (Stage) loginEmail.getScene().getWindow();
+
+            FadeTransition ft = new FadeTransition(Duration.millis(400), stage.getScene().getRoot());
+            ft.setToValue(0);
+            ft.setOnFinished(e -> {
+                stage.setTitle("TrackPack — Espace " + user.getRole().name());
+                stage.setScene(scene);
+                stage.setResizable(true);
+                stage.setMinWidth(1024);
+                stage.setMinHeight(700);
+                stage.centerOnScreen();
+
+                FadeTransition ftIn = new FadeTransition(Duration.millis(400), stage.getScene().getRoot());
+                ftIn.setFromValue(0);
+                ftIn.setToValue(1);
+                ftIn.play();
+            });
+            ft.play();
+        } catch (IOException e) {
+            showGlobalError(loginGlobalErr, "Erreur chargement dashboard utilisateur : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

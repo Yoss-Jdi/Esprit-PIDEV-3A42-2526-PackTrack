@@ -1,0 +1,648 @@
+/* ═══════════════════════════════════════════════════════════════════
+   USER HOME PAGE MODERN CSS
+   ═══════════════════════════════════════════════════════════════════ */
+
+.modern-home {
+    -fx-background-color: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   NAVBAR MODERNE
+   ═══════════════════════════════════════════════════════════════════ */
+.navbar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 16 40 16 40;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 10, 0, 0, 2);
+    -fx-border-color: transparent transparent #f1f5f9 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.logo-container {
+    -fx-cursor: hand;
+}
+
+.logo-icon {
+    -fx-background-color: #eef2ff;
+    -fx-background-radius: 12;
+    -fx-padding: 8;
+}
+
+.logo-text {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: #1e1b4b;
+}
+
+.nav-links {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 40;
+    -fx-padding: 8 20 8 20;
+}
+
+.nav-link {
+    -fx-font-size: 14px;
+    -fx-text-fill: #64748b;
+    -fx-cursor: hand;
+    -fx-padding: 6 0 6 0;
+}
+
+.nav-link:hover {
+    -fx-text-fill: #4f46e5;
+}
+
+.nav-link-active {
+    -fx-text-fill: #4f46e5;
+    -fx-font-weight: bold;
+    -fx-border-color: #4f46e5;
+    -fx-border-width: 0 0 2 0;
+}
+
+.session-container {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 40;
+    -fx-padding: 8 16 8 16;
+}
+
+.user-avatar-session {
+    -fx-background-color: linear-gradient(to bottom right, #6366f1, #4f46e5);
+    -fx-background-radius: 24;
+    -fx-min-width: 36;
+    -fx-min-height: 36;
+}
+
+.user-name-session {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.user-role-session {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 8 2 8;
+    -fx-background-radius: 20;
+}
+
+.role-client { -fx-background-color: #eff6ff; -fx-text-fill: #2563eb; }
+.role-livreur { -fx-background-color: #fffbeb; -fx-text-fill: #d97706; }
+.role-entreprise { -fx-background-color: #f0fdf4; -fx-text-fill: #16a34a; }
+.role-technicien { -fx-background-color: #fdf4ff; -fx-text-fill: #9333ea; }
+
+.logout-icon-btn {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 6;
+}
+
+.logout-icon-btn:hover {
+    -fx-background-color: #fef2f2;
+    -fx-background-radius: 20;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SCROLL CONTENT
+   ═══════════════════════════════════════════════════════════════════ */
+.content-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.content-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.content-scroll .scroll-bar:vertical {
+    -fx-pref-width: 6;
+    -fx-background-color: transparent;
+}
+
+.content-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 3;
+}
+
+.main-content {
+    -fx-background-color: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HERO SECTION
+   ═══════════════════════════════════════════════════════════════════ */
+.hero-section-modern {
+    -fx-min-height: 450;
+    -fx-pref-height: 450;
+}
+
+.hero-bg-modern {
+    -fx-fill: linear-gradient(to bottom, #f8fafc, #ffffff);
+}
+
+.hero-content-modern {
+    -fx-padding: 60 40 60 40;
+}
+
+.hero-icon-container {
+    -fx-animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { -fx-translate-y: 0; }
+    50% { -fx-translate-y: -8px; }
+}
+
+.hero-icon-animated {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.3), 20, 0, 0, 0);
+}
+
+.hero-title-modern {
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.hero-subtitle-modern {
+    -fx-font-size: 16px;
+    -fx-text-fill: #64748b;
+}
+
+.btn-primary-modern {
+    -fx-background-color: linear-gradient(to right, #6366f1, #4f46e5);
+    -fx-background-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 12 32 12 32;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.4), 12, 0, 0, 3);
+}
+
+.btn-primary-modern:hover {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #4338ca);
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.6), 18, 0, 0, 5);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.btn-secondary-modern {
+    -fx-background-color: transparent;
+    -fx-background-radius: 30;
+    -fx-text-fill: #4f46e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 12 32 12 32;
+    -fx-cursor: hand;
+    -fx-border-color: #c7d2fe;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 30;
+}
+
+.btn-secondary-modern:hover {
+    -fx-background-color: #eef2ff;
+    -fx-border-color: #6366f1;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SERVICES SECTION
+   ═══════════════════════════════════════════════════════════════════ */
+.services-section-modern {
+    -fx-background-color: #f8fafc;
+    -fx-padding: 70 40 70 40;
+}
+
+.section-icon {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.2), 10, 0, 0, 0);
+}
+
+.section-title-modern {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.section-subtitle-modern {
+    -fx-font-size: 14px;
+    -fx-text-fill: #64748b;
+}
+
+.section-underline {
+    -fx-fill: #6366f1;
+}
+
+.services-grid-modern {
+    -fx-alignment: center;
+}
+
+.service-card-modern {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20;
+    -fx-padding: 28;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 15, 0, 0, 2);
+    -fx-pref-width: 280;
+    -fx-transition: all 0.3s ease;
+}
+
+.service-card-modern:hover {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.15), 25, 0, 0, 6);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.service-icon-modern {
+    -fx-background-color: #eef2ff;
+    -fx-background-radius: 50;
+    -fx-min-width: 64;
+    -fx-min-height: 64;
+    -fx-alignment: CENTER;
+}
+
+.service-title-modern {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.service-desc-modern {
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748b;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DEVELOPERS SECTION
+   ═══════════════════════════════════════════════════════════════════ */
+.developers-section-modern {
+    -fx-background-color: #ffffff;
+    -fx-padding: 70 40 70 40;
+}
+
+.developers-grid-modern {
+    -fx-alignment: center;
+}
+
+.developer-card-modern {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 24;
+    -fx-padding: 24 20 24 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 15, 0, 0, 2);
+    -fx-pref-width: 210;
+    -fx-transition: all 0.3s ease;
+}
+
+.developer-card-modern:hover {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.15), 25, 0, 0, 6);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.dev-avatar-modern {
+    -fx-min-width: 100;
+    -fx-min-height: 100;
+    -fx-alignment: CENTER;
+}
+
+.online-status-modern {
+    -fx-fill: #22c55e;
+    -fx-effect: dropshadow(gaussian, rgba(34, 197, 94, 0.5), 4, 0, 0, 0);
+    -fx-animation: pulse 1.5s infinite;
+}
+
+.offline-status-modern {
+    -fx-fill: #94a3b8;
+    -fx-opacity: 0.5;
+}
+
+@keyframes pulse {
+    0%, 100% { -fx-scale-x: 1; -fx-scale-y: 1; -fx-opacity: 1; }
+    50% { -fx-scale-x: 1.2; -fx-scale-y: 1.2; -fx-opacity: 0.7; }
+}
+
+.dev-name-modern {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.dev-role-modern {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6366f1;
+    -fx-font-weight: bold;
+}
+
+.dev-bio-modern {
+    -fx-font-size: 10px;
+    -fx-text-fill: #64748b;
+}
+
+.dev-social-modern FontIcon {
+    -fx-cursor: hand;
+}
+
+.dev-social-modern FontIcon:hover {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════════ */
+.footer-modern {
+    -fx-background-color: #0f172a;
+    -fx-padding: 50 40 40 40;
+    -fx-alignment: CENTER;
+}
+
+.footer-links-modern {
+    -fx-alignment: CENTER;
+}
+
+.footer-link-modern {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.footer-link-modern:hover {
+    -fx-text-fill: #818cf8;
+    -fx-underline: true;
+}
+
+.footer-separator-modern {
+    -fx-background-color: #334155;
+}
+
+.footer-social-modern FontIcon {
+    -fx-cursor: hand;
+}
+
+.footer-social-modern FontIcon:hover {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+    -fx-fill: #818cf8;
+}
+
+.footer-copyright-modern {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 11px;
+}
+
+/* Correction des problèmes d'affichage */
+.modern-home {
+    -fx-background-color: #ffffff;
+}
+
+.navbar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 0 40 0 40;
+    -fx-min-height: 70;
+    -fx-pref-height: 70;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0, 0, 2);
+    -fx-border-color: transparent transparent #f1f5f9 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.logo-container {
+    -fx-cursor: hand;
+}
+
+.logo-icon {
+    -fx-background-color: #eef2ff;
+    -fx-background-radius: 10;
+    -fx-padding: 8;
+}
+
+.logo-text {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-fill: #1e1b4b;
+}
+
+.nav-links {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 40;
+    -fx-padding: 8 24 8 24;
+}
+
+.nav-link {
+    -fx-font-size: 14px;
+    -fx-text-fill: #64748b;
+    -fx-cursor: hand;
+    -fx-padding: 6 0 6 0;
+}
+
+.nav-link:hover {
+    -fx-text-fill: #4f46e5;
+}
+
+.nav-link-active {
+    -fx-text-fill: #4f46e5;
+    -fx-font-weight: bold;
+}
+
+.session-container {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 40;
+    -fx-padding: 6 16 6 16;
+}
+
+.user-avatar-session {
+    -fx-background-color: linear-gradient(to bottom right, #6366f1, #4f46e5);
+    -fx-background-radius: 24;
+    -fx-min-width: 34;
+    -fx-min-height: 34;
+}
+
+.user-name-session {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.user-role-session {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 8 2 8;
+    -fx-background-radius: 20;
+}
+
+.logout-icon-btn {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 6;
+}
+
+.logout-icon-btn:hover {
+    -fx-background-color: #fef2f2;
+    -fx-background-radius: 20;
+}
+
+.content-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.content-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.main-content {
+    -fx-background-color: #ffffff;
+}
+
+/* Sections */
+.hero-section-modern {
+    -fx-min-height: 450;
+    -fx-pref-height: 450;
+    -fx-padding: 60 40;
+    -fx-background-color: linear-gradient(to bottom, #f8fafc, #ffffff);
+}
+
+.hero-icon {
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.3), 20, 0, 0, 0);
+}
+
+.hero-title-modern {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.hero-subtitle-modern {
+    -fx-font-size: 16px;
+    -fx-text-fill: #64748b;
+}
+
+.services-section-modern {
+    -fx-background-color: #f8fafc;
+    -fx-padding: 60 40;
+}
+
+.developers-section-modern {
+    -fx-background-color: #ffffff;
+    -fx-padding: 60 40;
+}
+
+.footer-modern {
+    -fx-background-color: #0f172a;
+    -fx-padding: 40;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONTACT SECTION
+   ═══════════════════════════════════════════════════════════════════ */
+.contact-section-modern {
+    -fx-background-color: #f8fafc;
+    -fx-padding: 70 40 70 40;
+}
+
+.contact-container {
+    -fx-alignment: CENTER;
+}
+
+.contact-info {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20;
+    -fx-padding: 30;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 15, 0, 0, 2);
+    -fx-min-width: 300;
+}
+
+.contact-icon-bg {
+    -fx-background-color: #eef2ff;
+    -fx-background-radius: 40;
+    -fx-min-width: 44;
+    -fx-min-height: 44;
+    -fx-alignment: CENTER;
+}
+
+.contact-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748b;
+}
+
+.contact-value {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.contact-form {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20;
+    -fx-padding: 30;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 15, 0, 0, 2);
+    -fx-min-width: 400;
+}
+
+.contact-input {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 12 16;
+    -fx-font-size: 13px;
+}
+
+.contact-input:focused {
+    -fx-border-color: #6366f1;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.15), 6, 0, 0, 1);
+}
+
+.contact-textarea {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 12 16;
+    -fx-font-size: 13px;
+}
+
+.contact-textarea:focused {
+    -fx-border-color: #6366f1;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.15), 6, 0, 0, 1);
+}
+
+/* Boutons services */
+.service-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: #c7d2fe;
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-text-fill: #4f46e5;
+    -fx-font-size: 11px;
+    -fx-padding: 6 16;
+    -fx-cursor: hand;
+}
+
+.service-btn:hover {
+    -fx-background-color: #eef2ff;
+    -fx-border-color: #6366f1;
+}
+
+/* Images développeurs */
+.dev-image {
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 0, 2);
+}
+
+/* Icônes réseaux sociaux */
+.social-icon-hover {
+    -fx-cursor: hand;
+}
+
+.social-icon-hover:hover {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+}
+
+.social-icon-footer {
+    -fx-cursor: hand;
+}
+
+.social-icon-footer:hover {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+    -fx-fill: #818cf8;
+}
