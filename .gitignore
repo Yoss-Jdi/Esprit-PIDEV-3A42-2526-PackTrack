@@ -56,6 +56,8 @@ buildNumber.properties
 *.temp
 *.swp
 *.swo
+.env
+*.env
 
 
 src/main/resources/config.properties

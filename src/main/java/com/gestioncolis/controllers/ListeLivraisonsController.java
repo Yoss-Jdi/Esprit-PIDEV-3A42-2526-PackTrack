@@ -3,9 +3,13 @@ package com.gestioncolis.controllers;
 import com.gestioncolis.models.Livraison;
 import com.gestioncolis.models.Utilisateur;
 import com.gestioncolis.services.LivraisonService;
+import com.gestioncolis.utils.QrCodeHelper;
 import com.gestioncolis.utils.SessionManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +25,7 @@ public class ListeLivraisonsController {
 
     @FXML private TableView<Livraison>           tableLivraisons;
     @FXML private TableColumn<Livraison, String> colDescriptionColis;
-    @FXML private TableColumn<Livraison, String> colNomLivreur;      // visible uniquement pour ROLE_ADMIN
+    @FXML private TableColumn<Livraison, String> colNomLivreur;
     @FXML private TableColumn<Livraison, String> colStatut;
     @FXML private TableColumn<Livraison, String> colDistance;
     @FXML private TableColumn<Livraison, String> colDuree;
@@ -30,68 +34,176 @@ public class ListeLivraisonsController {
     @FXML private TableColumn<Livraison, Void>   colActions;
     @FXML private Label                          lblMessage;
 
+    // ── Barre recherche / tri / filtre ────────────────────────────────
+    @FXML private TextField        tfRecherche;
+    @FXML private ComboBox<String> cbTri;
+    @FXML private ComboBox<String> cbFiltreStatut;
+
     private final LivraisonService service = new LivraisonService();
     private static final DateTimeFormatter FMT =
             DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+    private ObservableList<Livraison> toutesLesLivraisons = FXCollections.observableArrayList();
+
     @FXML
     public void initialize() {
+
+        // ── Colonnes texte ────────────────────────────────────────────
         colDescriptionColis.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDescriptionColis()));
-        colStatut   .setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStatut()));
         colDistance .setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDistanceKm() + " km"));
         colDuree    .setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDureeFormatee()));
         colTotal    .setCellValueFactory(d -> new SimpleStringProperty(
                 String.format("%.2f DT", d.getValue().getTotal())));
         colDateDebut.setCellValueFactory(d -> new SimpleStringProperty(
-                d.getValue().getDateDebut() != null ? d.getValue().getDateDebut().format(FMT) : "-"));
+                d.getValue().getDateDebut() != null ? d.getValue().getDateDebut().format(FMT) : "—"));
 
+        // ── Colonne statut avec badge coloré ──────────────────────────
+        colStatut.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStatut()));
+        colStatut.setCellFactory(col -> new TableCell<>() {
+            @Override protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) { setText(null); setStyle(""); return; }
+                setText(formatStatut(item));
+                setStyle(styleStatut(item) + "-fx-font-weight: bold; -fx-font-size: 12px;");
+            }
+        });
+
+        // ── Colonne livreur (admin seulement) ─────────────────────────
         Utilisateur u = SessionManager.getInstance().getUtilisateurConnecte();
         boolean estAdmin = (u != null && u.getRole() == Utilisateur.Role.ROLE_ADMIN);
         colNomLivreur.setVisible(estAdmin);
         if (estAdmin) {
-            //col livreur
             colNomLivreur.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNomLivreur()));
+        }
+
+        // ── Filtre statut ─────────────────────────────────────────────
+        if (cbFiltreStatut != null) {
+            cbFiltreStatut.setItems(FXCollections.observableArrayList(
+                    "Tous", "🚚 En cours", "✅ Terminé"));
+            cbFiltreStatut.setValue("Tous");
+            cbFiltreStatut.setOnAction(e -> appliquerFiltreEtTri());
+        }
+
+        // ── Tri ───────────────────────────────────────────────────────
+        if (cbTri != null) {
+            cbTri.setItems(FXCollections.observableArrayList(
+                    "Par défaut", "Colis A→Z", "Colis Z→A",
+                    "Distance ↑", "Distance ↓",
+                    "Total ↑", "Total ↓",
+                    "Date ↑", "Date ↓", "Statut"));
+            cbTri.setValue("Par défaut");
+            cbTri.setOnAction(e -> appliquerFiltreEtTri());
+        }
+
+        // ── Recherche texte ───────────────────────────────────────────
+        if (tfRecherche != null) {
+            tfRecherche.textProperty().addListener((obs, old, val) -> appliquerFiltreEtTri());
         }
 
         ajouterColonneActions();
         chargerDonnees();
     }
 
+    // ─────────────────────────────────────────────────────────────────
+
     private void chargerDonnees() {
         try {
             Utilisateur u = SessionManager.getInstance().getUtilisateurConnecte();
             if (u == null) return;
-
-            List<Livraison> liste;
-            if (u.getRole() == Utilisateur.Role.ROLE_ADMIN) {
-                liste = service.getAll();
-            } else {
-                liste = service.getByLivreur(u.getId());
-            }
-            tableLivraisons.setItems(FXCollections.observableArrayList(liste));
+            List<Livraison> liste = (u.getRole() == Utilisateur.Role.ROLE_ADMIN)
+                    ? service.getAll()
+                    : service.getByLivreur(u.getId());
+            toutesLesLivraisons = FXCollections.observableArrayList(liste);
+            appliquerFiltreEtTri();
         } catch (SQLException e) {
             afficherErreur("Erreur chargement : " + e.getMessage());
         }
     }
 
+    private void appliquerFiltreEtTri() {
+        String recherche = tfRecherche    != null ? tfRecherche.getText().trim().toLowerCase() : "";
+        String tri       = cbTri          != null ? cbTri.getValue()          : "Par défaut";
+        String statut    = cbFiltreStatut != null ? cbFiltreStatut.getValue() : "Tous";
+
+        FilteredList<Livraison> filtered = new FilteredList<>(toutesLesLivraisons, l -> {
+
+            // ── Filtre par statut ──────────────────────────────────────
+            if (statut != null && !statut.equals("Tous")) {
+                String statutDb = switch (statut) {
+                    case "🚚 En cours"  -> "en_cours";
+                    case "✅ Terminé"   -> "termine";
+                    default            -> "";
+                };
+                if (!statutDb.equals(l.getStatut())) return false;
+            }
+
+            // ── Filtre par texte ──────────────────────────────────────
+            if (!recherche.isBlank()) {
+                return (l.getDescriptionColis() != null && l.getDescriptionColis().toLowerCase().contains(recherche))
+                        || (l.getNomLivreur()       != null && l.getNomLivreur().toLowerCase().contains(recherche));
+            }
+            return true;
+        });
+
+        // ── Tri ────────────────────────────────────────────────────────
+        SortedList<Livraison> sorted = new SortedList<>(filtered);
+        if (tri != null) switch (tri) {
+            case "Colis A→Z"  -> sorted.setComparator((a, b) ->
+                    nvl(a.getDescriptionColis()).compareToIgnoreCase(nvl(b.getDescriptionColis())));
+            case "Colis Z→A"  -> sorted.setComparator((a, b) ->
+                    nvl(b.getDescriptionColis()).compareToIgnoreCase(nvl(a.getDescriptionColis())));
+            case "Distance ↑" -> sorted.setComparator((a, b) -> Double.compare(a.getDistanceKm(), b.getDistanceKm()));
+            case "Distance ↓" -> sorted.setComparator((a, b) -> Double.compare(b.getDistanceKm(), a.getDistanceKm()));
+            case "Total ↑"    -> sorted.setComparator((a, b) -> Double.compare(a.getTotal(), b.getTotal()));
+            case "Total ↓"    -> sorted.setComparator((a, b) -> Double.compare(b.getTotal(), a.getTotal()));
+            case "Date ↑"     -> sorted.setComparator((a, b) -> {
+                if (a.getDateDebut() == null) return 1;
+                if (b.getDateDebut() == null) return -1;
+                return a.getDateDebut().compareTo(b.getDateDebut());
+            });
+            case "Date ↓"     -> sorted.setComparator((a, b) -> {
+                if (a.getDateDebut() == null) return 1;
+                if (b.getDateDebut() == null) return -1;
+                return b.getDateDebut().compareTo(a.getDateDebut());
+            });
+            case "Statut"     -> sorted.setComparator((a, b) ->
+                    nvl(a.getStatut()).compareToIgnoreCase(nvl(b.getStatut())));
+            default -> sorted.setComparator(null);
+        }
+
+        tableLivraisons.setItems(sorted);
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+
     private void ajouterColonneActions() {
         colActions.setCellFactory(col -> new TableCell<>() {
-            private final Button btnTerminer  = new Button("✅ Terminer");
-            private final Button btnSupprimer = new Button("🗑️ Supprimer");
-            private final HBox   box          = new HBox(6, btnTerminer, btnSupprimer);
+            private final Button btnQr        = new Button("QR");
+            private final Button btnTerminer  = new Button("✅");
+            private final Button btnSupprimer = new Button("🗑️");
+            private final HBox   box          = new HBox(4, btnQr, btnTerminer, btnSupprimer);
 
             {
+                btnQr.setStyle(
+                        "-fx-background-color: #8e44ad; -fx-text-fill: white;" +
+                                " -fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
                 btnTerminer.setStyle(
                         "-fx-background-color: #27ae60; -fx-text-fill: white;" +
-                                "-fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
+                                " -fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
                 btnSupprimer.setStyle(
                         "-fx-background-color: #e74c3c; -fx-text-fill: white;" +
-                                "-fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
+                                " -fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
 
-                btnTerminer.setOnAction(e -> confirmerTerminer(
-                        getTableView().getItems().get(getIndex())));
-                btnSupprimer.setOnAction(e -> confirmerSuppression(
-                        getTableView().getItems().get(getIndex())));
+                btnQr       .setTooltip(new Tooltip("Afficher le QR Code"));
+                btnTerminer .setTooltip(new Tooltip("Terminer la livraison"));
+                btnSupprimer.setTooltip(new Tooltip("Supprimer"));
+
+                btnQr.setOnAction(e ->
+                        QrCodeHelper.afficherQrLivraison(getTableView().getItems().get(getIndex())));
+                btnTerminer.setOnAction(e ->
+                        confirmerTerminer(getTableView().getItems().get(getIndex())));
+                btnSupprimer.setOnAction(e ->
+                        confirmerSuppression(getTableView().getItems().get(getIndex())));
             }
 
             @Override
@@ -99,12 +211,20 @@ public class ListeLivraisonsController {
                 super.updateItem(item, empty);
                 if (empty) { setGraphic(null); return; }
                 Livraison liv = getTableView().getItems().get(getIndex());
-                btnTerminer.setDisable("termine".equals(liv.getStatut()));
-                btnTerminer.setOpacity("termine".equals(liv.getStatut()) ? 0.4 : 1.0);
+                boolean termine = "termine".equals(liv.getStatut());
+                btnTerminer.setDisable(termine);
+                btnTerminer.setOpacity(termine ? 0.4 : 1.0);
+                if (termine) {
+                    btnTerminer.setTooltip(new Tooltip("Livraison déjà terminée"));
+                } else {
+                    btnTerminer.setTooltip(new Tooltip("Terminer la livraison"));
+                }
                 setGraphic(box);
             }
         });
     }
+
+    // ─────────────────────────────────────────────────────────────────
 
     private void confirmerTerminer(Livraison liv) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -142,31 +262,44 @@ public class ListeLivraisonsController {
         });
     }
 
-    @FXML
-    public void ouvrirAjouter() {
+    @FXML public void ouvrirAjouter() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/ajouterLivraison.fxml"));
             tableLivraisons.getScene().setRoot(root);
-        } catch (IOException e) {
-            afficherErreur("Erreur navigation : " + e.getMessage());
-        }
+        } catch (IOException e) { afficherErreur("Erreur navigation : " + e.getMessage()); }
     }
 
-    @FXML
-    public void retourDashboard() {
+    @FXML public void retourDashboard() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard.fxml"));
             tableLivraisons.getScene().setRoot(root);
-        } catch (IOException e) {
-            afficherErreur("Erreur navigation : " + e.getMessage());
-        }
+        } catch (IOException e) { afficherErreur("Erreur navigation : " + e.getMessage()); }
     }
+
+    // ── Helpers ───────────────────────────────────────────────────────
+
+    private String formatStatut(String s) {
+        return switch (s == null ? "" : s) {
+            case "en_cours" -> "🚚 En cours";
+            case "termine"  -> "✅ Terminé";
+            default         -> s;
+        };
+    }
+
+    private String styleStatut(String s) {
+        return switch (s == null ? "" : s) {
+            case "en_cours" -> "-fx-text-fill: #2980b9;";
+            case "termine"  -> "-fx-text-fill: #27ae60;";
+            default         -> "-fx-text-fill: #555;";
+        };
+    }
+
+    private String nvl(String s) { return s == null ? "" : s; }
 
     private void afficherSucces(String msg) {
         lblMessage.setStyle("-fx-text-fill: #27ae60; -fx-font-size: 12px;");
         lblMessage.setText(msg);
     }
-
     private void afficherErreur(String msg) {
         lblMessage.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 12px;");
         lblMessage.setText(msg);

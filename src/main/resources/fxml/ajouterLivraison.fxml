@@ -10,7 +10,7 @@
       maxWidth="Infinity" maxHeight="Infinity"
       style="-fx-background-color: #f4f4f4; -fx-padding: 28 36;">
 
-    <!-- ── Header ──────────────────────────────────────────────────── -->
+    <!-- Header -->
     <HBox alignment="CENTER_LEFT" spacing="14" maxWidth="Infinity">
         <Button text="←" onAction="#retourListe"
                 style="-fx-background-color: transparent; -fx-border-color: #ccc;
@@ -20,9 +20,16 @@
         </Button>
         <Label text="🚚 Prendre un colis en charge"
                style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="btnLocalisation" text="📍 Ma position" onAction="#definirLocalisation"
+                style="-fx-background-color: #3498db; -fx-text-fill: white;
+                       -fx-background-radius: 8; -fx-font-size: 13px;
+                       -fx-cursor: hand; -fx-padding: 10 20;">
+            <tooltip><Tooltip text="Définir ma position pour trier les colis"/></tooltip>
+        </Button>
     </HBox>
 
-    <!-- ── Bandeau livreur + bouton Prendre en charge ──────────────── -->
+    <!-- Bandeau livreur + bouton action -->
     <HBox alignment="CENTER_LEFT" spacing="16" maxWidth="Infinity"
           style="-fx-background-color: white; -fx-border-color: #e0e0e0;
                  -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 16 24;">
@@ -34,63 +41,48 @@
                 style="-fx-background-color: #27ae60; -fx-text-fill: white;
                        -fx-background-radius: 8; -fx-font-size: 14px; -fx-font-weight: bold;
                        -fx-cursor: hand; -fx-padding: 10 28;">
-            <tooltip><Tooltip text="Prendre ce colis en charge et créer la livraison"/></tooltip>
+            <tooltip><Tooltip text="Prendre ce colis en charge"/></tooltip>
         </Button>
     </HBox>
 
-    <!-- ── Résumé du colis sélectionné ─────────────────────────────── -->
+    <!-- Résumé colis sélectionné -->
     <Label fx:id="lblSelectionInfo" text=""
            style="-fx-font-size: 13px; -fx-text-fill: #2980b9;
                   -fx-background-color: #eaf4fb; -fx-padding: 8 16;
                   -fx-border-radius: 8; -fx-background-radius: 8; -fx-wrap-text: true;"
            maxWidth="Infinity"/>
 
-    <!-- ── Bandeau Estimation IA ────────────────────────────────────── -->
-    <VBox spacing="6" maxWidth="Infinity"
-          style="-fx-background-color: #f0faf4; -fx-border-color: #a9dfbf;
-                 -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;
-                 -fx-padding: 14 20;">
-
-        <!-- Titre + statut -->
-        <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="🤖 Estimation IA"
-                   style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1a5c38;"/>
-            <Label fx:id="lblIaStatut"
-                   text="Sélectionnez un colis pour lancer l'analyse IA"
-                   style="-fx-font-size: 12px; -fx-text-fill: #888;"/>
-        </HBox>
-
-        <!-- Résultats distance et durée -->
-        <HBox spacing="40" alignment="CENTER_LEFT">
-            <Label fx:id="lblIaDistance" text=""
-                   style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1e8449;"
-                   wrapText="true"/>
-            <Label fx:id="lblIaDuree" text=""
-                   style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1e8449;"
-                   wrapText="true"/>
-        </HBox>
-
+    <!-- Bandeau IA -->
+    <VBox spacing="6" style="-fx-background-color: #f9f9f9; -fx-border-color: #e0e0e0;
+                             -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 12 16;">
+        <Label fx:id="lblIaStatut" text="Sélectionnez un colis pour lancer l'analyse IA"
+               style="-fx-font-size: 12px; -fx-text-fill: #888888;"/>
+        <Label fx:id="lblIaDistance" text=""
+               style="-fx-font-size: 13px; -fx-font-weight: bold;"/>
+        <Label fx:id="lblIaDuree" text=""
+               style="-fx-font-size: 13px; -fx-font-weight: bold;"/>
     </VBox>
 
-    <!-- ── Message d'erreur ─────────────────────────────────────────── -->
+    <!-- Erreur -->
     <Label fx:id="lblErreur" text=""
            style="-fx-text-fill: #e74c3c; -fx-font-size: 13px; -fx-wrap-text: true;"
            maxWidth="Infinity"/>
 
-    <!-- ── Tableau des colis disponibles ───────────────────────────── -->
+    <!-- Tableau colis disponibles -->
     <VBox spacing="8" VBox.vgrow="ALWAYS" maxWidth="Infinity">
-        <Label text="📦 Colis disponibles — cliquez pour sélectionner, puis appuyez sur « Prendre en charge »"
+        <Label text="📦 Colis disponibles — triés par proximité (cliquez pour voir les détails)"
                style="-fx-font-size: 13px; -fx-text-fill: #888;"/>
 
         <TableView fx:id="tableColisDisponibles" VBox.vgrow="ALWAYS" maxWidth="Infinity"
                    style="-fx-background-color: white; -fx-border-color: #e0e0e0;
                           -fx-border-radius: 10; -fx-background-radius: 10;">
             <columns>
-                <TableColumn fx:id="colCDesc"    text="Description"    prefWidth="300" minWidth="180"/>
-                <TableColumn fx:id="colCDep"     text="📍 Départ"      prefWidth="230" minWidth="140"/>
-                <TableColumn fx:id="colCDest"    text="🏁 Destination"  prefWidth="230" minWidth="140"/>
-                <TableColumn fx:id="colCPoid"    text="Poids"          prefWidth="110" minWidth="80"/>
-                <TableColumn fx:id="colCMontant" text="Montant"        prefWidth="140" minWidth="100"/>
+                <TableColumn fx:id="colCProximite" text="📍 Distance" prefWidth="100" minWidth="80"/>
+                <TableColumn fx:id="colCDesc"      text="Description"  prefWidth="240" minWidth="160"/>
+                <TableColumn fx:id="colCDep"       text="📍 Départ"    prefWidth="200" minWidth="130"/>
+                <TableColumn fx:id="colCDest"      text="🏁 Destination" prefWidth="200" minWidth="130"/>
+                <TableColumn fx:id="colCPoid"      text="Poids"        prefWidth="90"  minWidth="70"/>
+                <TableColumn fx:id="colCMontant"   text="Montant"      prefWidth="120" minWidth="90"/>
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

@@ -4,193 +4,293 @@ import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-/**
- * Utilitaire partagé pour ouvrir la carte Leaflet / OpenStreetMap
- * dans un dialog modal et récupérer une adresse via Nominatim.
- *
- * Utilisé par AjouterColisController ET ModifierColisController.
- */
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapHelper {
 
-    /**
-     * Ouvre le dialog carte et insère l'adresse choisie dans {@code cible}.
-     *
-     * @param titre Titre de la fenêtre
-     * @param cible TextField dans lequel écrire l'adresse sélectionnée
-     */
     public static void ouvrirCarte(String titre, TextField cible) {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle(titre);
-        dialog.setWidth(820);
-        dialog.setHeight(580);
+        dialog.setWidth(860);
+        dialog.setHeight(660);
 
-        WebView webView   = new WebView();
-        WebEngine engine  = webView.getEngine();
+        WebView webView  = new WebView();
+        WebEngine engine = webView.getEngine();
+        VBox.setVgrow(webView, Priority.ALWAYS);
 
-        Label lblAdresse = new Label("Cliquez sur la carte pour sélectionner une adresse...");
-        lblAdresse.setStyle("-fx-font-size: 13px; -fx-text-fill: #2980b9; -fx-padding: 0 0 4 0;");
-        lblAdresse.setWrapText(true);
+        // Champ saisie
+        TextField tfSaisie = new TextField(cible.getText());
+        tfSaisie.setPromptText("Tapez une adresse ou cliquez directement sur la carte…");
+        tfSaisie.setStyle("-fx-pref-height: 38px; -fx-font-size: 13px; " +
+                "-fx-border-color: #ddd; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;");
+        HBox.setHgrow(tfSaisie, Priority.ALWAYS);
+
+        Button btnLocaliser = new Button("🔍 Localiser");
+        btnLocaliser.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white; " +
+                "-fx-background-radius: 6; -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 8 16;");
+
+        HBox hbSaisie = new HBox(8, tfSaisie, btnLocaliser);
+
+        // Liste suggestions
+        ListView<String> listSuggestions = new ListView<>();
+        listSuggestions.setStyle("-fx-font-size: 12px;");
+        listSuggestions.setPrefHeight(120);
+        listSuggestions.setMaxHeight(120);
+        listSuggestions.setVisible(false);
+        listSuggestions.setManaged(false);
+        List<String> adressesCompletes = new ArrayList<>();
+
+        // Label statut + boutons
+        Label lblStatut = new Label("Cliquez sur la carte ou saisissez une adresse ci-dessous.");
+        lblStatut.setStyle("-fx-font-size: 12px; -fx-text-fill: #2980b9; -fx-wrap-text: true;");
 
         Button btnValider = new Button("✅  Valider cette adresse");
-        btnValider.setStyle(
-                "-fx-background-color: #2c3e50; -fx-text-fill: white; " +
-                        "-fx-background-radius: 8; -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 10 24;");
-        btnValider.setDisable(true);
+        btnValider.setStyle("-fx-background-color: #2c3e50; -fx-text-fill: white; " +
+                "-fx-background-radius: 8; -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 10 24;");
+        btnValider.setDisable(cible.getText().isBlank());
 
         Button btnAnnuler = new Button("Annuler");
-        btnAnnuler.setStyle(
-                "-fx-background-color: transparent; -fx-border-color: #ccc; " +
-                        "-fx-border-radius: 8; -fx-background-radius: 8; -fx-font-size: 13px; " +
-                        "-fx-cursor: hand; -fx-padding: 10 20;");
+        btnAnnuler.setStyle("-fx-background-color: transparent; -fx-border-color: #ccc; " +
+                "-fx-border-radius: 8; -fx-background-radius: 8; -fx-font-size: 13px; " +
+                "-fx-cursor: hand; -fx-padding: 10 20;");
 
-        final String[] adresseSelectionnee = {""};
+        final String[] adresseSelectionnee = { cible.getText() };
 
-        // Bridge Java ↔ JavaScript
+        // Bridge
         engine.getLoadWorker().stateProperty().addListener((obs, old, state) -> {
             if (state == Worker.State.SUCCEEDED) {
                 JSObject window = (JSObject) engine.executeScript("window");
-                window.setMember("javaApp", new MapBridge(lblAdresse, btnValider, adresseSelectionnee));
+                window.setMember("javaApp",
+                        new MapBridge(lblStatut, btnValider, adresseSelectionnee, tfSaisie));
+                if (!cible.getText().isBlank()) {
+                    localiserDansMap(engine, cible.getText(), lblStatut, btnValider,
+                            adresseSelectionnee, tfSaisie);
+                }
+            }
+        });
+        engine.loadContent(buildHtml());
+
+        // Autocomplete
+        tfSaisie.textProperty().addListener((obs, old, val) -> {
+            if (val == null || val.trim().length() < 3) {
+                listSuggestions.setVisible(false);
+                listSuggestions.setManaged(false);
+                return;
+            }
+            String q = val.trim();
+            new Thread(() -> {
+                List<String> s = rechercherNominatim(q);
+                Platform.runLater(() -> {
+                    adressesCompletes.clear();
+                    adressesCompletes.addAll(s);
+                    listSuggestions.getItems().setAll(s);
+                    boolean v = !s.isEmpty();
+                    listSuggestions.setVisible(v);
+                    listSuggestions.setManaged(v);
+                });
+            }, "nominatim-suggest").start();
+        });
+
+        listSuggestions.setOnMouseClicked(e -> {
+            int idx = listSuggestions.getSelectionModel().getSelectedIndex();
+            if (idx >= 0 && idx < adressesCompletes.size()) {
+                String adr = adressesCompletes.get(idx);
+                tfSaisie.setText(adr);
+                adresseSelectionnee[0] = adr;
+                listSuggestions.setVisible(false);
+                listSuggestions.setManaged(false);
+                localiserDansMap(engine, adr, lblStatut, btnValider, adresseSelectionnee, tfSaisie);
+                btnValider.setDisable(false);
             }
         });
 
-        engine.loadContent(buildHtml());
+        btnLocaliser.setOnAction(e -> {
+            String adr = tfSaisie.getText().trim();
+            if (adr.isBlank()) return;
+            listSuggestions.setVisible(false);
+            listSuggestions.setManaged(false);
+            lblStatut.setText("Recherche en cours…");
+            localiserDansMap(engine, adr, lblStatut, btnValider, adresseSelectionnee, tfSaisie);
+        });
+        tfSaisie.setOnAction(e -> btnLocaliser.fire());
 
         btnValider.setOnAction(e -> {
-            if (!adresseSelectionnee[0].isEmpty()) {
-                cible.setText(adresseSelectionnee[0]);
-            }
+            if (!adresseSelectionnee[0].isBlank()) cible.setText(adresseSelectionnee[0]);
             dialog.close();
         });
         btnAnnuler.setOnAction(e -> dialog.close());
 
-        HBox boutons = new HBox(12, btnValider, btnAnnuler);
-        boutons.setStyle("-fx-alignment: CENTER_LEFT;");
+        Label lblTitre = new Label(titre);
+        lblTitre.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
-        VBox layout = new VBox(8, webView, lblAdresse, boutons);
-        layout.setPadding(new Insets(12));
-        VBox.setVgrow(webView, Priority.ALWAYS);
+        VBox layout = new VBox(8, lblTitre, webView,
+                new Label("📍 Adresse :") {{ setStyle("-fx-font-size: 12px; -fx-text-fill:#555;"); }},
+                hbSaisie, listSuggestions, lblStatut,
+                new HBox(12, btnValider, btnAnnuler));
+        layout.setPadding(new Insets(14));
 
         dialog.setScene(new Scene(layout));
         dialog.showAndWait();
     }
 
-    // ── Bridge Java ↔ JavaScript ──────────────────────────────────────
+    private static void localiserDansMap(WebEngine engine, String adresse,
+                                         Label lblStatut, Button btnValider,
+                                         String[] sel, TextField tfSaisie) {
+        new Thread(() -> {
+            double[] coords = geocoderNominatim(adresse);
+            if (coords == null) {
+                Platform.runLater(() -> lblStatut.setText(
+                        "⚠ Adresse introuvable — vous pouvez quand même cliquer sur la carte."));
+                return;
+            }
+            List<String> noms = rechercherNominatim(adresse);
+            String nom = noms.isEmpty() ? adresse : noms.get(0);
+            Platform.runLater(() -> {
+                engine.executeScript(String.format("setMarkerFromJava(%s, %s, '%s')",
+                        coords[0], coords[1],
+                        nom.replace("'", "\\'").replace("\n", " ")));
+                sel[0] = nom;
+                tfSaisie.setText(nom);
+                lblStatut.setText("📍 " + nom);
+                lblStatut.setStyle("-fx-font-size:12px; -fx-text-fill:#27ae60; -fx-font-weight:bold;");
+                btnValider.setDisable(false);
+            });
+        }, "nominatim-geocode").start();
+    }
 
-    /**
-     * Classe exposée au JavaScript via JSObject.
-     * Le JS appelle {@code javaApp.setAdresse(adresseStr)} après le geocoding.
-     */
+    private static List<String> rechercherNominatim(String query) {
+        List<String> results = new ArrayList<>();
+        try {
+            String enc = URLEncoder.encode(query, StandardCharsets.UTF_8);
+            String url = "https://nominatim.openstreetmap.org/search"
+                    + "?format=json&q=" + enc + "&accept-language=fr&limit=6&countrycodes=tn";
+            HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+            conn.setRequestProperty("User-Agent", "PackTrack/1.0");
+            conn.setConnectTimeout(4000); conn.setReadTimeout(4000);
+            StringBuilder sb = new StringBuilder();
+            try (InputStreamReader r = new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8)) {
+                char[] buf = new char[4096]; int n;
+                while ((n = r.read(buf)) != -1) sb.append(buf, 0, n);
+            }
+            JSONArray arr = new JSONArray(sb.toString());
+            for (int i = 0; i < arr.length(); i++)
+                results.add(arr.getJSONObject(i).optString("display_name", ""));
+        } catch (Exception e) { System.err.println("[MapHelper] suggest: " + e.getMessage()); }
+        return results;
+    }
+
+    private static double[] geocoderNominatim(String adresse) {
+        try {
+            List<String> r = rechercherNominatim(adresse);
+            if (r.isEmpty()) return null;
+            // On re-geocode le premier résultat pour avoir les coords
+            String enc = URLEncoder.encode(r.get(0), StandardCharsets.UTF_8);
+            String url = "https://nominatim.openstreetmap.org/search"
+                    + "?format=json&q=" + enc + "&accept-language=fr&limit=1&countrycodes=tn";
+            HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+            conn.setRequestProperty("User-Agent", "PackTrack/1.0");
+            conn.setConnectTimeout(4000); conn.setReadTimeout(4000);
+            StringBuilder sb = new StringBuilder();
+            try (InputStreamReader rd = new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8)) {
+                char[] buf = new char[4096]; int n;
+                while ((n = rd.read(buf)) != -1) sb.append(buf, 0, n);
+            }
+            JSONArray arr = new JSONArray(sb.toString());
+            if (arr.length() > 0) {
+                JSONObject obj = arr.getJSONObject(0);
+                return new double[]{ Double.parseDouble(obj.getString("lat")),
+                        Double.parseDouble(obj.getString("lon")) };
+            }
+        } catch (Exception e) { System.err.println("[MapHelper] geocode: " + e.getMessage()); }
+        return null;
+    }
+
     public static class MapBridge {
-        private final Label    lblAdresse;
-        private final Button   btnValider;
+        private final Label lblStatut;
+        private final Button btnValider;
         private final String[] adresse;
+        private final TextField tfSaisie;
 
-        public MapBridge(Label lbl, Button btn, String[] adresse) {
-            this.lblAdresse = lbl;
-            this.btnValider = btn;
-            this.adresse    = adresse;
+        public MapBridge(Label l, Button b, String[] a, TextField tf) {
+            lblStatut = l; btnValider = b; adresse = a; tfSaisie = tf;
         }
 
-        /** Appelée depuis JavaScript */
         public void setAdresse(String adresseStr) {
             Platform.runLater(() -> {
                 adresse[0] = adresseStr;
-                lblAdresse.setText("📍 " + adresseStr);
-                lblAdresse.setStyle(
-                        "-fx-font-size: 13px; -fx-text-fill: #27ae60; -fx-font-weight: bold;");
+                tfSaisie.setText(adresseStr);
+                lblStatut.setText("📍 " + adresseStr);
+                lblStatut.setStyle("-fx-font-size:12px; -fx-text-fill:#27ae60; -fx-font-weight:bold;");
                 btnValider.setDisable(false);
             });
         }
     }
 
-    // ── HTML Leaflet / OpenStreetMap ──────────────────────────────────
-
     private static String buildHtml() {
         return """
-                <!DOCTYPE html>
-                <html>
+                <!DOCTYPE html><html>
                 <head>
                   <meta charset="utf-8"/>
-                  <title>Choisir une adresse</title>
                   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
                   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-                  <style>
-                    * { margin: 0; padding: 0; box-sizing: border-box; }
-                    body { font-family: sans-serif; }
-                    #map { width: 100%; height: 492px; }
-                    #info {
-                      padding: 8px 14px;
-                      background: #eaf4fb;
-                      font-size: 13px;
-                      color: #2980b9;
-                      min-height: 36px;
-                    }
-                    .leaflet-popup-content { font-size: 13px; }
-                  </style>
+                  <style>* {margin:0;padding:0;box-sizing:border-box} #map{width:100%;height:400px}</style>
                 </head>
                 <body>
                   <div id="map"></div>
-                  <div id="info">Cliquez sur la carte pour sélectionner une position...</div>
                   <script>
-                    var map = L.map('map').setView([36.8065, 10.1815], 12); // Tunis par défaut
-
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                      attribution: '© OpenStreetMap contributors',
-                      maxZoom: 19
-                    }).addTo(map);
-
+                    var map = L.map('map').setView([36.8065, 10.1815], 12);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      {attribution:'© OpenStreetMap', maxZoom:19}).addTo(map);
                     var marker = null;
 
-                    map.on('click', function(e) {
-                      var lat = e.latlng.lat;
-                      var lng = e.latlng.lng;
-
-                      if (marker) {
-                        marker.setLatLng(e.latlng);
-                      } else {
-                        marker = L.marker(e.latlng, { draggable: true }).addTo(map);
+                    function setMarkerFromJava(lat, lon, label) {
+                      var ll = L.latLng(lat, lon);
+                      if (marker) { marker.setLatLng(ll); } else {
+                        marker = L.marker(ll, {draggable:true}).addTo(map);
                         marker.on('dragend', function(ev) {
-                          reverseGeocode(ev.target.getLatLng().lat, ev.target.getLatLng().lng);
-                        });
+                          reverseGeocode(ev.target.getLatLng().lat, ev.target.getLatLng().lng); });
                       }
-                      reverseGeocode(lat, lng);
+                      map.setView(ll, 15);
+                      if (label) marker.bindPopup('<b>' + label + '</b>').openPopup();
+                    }
+
+                    map.on('click', function(e) {
+                      setMarkerFromJava(e.latlng.lat, e.latlng.lng, null);
+                      reverseGeocode(e.latlng.lat, e.latlng.lng);
                     });
 
                     function reverseGeocode(lat, lng) {
-                      document.getElementById('info').textContent = 'Recherche de l\\'adresse...';
-                      var url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='
-                                + lat + '&lon=' + lng + '&accept-language=fr';
-
-                      fetch(url, { headers: { 'Accept': 'application/json' } })
-                        .then(function(r) { return r.json(); })
-                        .then(function(data) {
-                          var adresse = data.display_name || (lat.toFixed(5) + ', ' + lng.toFixed(5));
-                          document.getElementById('info').textContent = '📍 ' + adresse;
-                          if (window.javaApp) { window.javaApp.setAdresse(adresse); }
-                          if (marker) { marker.bindPopup('<b>' + adresse + '</b>').openPopup(); }
-                        })
-                        .catch(function() {
-                          var coords = lat.toFixed(5) + ', ' + lng.toFixed(5);
-                          document.getElementById('info').textContent = '📍 ' + coords;
-                          if (window.javaApp) { window.javaApp.setAdresse(coords); }
+                      fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+lng+'&accept-language=fr',
+                            {headers:{'Accept':'application/json'}})
+                        .then(function(r){return r.json();})
+                        .then(function(data){
+                          var adr = data.display_name || (lat.toFixed(5)+', '+lng.toFixed(5));
+                          if(window.javaApp) window.javaApp.setAdresse(adr);
+                          if(marker) marker.bindPopup('<b>'+adr+'</b>').openPopup();
+                        }).catch(function(){
+                          var c = lat.toFixed(5)+', '+lng.toFixed(5);
+                          if(window.javaApp) window.javaApp.setAdresse(c);
                         });
                     }
                   </script>
-                </body>
-                </html>
+                </body></html>
                 """;
     }
 }

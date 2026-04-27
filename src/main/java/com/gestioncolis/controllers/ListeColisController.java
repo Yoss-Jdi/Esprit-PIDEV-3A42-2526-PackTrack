@@ -3,9 +3,13 @@ package com.gestioncolis.controllers;
 import com.gestioncolis.models.Colis;
 import com.gestioncolis.models.Utilisateur;
 import com.gestioncolis.services.ColisService;
+import com.gestioncolis.utils.QrCodeHelper;
 import com.gestioncolis.utils.SessionManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,34 +34,73 @@ public class ListeColisController {
     @FXML private Label                      lblMessage;
     @FXML private Button                     btnAjouter;
 
+    // ── Barre recherche / tri / filtre ────────────────────────────────
+    @FXML private TextField        tfRecherche;
+    @FXML private ComboBox<String> cbTri;
+    @FXML private ComboBox<String> cbFiltreStatut;
+
     private final ColisService service = new ColisService();
+    private ObservableList<Colis> tousLesColis = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+
+        // ── Colonnes texte ────────────────────────────────────────────
         colDescription.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDescription()));
         colDepart     .setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAdresseDepart()));
         colDestination.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAdresseDestination()));
         colPoids      .setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPoids() + " kg"));
-        colStatut     .setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStatut()));
         colMontant    .setCellValueFactory(d -> new SimpleStringProperty(
                 String.format("%.2f DT", d.getValue().calculerMontant())));
+
+        // ── Colonne statut avec badge coloré ──────────────────────────
+        colStatut.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStatut()));
+        colStatut.setCellFactory(col -> new TableCell<>() {
+            @Override protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) { setText(null); setStyle(""); return; }
+                setText(formatStatut(item));
+                setStyle(styleStatut(item) + "-fx-font-weight: bold; -fx-font-size: 12px;");
+            }
+        });
+
+        // ── Filtre statut ─────────────────────────────────────────────
+        if (cbFiltreStatut != null) {
+            cbFiltreStatut.setItems(FXCollections.observableArrayList(
+                    "Tous", "⏳ En attente", "🚚 En cours", "✅ Livré"));
+            cbFiltreStatut.setValue("Tous");
+            cbFiltreStatut.setOnAction(e -> appliquerFiltreEtTri());
+        }
+
+        // ── Tri ───────────────────────────────────────────────────────
+        if (cbTri != null) {
+            cbTri.setItems(FXCollections.observableArrayList(
+                    "Par défaut", "Description A→Z", "Description Z→A",
+                    "Poids ↑", "Poids ↓", "Montant ↑", "Montant ↓", "Statut"));
+            cbTri.setValue("Par défaut");
+            cbTri.setOnAction(e -> appliquerFiltreEtTri());
+        }
+
+        // ── Recherche texte ───────────────────────────────────────────
+        if (tfRecherche != null) {
+            tfRecherche.textProperty().addListener((obs, old, val) -> appliquerFiltreEtTri());
+        }
 
         configurerSelonRole();
         ajouterColonneActions();
         chargerDonnees();
     }
 
+    // ─────────────────────────────────────────────────────────────────
+
     private void configurerSelonRole() {
         Utilisateur u = SessionManager.getInstance().getUtilisateurConnecte();
         if (u == null) return;
-
         boolean estClient = (u.getRole() == Utilisateur.Role.ROLE_CLIENT);
-
         if (btnAjouter != null) {
             btnAjouter.setVisible(!estClient);
             btnAjouter.setManaged(!estClient);
         }
-
         colActions.setVisible(!estClient);
     }
 
@@ -65,7 +108,6 @@ public class ListeColisController {
         try {
             Utilisateur u = SessionManager.getInstance().getUtilisateurConnecte();
             if (u == null) return;
-
             List<Colis> liste;
             switch (u.getRole()) {
                 case ROLE_ADMIN      -> liste = service.getAll();
@@ -73,58 +115,115 @@ public class ListeColisController {
                 case ROLE_ENTREPRISE -> liste = service.getByExpediteur(u.getId());
                 default              -> liste = new ArrayList<>();
             }
-
-            tableColis.setItems(FXCollections.observableArrayList(liste));
+            tousLesColis = FXCollections.observableArrayList(liste);
+            appliquerFiltreEtTri();
         } catch (SQLException e) {
             afficherErreur("Erreur chargement : " + e.getMessage());
         }
     }
 
+    private void appliquerFiltreEtTri() {
+        String recherche = tfRecherche    != null ? tfRecherche.getText().trim().toLowerCase() : "";
+        String tri       = cbTri          != null ? cbTri.getValue()          : "Par défaut";
+        String statut    = cbFiltreStatut != null ? cbFiltreStatut.getValue() : "Tous";
+
+        FilteredList<Colis> filtered = new FilteredList<>(tousLesColis, c -> {
+
+            // ── Filtre par statut ──────────────────────────────────────
+            if (statut != null && !statut.equals("Tous")) {
+                String statutDb = switch (statut) {
+                    case "⏳ En attente" -> "en_attente";
+                    case "🚚 En cours"   -> "en_cours";
+                    case "✅ Livré"       -> "livre";
+                    default              -> "";
+                };
+                if (!statutDb.equals(c.getStatut())) return false;
+            }
+
+            // ── Filtre par texte ──────────────────────────────────────
+            if (!recherche.isBlank()) {
+                return (c.getDescription()       != null && c.getDescription().toLowerCase().contains(recherche))
+                        || (c.getAdresseDepart()      != null && c.getAdresseDepart().toLowerCase().contains(recherche))
+                        || (c.getAdresseDestination() != null && c.getAdresseDestination().toLowerCase().contains(recherche));
+            }
+            return true;
+        });
+
+        // ── Tri ────────────────────────────────────────────────────────
+        SortedList<Colis> sorted = new SortedList<>(filtered);
+        if (tri != null) switch (tri) {
+            case "Description A→Z" -> sorted.setComparator((a, b) ->
+                    nvl(a.getDescription()).compareToIgnoreCase(nvl(b.getDescription())));
+            case "Description Z→A" -> sorted.setComparator((a, b) ->
+                    nvl(b.getDescription()).compareToIgnoreCase(nvl(a.getDescription())));
+            case "Poids ↑"   -> sorted.setComparator((a, b) -> Double.compare(a.getPoids(), b.getPoids()));
+            case "Poids ↓"   -> sorted.setComparator((a, b) -> Double.compare(b.getPoids(), a.getPoids()));
+            case "Montant ↑" -> sorted.setComparator((a, b) -> Double.compare(a.calculerMontant(), b.calculerMontant()));
+            case "Montant ↓" -> sorted.setComparator((a, b) -> Double.compare(b.calculerMontant(), a.calculerMontant()));
+            case "Statut"    -> sorted.setComparator((a, b) ->
+                    nvl(a.getStatut()).compareToIgnoreCase(nvl(b.getStatut())));
+            default -> sorted.setComparator(null);
+        }
+
+        tableColis.setItems(sorted);
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+
     private void ajouterColonneActions() {
         colActions.setCellFactory(col -> new TableCell<>() {
-            private final Button btnModifier  = new Button("✏️ Modifier");
-            private final Button btnSupprimer = new Button("🗑️ Supprimer");
-            private final HBox   box          = new HBox(6, btnModifier, btnSupprimer);
+            private final Button btnQr        = new Button("QR");
+            private final Button btnModifier  = new Button("✏️");
+            private final Button btnSupprimer = new Button("🗑️");
+            private final HBox   box          = new HBox(4, btnQr, btnModifier, btnSupprimer);
 
             {
+                btnQr.setStyle(
+                        "-fx-background-color: #8e44ad; -fx-text-fill: white;" +
+                                " -fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
                 btnModifier.setStyle(
                         "-fx-background-color: #2980b9; -fx-text-fill: white;" +
-                                "-fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
+                                " -fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
                 btnSupprimer.setStyle(
                         "-fx-background-color: #e74c3c; -fx-text-fill: white;" +
-                                "-fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
+                                " -fx-background-radius: 4; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 8;");
 
-                btnModifier.setOnAction(e -> ouvrirModifier(
-                        getTableView().getItems().get(getIndex())));
-                btnSupprimer.setOnAction(e -> confirmerSuppression(
-                        getTableView().getItems().get(getIndex())));
+                btnQr       .setTooltip(new Tooltip("Afficher le QR Code"));
+                btnModifier .setTooltip(new Tooltip("Modifier"));
+                btnSupprimer.setTooltip(new Tooltip("Supprimer"));
+
+                btnQr.setOnAction(e ->
+                        QrCodeHelper.afficherQrColis(getTableView().getItems().get(getIndex())));
+                btnModifier.setOnAction(e ->
+                        ouvrirModifier(getTableView().getItems().get(getIndex())));
+                btnSupprimer.setOnAction(e ->
+                        confirmerSuppression(getTableView().getItems().get(getIndex())));
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) { setGraphic(null); return; }
-
                 Colis colis = getTableView().getItems().get(getIndex());
                 boolean enAttente = "en_attente".equals(colis.getStatut());
-
                 btnModifier .setDisable(!enAttente);
                 btnSupprimer.setDisable(!enAttente);
                 btnModifier .setOpacity(enAttente ? 1.0 : 0.4);
                 btnSupprimer.setOpacity(enAttente ? 1.0 : 0.4);
-
                 if (!enAttente) {
-                    String raison = "Colis « " + colis.getStatut() + " » : action non disponible";
+                    String raison = "Colis « " + formatStatut(colis.getStatut()) + " » : action non disponible";
                     btnModifier .setTooltip(new Tooltip(raison));
                     btnSupprimer.setTooltip(new Tooltip(raison));
                 } else {
-                    btnModifier .setTooltip(null);
-                    btnSupprimer.setTooltip(null);
+                    btnModifier .setTooltip(new Tooltip("Modifier"));
+                    btnSupprimer.setTooltip(new Tooltip("Supprimer"));
                 }
                 setGraphic(box);
             }
         });
     }
+
+    // ─────────────────────────────────────────────────────────────────
 
     private void ouvrirModifier(Colis colis) {
         try {
@@ -156,31 +255,46 @@ public class ListeColisController {
         });
     }
 
-    @FXML
-    public void ouvrirAjouter() {
+    @FXML public void ouvrirAjouter() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/ajouterColis.fxml"));
             tableColis.getScene().setRoot(root);
-        } catch (IOException e) {
-            afficherErreur("Erreur navigation : " + e.getMessage());
-        }
+        } catch (IOException e) { afficherErreur("Erreur navigation : " + e.getMessage()); }
     }
 
-    @FXML
-    public void retourDashboard() {
+    @FXML public void retourDashboard() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard.fxml"));
             tableColis.getScene().setRoot(root);
-        } catch (IOException e) {
-            afficherErreur("Erreur navigation : " + e.getMessage());
-        }
+        } catch (IOException e) { afficherErreur("Erreur navigation : " + e.getMessage()); }
     }
+
+    // ── Helpers ───────────────────────────────────────────────────────
+
+    private String formatStatut(String s) {
+        return switch (s == null ? "" : s) {
+            case "en_attente" -> "⏳ En attente";
+            case "en_cours"   -> "🚚 En cours";
+            case "livre"      -> "✅ Livré";
+            default           -> s;
+        };
+    }
+
+    private String styleStatut(String s) {
+        return switch (s == null ? "" : s) {
+            case "en_attente" -> "-fx-text-fill: #e67e22;";
+            case "en_cours"   -> "-fx-text-fill: #2980b9;";
+            case "livre"      -> "-fx-text-fill: #27ae60;";
+            default           -> "-fx-text-fill: #555;";
+        };
+    }
+
+    private String nvl(String s) { return s == null ? "" : s; }
 
     private void afficherSucces(String msg) {
         lblMessage.setStyle("-fx-text-fill: #27ae60; -fx-font-size: 12px;");
         lblMessage.setText(msg);
     }
-
     private void afficherErreur(String msg) {
         lblMessage.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 12px;");
         lblMessage.setText(msg);

@@ -196,4 +196,49 @@ public class PredictionService {
         }
         return json.substring(colon + 1, end).trim();
     }
+
+    /**
+     * Prédit avec données contextuelles (météo + trafic).
+     */
+    public PredictionResult predireAvecContexte(String adresseDepart,
+                                                String adresseDestination,
+                                                double poidsKg,
+                                                LocalDateTime dateDebut,
+                                                int conditionsMeteo,
+                                                double niveauTrafic,
+                                                double temperature,
+                                                int visibilite) {
+        if (dateDebut == null) dateDebut = LocalDateTime.now();
+
+        String payload = buildJsonEnrichi(adresseDepart, adresseDestination, poidsKg,
+                dateDebut, conditionsMeteo, niveauTrafic,
+                temperature, visibilite);
+
+        try {
+            String body = post(PREDICT_URL, payload);
+            return parseResponse(body);
+        } catch (IOException e) {
+            System.err.println("[PredictionService] Réseau : " + e.getMessage());
+            return new PredictionResult("Service ML indisponible (" + e.getMessage() + ")");
+        } catch (Exception e) {
+            System.err.println("[PredictionService] Inattendu : " + e.getMessage());
+            return new PredictionResult("Erreur prédiction : " + e.getMessage());
+        }
+    }
+
+    private String buildJsonEnrichi(String adresseDepart, String adresseDestination,
+                                    double poidsKg, LocalDateTime dateDebut,
+                                    int conditionsMeteo, double niveauTrafic,
+                                    double temperature, int visibilite) {
+        return "{"
+                + "\"adresse_depart\":"      + jsonStr(adresseDepart)      + ","
+                + "\"adresse_destination\":" + jsonStr(adresseDestination) + ","
+                + "\"poids_kg\":"            + poidsKg                     + ","
+                + "\"date_debut\":"          + jsonStr(dateDebut.format(FMT)) + ","
+                + "\"conditions_meteo\":"    + conditionsMeteo             + ","
+                + "\"niveau_trafic\":"       + niveauTrafic                + ","
+                + "\"temperature\":"         + temperature                 + ","
+                + "\"visibilite\":"          + visibilite
+                + "}";
+    }
 }

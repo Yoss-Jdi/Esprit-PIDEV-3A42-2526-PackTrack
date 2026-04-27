@@ -83,14 +83,14 @@ public class AjouterColisController {
     private void configurerBoutonsMap() {
         if (btnMapDepart != null) {
             btnMapDepart.setOnAction(e -> {
-                MapHelper.ouvrirCarte("Choisir l'adresse de départ", tfDepart);
-                if (!tfDepart.getText().isBlank()) effacerErreur(lblErrDepart);
+                effacerErreur(lblErrDepart);
+                MapHelper.ouvrirCarte("📍 Choisir l'adresse de départ", tfDepart);
             });
         }
         if (btnMapDestination != null) {
             btnMapDestination.setOnAction(e -> {
-                MapHelper.ouvrirCarte("Choisir l'adresse de destination", tfDestination);
-                if (!tfDestination.getText().isBlank()) effacerErreur(lblErrDestination);
+                effacerErreur(lblErrDestination);
+                MapHelper.ouvrirCarte("🏁 Choisir l'adresse de destination", tfDestination);
             });
         }
     }

@@ -22,15 +22,16 @@ import datetime
 import requests
 import numpy as np
 from flask import Flask, request, jsonify
+from dotenv import load_dotenv
+
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 BASE_DIR   = os.path.dirname(__file__)
 MODEL_DIST = os.path.join(BASE_DIR, "models", "model_distance.pkl")
 MODEL_DUR  = os.path.join(BASE_DIR, "models", "model_duree.pkl")
 
-# Clé OpenRouteService — variable d'environnement en production
-# export ORS_API_KEY="votre_clé"
-ORS_API_KEY = os.environ.get("eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImY5NmQ3NWQ5NGNiODQ4MmNiMzI4NjQ4MDFhZDkwNDdiIiwiaCI6Im11cm11cjY0In0=", "")
+load_dotenv()
+ORS_API_KEY = os.getenv("ORS_API_KEY")
 
 app = Flask(__name__)
 
@@ -197,26 +198,31 @@ def health():
 def predict_complet():
     data = request.get_json(force=True)
 
-    # Validation des champs requis
     required = ["adresse_depart", "adresse_destination", "poids_kg", "date_debut"]
-    missing  = [k for k in required if k not in data]
+    missing = [k for k in required if k not in data]
     if missing:
         return jsonify({"error": f"Champs manquants : {missing}"}), 400
 
-    adresse_dep  = str(data["adresse_depart"]).strip()
+    adresse_dep = str(data["adresse_depart"]).strip()
     adresse_dest = str(data["adresse_destination"]).strip()
-    poids_kg     = float(data["poids_kg"])
+    poids_kg = float(data["poids_kg"])
 
-    # Parsing date_debut — accepte ISO avec T ou espace
     try:
-        date_str   = str(data["date_debut"]).replace("T", " ")[:19]
+        date_str = str(data["date_debut"]).replace("T", " ")[:19]
         date_debut = datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
     except ValueError as e:
         return jsonify({"error": f"Format date_debut invalide : {e}"}), 400
 
+    # Features contextuelles optionnelles
+    conditions_meteo = data.get("conditions_meteo", 0)  # 0=normal par défaut
+    niveau_trafic = data.get("niveau_trafic", 0.2)     # 0.2=modéré par défaut
+    temperature = data.get("temperature", 20.0)
+    visibilite = data.get("visibilite", 10000)
+
     print(f"\n[predict] dep='{adresse_dep[:70]}'"
           f"\n          dest='{adresse_dest[:70]}'"
-          f"\n          poids={poids_kg}kg | date={date_debut}")
+          f"\n          poids={poids_kg}kg | date={date_debut}"
+          f"\n          meteo={conditions_meteo} | trafic={niveau_trafic:.2f}")
 
     # Géocodage
     coords_dep = geocoder(adresse_dep)
@@ -227,39 +233,45 @@ def predict_complet():
     if not coords_dest:
         return jsonify({"error": f"Adresse destination introuvable : '{adresse_dest}'"}), 422
 
-    lat_dep,  lon_dep  = coords_dep
+    lat_dep, lon_dep = coords_dep
     lat_dest, lon_dest = coords_dest
 
-    # Prédiction distance
+    # Prédiction distance (inchangée)
     features_dist = np.array([[lat_dep, lon_dep, lat_dest, lon_dest]])
     if model_distance:
         distance_km = float(model_distance.predict(features_dist)[0])
     else:
         distance_km = haversine(lat_dep, lon_dep, lat_dest, lon_dest) * 1.30
-        print("  ⚠  Fallback haversine ×1.30")
 
     distance_km = max(0.5, round(distance_km, 2))
     print(f"  Distance ML : {distance_km} km")
 
-    # Prédiction durée
-    heure        = date_debut.hour
-    jour_semaine = date_debut.weekday()   # 0=Lundi … 6=Dimanche
-    features_dur = np.array([[distance_km, poids_kg, heure, jour_semaine]])
+    # Prédiction durée ENRICHIE avec 8 features
+    heure = date_debut.hour
+    jour_semaine = date_debut.weekday()
+
+    features_dur = np.array([[
+        distance_km, poids_kg, heure, jour_semaine,
+        conditions_meteo, niveau_trafic, temperature, visibilite
+    ]])
 
     if model_duree:
         duree_minutes = float(model_duree.predict(features_dur)[0])
     else:
-        duree_minutes = (distance_km / 40) * 60 + 5
-        print("  ⚠  Fallback vitesse 40 km/h")
+        # Fallback avec facteurs météo/trafic
+        vitesse_base = 40
+        coeff_meteo = [1.0, 1.15, 1.40, 1.25][min(conditions_meteo, 3)]
+        coeff_trafic = 1.0 + (niveau_trafic * 2.0)
+        duree_minutes = ((distance_km / vitesse_base) * 60 * coeff_meteo * coeff_trafic) + 5
 
     duree_minutes = max(5.0, round(duree_minutes, 1))
     print(f"  Durée ML    : {duree_minutes} min → {formater_duree(duree_minutes)}")
 
     return jsonify({
-        "distance_km":        distance_km,
-        "duree_minutes":      duree_minutes,
-        "duree_formatee":     formater_duree(duree_minutes),
-        "coords_depart":      [lat_dep,  lon_dep],
+        "distance_km": distance_km,
+        "duree_minutes": duree_minutes,
+        "duree_formatee": formater_duree(duree_minutes),
+        "coords_depart": [lat_dep, lon_dep],
         "coords_destination": [lat_dest, lon_dest],
     })
 
