@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.rayen.controllers.stat"
+            styleClass="page">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="top-navbar">
+            <padding>
+                <Insets bottom="18.0" left="24.0" right="24.0" top="18.0" />
+            </padding>
+            <VBox spacing="6.0">
+                <Label text="Rayen Fleet Manager" styleClass="nav-brand" />
+                <Label text="Vue statistique de la charge des techniciens par vehicule." styleClass="nav-caption" />
+            </VBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button onAction="#handleOpenChatbot" styleClass="chat-launch-button" text="Assistant IA" />
+            <Label text="Analyse rapide" styleClass="nav-chip" />
+        </HBox>
+    </top>
+    <left>
+        <VBox spacing="14.0" styleClass="sidebar">
+            <padding>
+                <Insets bottom="24.0" left="18.0" right="18.0" top="24.0" />
+            </padding>
+            <Label text="Modules" styleClass="sidebar-title" />
+            <Button maxWidth="Infinity" onAction="#handleGoVehicules" styleClass="sidebar-button" text="Vehicule" />
+            <Button maxWidth="Infinity" onAction="#handleGoTechniciens" styleClass="sidebar-button" text="Technicien" />
+            <Button maxWidth="Infinity" onAction="#handleGoStats" styleClass="sidebar-button-active" text="Statistiques" />
+        </VBox>
+    </left>
+    <center>
+        <BorderPane>
+            <top>
+                <VBox spacing="16.0" styleClass="page-header">
+                    <padding>
+                        <Insets bottom="18.0" left="24.0" right="24.0" top="24.0" />
+                    </padding>
+                    <VBox spacing="6.0">
+                        <Label text="Statistiques des techniciens" styleClass="title-label" />
+                        <Label text="Le graphique compare chaque technicien avec le nombre de vehicules qu'il a en charge." styleClass="subtitle-label" />
+                    </VBox>
+                    <HBox spacing="12.0">
+                        <Button text="Actualiser" onAction="#handleRefresh" styleClass="secondary-button" />
+                        <Button text="Retour techniciens" onAction="#handleGoTechniciens" styleClass="primary-button" />
+                    </HBox>
+                </VBox>
+            </top>
+            <center>
+                <VBox spacing="18.0">
+                    <padding>
+                        <Insets bottom="18.0" left="24.0" right="24.0" top="0.0" />
+                    </padding>
+                    <HBox spacing="16.0">
+                        <VBox HBox.hgrow="ALWAYS" maxWidth="Infinity" spacing="6.0" styleClass="stats-card">
+                            <Label fx:id="technicienCountLabel" styleClass="stats-value" text="0" />
+                            <Label styleClass="stats-caption" text="Nombre de techniciens" />
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS" maxWidth="Infinity" spacing="6.0" styleClass="stats-card">
+                            <Label fx:id="assignedVehiculeCountLabel" styleClass="stats-value" text="0" />
+                            <Label styleClass="stats-caption" text="Vehicules assignes" />
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS" maxWidth="Infinity" spacing="6.0" styleClass="stats-card">
+                            <Label fx:id="averageLabel" styleClass="stats-value" text="0.0" />
+                            <Label styleClass="stats-caption" text="Moyenne par technicien" />
+                        </VBox>
+                    </HBox>
+                    <VBox spacing="10.0" styleClass="chart-panel" VBox.vgrow="ALWAYS">
+                        <Label styleClass="section-title" text="Vehicules par technicien" />
+                        <Label fx:id="chartStatusLabel" styleClass="muted-label" text="Chargement du graphique..." />
+                        <BarChart fx:id="vehiculesChart"
+                                  alternativeColumnFillVisible="false"
+                                  alternativeRowFillVisible="false"
+                                  animated="false"
+                                  categoryGap="10.0"
+                                  horizontalZeroLineVisible="false"
+                                  legendVisible="false"
+                                  styleClass="chart bar-chart light-bar-chart"
+                                  verticalGridLinesVisible="true"
+                                  VBox.vgrow="ALWAYS">
+                            <xAxis>
+                                <CategoryAxis fx:id="technicienAxis" gapStartAndEnd="false" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis fx:id="vehiculesAxis" forceZeroInRange="true" minorTickVisible="false" />
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+                </VBox>
+            </center>
+            <bottom>
+                <HBox styleClass="footer-bar">
+                    <padding>
+                        <Insets bottom="18.0" left="24.0" right="24.0" top="0.0" />
+                    </padding>
+                    <Label fx:id="infoLabel" styleClass="info-label" />
+                </HBox>
+            </bottom>
+        </BorderPane>
+    </center>
+</BorderPane>
