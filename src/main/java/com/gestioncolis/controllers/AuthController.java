@@ -134,7 +134,7 @@ public class AuthController implements Initializable {
     }
 
     // ═════════════════════════════════════════════════════════════════════════
-    // PHOTO FILE PICKER
+    // Choisi de la photo de profil
     // ═════════════════════════════════════════════════════════════════════════
     @FXML
     private void handlePhotoPick() {
@@ -176,7 +176,7 @@ public class AuthController implements Initializable {
     }
 
     // ═════════════════════════════════════════════════════════════════════════
-    // SWITCH LOGIN ↔ SIGNUP avec animations fluides améliorées
+    // Navigation entre l'interface de Login et L'interface de SignUp
     // ═════════════════════════════════════════════════════════════════════════
     @FXML
     private void handleSwitch() {
@@ -276,7 +276,7 @@ public class AuthController implements Initializable {
     }
 
     // ═════════════════════════════════════════════════════════════════════════
-    // HANDLE LOGIN
+    // Login
     // ═════════════════════════════════════════════════════════════════════════
     @FXML
     private void handleLogin() {
@@ -410,7 +410,7 @@ public class AuthController implements Initializable {
     }
 
     // ═════════════════════════════════════════════════════════════════════════
-    // HANDLE SIGNUP
+    // SIGNUP
     // ═════════════════════════════════════════════════════════════════════════
     @FXML
     private void handleSignup() {
@@ -512,7 +512,7 @@ public class AuthController implements Initializable {
     }
 
     // ═════════════════════════════════════════════════════════════════════════
-    // VALIDATIONS (inchangées)
+    // VALIDATIONS (Contrôle de saisie)
     // ═════════════════════════════════════════════════════════════════════════
     private boolean validateLoginEmail() {
         String v = loginEmail.getText().trim();
@@ -583,7 +583,7 @@ public class AuthController implements Initializable {
     }
 
     // ═════════════════════════════════════════════════════════════════════════
-    // PASSWORD STRENGTH
+    // PASSWORD (Contrôle de saisie)
     // ═════════════════════════════════════════════════════════════════════════
     private void updateStrength(String pass) {
         int score = 0;
@@ -603,7 +603,7 @@ public class AuthController implements Initializable {
     }
 
     // ═════════════════════════════════════════════════════════════════════════
-    // UI HELPERS
+    // Message d'erreurs du contrôle de saisie
     // ═════════════════════════════════════════════════════════════════════════
     private void showError(Label lbl, Control field, String msg) {
         lbl.setText(msg); lbl.setVisible(true); lbl.setManaged(true);

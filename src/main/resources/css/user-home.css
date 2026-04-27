@@ -64,7 +64,7 @@
 }
 
 .user-avatar-session {
-    -fx-background-color: linear-gradient(to bottom right, #6366f1, #4f46e5);
+    -fx-background-color: transparent;
     -fx-background-radius: 24;
     -fx-min-width: 36;
     -fx-min-height: 36;
@@ -446,7 +446,7 @@
 }
 
 .user-avatar-session {
-    -fx-background-color: linear-gradient(to bottom right, #6366f1, #4f46e5);
+    -fx-background-color: transparent;
     -fx-background-radius: 24;
     -fx-min-width: 34;
     -fx-min-height: 34;
@@ -1196,4 +1196,107 @@
 @keyframes slideDown {
     from { -fx-translate-y: -20; -fx-opacity: 0; }
     to { -fx-translate-y: 0; -fx-opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   USER DROPDOWN MENU - TAILLE COMPACTE
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Menu déroulant - taille exacte pour les deux boutons */
+.user-dropdown-menu {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 20, 0, 0, 5);
+    -fx-padding: 8 0;
+    -fx-min-width: 200;
+    -fx-pref-width: 200;
+    -fx-max-width: 200;
+    /* Hauteur fixée à la taille exacte : 2 boutons (44px chacun) + séparateur (1px) + padding (16px) */
+    -fx-pref-height: 105;
+    -fx-max-height: 105;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+}
+
+.dropdown-item {
+    -fx-padding: 12 16;
+    -fx-cursor: hand;
+    -fx-background-color: transparent;
+    -fx-min-height: 44;
+    -fx-pref-height: 44;
+    -fx-max-height: 44;
+}
+
+.dropdown-item:hover {
+    -fx-background-color: #f8fafc;
+}
+
+.dropdown-item FontIcon {
+    -fx-icon-size: 16px;
+}
+
+.dropdown-item Label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #1e293b;
+}
+
+.dropdown-divider {
+    -fx-background-color: #f1f5f9;
+    -fx-pref-height: 1;
+    -fx-min-height: 1;
+    -fx-max-height: 1;
+}
+
+.dropdown-item-danger:hover {
+    -fx-background-color: #fef2f2;
+}
+
+.dropdown-item-danger Label {
+    -fx-text-fill: #dc2626;
+}
+
+.dropdown-item-danger FontIcon {
+    -fx-icon-color: #dc2626;
+}
+
+/* Style pour les boutons dans le dropdown */
+.user-dropdown-menu .dropdown-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 12 16;
+    -fx-min-height: 44;
+    -fx-pref-height: 44;
+    -fx-max-height: 44;
+    -fx-alignment: CENTER_LEFT;
+    -fx-graphic-text-gap: 12;
+    -fx-cursor: hand;
+}
+
+.user-dropdown-menu .dropdown-item:hover {
+    -fx-background-color: #f8fafc;
+}
+
+.user-dropdown-menu .dropdown-item-danger:hover {
+    -fx-background-color: #fef2f2;
+}
+
+.user-dropdown-menu .dropdown-item .text {
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-fill: #1e293b;
+}
+
+.user-dropdown-menu .dropdown-item-danger .text {
+    -fx-fill: #dc2626;
+}
+
+/* Style pour le curseur sur la session */
+.session-container {
+    -fx-cursor: hand;
+}
+
+.session-container:hover {
+    -fx-background-color: #f1f5f9;
 }
