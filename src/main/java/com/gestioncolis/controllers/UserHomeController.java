@@ -1,5 +1,6 @@
 package com.gestioncolis.controllers;
 
+import com.gestioncolis.utils.PasswordUtil;
 import com.gestioncolis.utils.PhotoManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -534,8 +535,11 @@ public class UserHomeController implements Initializable {
         currentUser.setPrenom(prenom);
         currentUser.setEmail(email);
         currentUser.setTelephone(tel.isEmpty() ? null : tel);
+
+        // HACHER LE NOUVEAU MOT DE PASSE S'IL A ÉTÉ MODIFIÉ
         if (!newPass.isEmpty()) {
-            currentUser.setMotDePasse(newPass);
+            String hashedPassword = PasswordUtil.hashPassword(newPass);
+            currentUser.setMotDePasse(hashedPassword);  // ← Mot de passe haché
         }
 
         // Gérer la photo

@@ -3,6 +3,7 @@ package com.gestioncolis.services;
 import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.enums.Role;
 import com.gestioncolis.utils.MyDataBase;
+import com.gestioncolis.utils.PasswordUtil;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public class UtilisateursServices implements ICrud<Utilisateurs> {
     private final Connection cnx = MyDataBase.getInstance().getConx();
 
     // ─────────────────────────────────────────────────────────────────────────
-    // AJOUTER
+    // AJOUTER - Le mot de passe est déjà haché avant l'appel
     // ─────────────────────────────────────────────────────────────────────────
     @Override
     public void ajouter(Utilisateurs u) throws SQLException {
@@ -24,7 +25,7 @@ public class UtilisateursServices implements ICrud<Utilisateurs> {
 
         PreparedStatement ps = cnx.prepareStatement(query);
         ps.setString(1, u.getEmail());
-        ps.setString(2, u.getMotDePasse());
+        ps.setString(2, u.getMotDePasse()); // Déjà haché
         ps.setString(3, u.getNom());
         ps.setString(4, u.getPrenom());
         ps.setString(5, u.getTelephone());
@@ -55,7 +56,7 @@ public class UtilisateursServices implements ICrud<Utilisateurs> {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // MODIFIER
+    // MODIFIER - Le mot de passe est déjà haché si modifié
     // ─────────────────────────────────────────────────────────────────────────
     @Override
     public void modifier(Utilisateurs u) throws SQLException {
@@ -66,7 +67,7 @@ public class UtilisateursServices implements ICrud<Utilisateurs> {
 
         PreparedStatement ps = cnx.prepareStatement(query);
         ps.setString(1, u.getEmail());
-        ps.setString(2, u.getMotDePasse());
+        ps.setString(2, u.getMotDePasse()); // Déjà haché (soit nouveau, soit existant)
         ps.setString(3, u.getNom());
         ps.setString(4, u.getPrenom());
         ps.setString(5, u.getTelephone());
@@ -96,7 +97,7 @@ public class UtilisateursServices implements ICrud<Utilisateurs> {
             Utilisateurs u = new Utilisateurs();
             u.setIdUtilisateur(rs.getInt("id_utilisateur"));
             u.setEmail(rs.getString("email"));
-            u.setMotDePasse(rs.getString("mot_de_passe"));
+            u.setMotDePasse(rs.getString("mot_de_passe")); // Récupère le hachage
             u.setNom(rs.getString("nom"));
             u.setPrenom(rs.getString("prenom"));
             u.setTelephone(rs.getString("telephone"));
@@ -108,5 +109,37 @@ public class UtilisateursServices implements ICrud<Utilisateurs> {
         }
 
         return liste;
+    }
+
+    /**
+     * Authentifie un utilisateur par email et mot de passe
+     * @param email - l'email de l'utilisateur
+     * @param plainPassword - le mot de passe en clair
+     * @return l'utilisateur si authentifié, null sinon
+     */
+    public Utilisateurs authenticate(String email, String plainPassword) throws SQLException {
+        String query = "SELECT * FROM utilisateurs WHERE email = ?";
+        PreparedStatement ps = cnx.prepareStatement(query);
+        ps.setString(1, email);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            String hashedPassword = rs.getString("mot_de_passe");
+            if (PasswordUtil.verifyPassword(plainPassword, hashedPassword)) {
+                Utilisateurs u = new Utilisateurs();
+                u.setIdUtilisateur(rs.getInt("id_utilisateur"));
+                u.setEmail(rs.getString("email"));
+                u.setMotDePasse(hashedPassword);
+                u.setNom(rs.getString("nom"));
+                u.setPrenom(rs.getString("prenom"));
+                u.setTelephone(rs.getString("telephone"));
+                u.setRole(Role.valueOf(rs.getString("role")));
+                u.setPhoto(rs.getString("photo"));
+                Timestamp ts = rs.getTimestamp("created_at");
+                u.setCreatedAt(ts != null ? ts.toLocalDateTime() : null);
+                return u;
+            }
+        }
+        return null;
     }
 }

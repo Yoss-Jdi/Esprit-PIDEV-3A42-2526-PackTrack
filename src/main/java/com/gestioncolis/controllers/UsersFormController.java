@@ -1,5 +1,6 @@
 package com.gestioncolis.controllers;
 
+import com.gestioncolis.utils.PasswordUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -120,6 +121,9 @@ public class UsersFormController implements Initializable,
             fTel   .setText(existing.getTelephone() != null ? existing.getTelephone() : "");
             fRole  .setValue(existing.getRole());
 
+            // IMPORTANT : Garder le mot de passe haché existant en mémoire
+            // On ne modifie le mot de passe que si un nouveau est saisi
+
             // ── Charger la photo existante ────────────────────────────────
             existingPhotoPath = existing.getPhoto();
             if (existingPhotoPath != null && !existingPhotoPath.isBlank()) {
@@ -222,7 +226,6 @@ public class UsersFormController implements Initializable,
                 System.out.println("📸 Photo enregistrée : " + finalPhotoPath);
             } catch (IOException e) {
                 System.err.println("⚠️ Copie photo échouée : " + e.getMessage());
-                // On continue avec l'ancienne photo
             }
         }
 
@@ -234,7 +237,19 @@ public class UsersFormController implements Initializable,
         u.setTelephone(tel.isEmpty() ? null : tel);
         u.setRole(role);
         u.setPhoto(finalPhotoPath);
-        if (!isEdit || !pass.isEmpty()) u.setMotDePasse(pass);
+
+        // GESTION DU MOT DE PASSE AVEC HACHAGE
+        if (!isEdit) {
+            // Nouvel utilisateur - HACHER LE MOT DE PASSE
+            String hashedPassword = PasswordUtil.hashPassword(pass);
+            u.setMotDePasse(hashedPassword);
+        } else if (!pass.isEmpty()) {
+            // Modification avec nouveau mot de passe - HACHER LE NOUVEAU MOT DE PASSE
+            String hashedPassword = PasswordUtil.hashPassword(pass);
+            u.setMotDePasse(hashedPassword);
+        }
+        // Si modification sans nouveau mot de passe, on garde le hachage existant (déjà dans editTarget)
+
         if (!isEdit) u.setCreatedAt(LocalDateTime.now());
 
         // ── Persistance ────────────────────────────────────────────────────

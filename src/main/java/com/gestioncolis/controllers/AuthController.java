@@ -1,5 +1,6 @@
 package com.gestioncolis.controllers;
 
+import com.gestioncolis.utils.PasswordUtil;
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -283,7 +284,10 @@ public class AuthController implements Initializable {
         clearLoginErrors();
         boolean valid = validateLoginEmail();
         String pass = loginPassword.getText();
-        if (pass.isEmpty()) { showError(loginPassErr, loginPassword, "Le mot de passe est requis."); valid = false; }
+        if (pass.isEmpty()) {
+            showError(loginPassErr, loginPassword, "Le mot de passe est requis.");
+            valid = false;
+        }
         if (!valid) return;
 
         // Animation de loading sur le bouton
@@ -294,10 +298,8 @@ public class AuthController implements Initializable {
 
         try {
             String email = loginEmail.getText().trim();
-            Utilisateurs found = service.afficher().stream()
-                    .filter(u -> u.getEmail().equalsIgnoreCase(email)
-                            && u.getMotDePasse().equals(pass))
-                    .findFirst().orElse(null);
+            // Utiliser la nouvelle méthode d'authentification
+            Utilisateurs found = service.authenticate(email, pass);
 
             if (found == null) {
                 showGlobalError(loginGlobalErr, "Email ou mot de passe incorrect.");
@@ -308,10 +310,8 @@ public class AuthController implements Initializable {
             } else {
                 // Vérifier le rôle et rediriger vers le dashboard approprié
                 if (found.getRole() == Role.ADMIN) {
-                    // Animation de transition vers dashboard admin
                     animateLoginSuccess(() -> redirectToAdminDashboard(found));
                 } else {
-                    // Rediriger vers le dashboard utilisateur normal
                     animateLoginSuccess(() -> redirectToUserDashboard(found));
                 }
             }
@@ -442,11 +442,19 @@ public class AuthController implements Initializable {
             }
         }
 
+        // HACHER LE MOT DE PASSE AVANT ENREGISTREMENT
+        String plainPassword = signupPassword.getText();
+        String hashedPassword = PasswordUtil.hashPassword(plainPassword);
+
         Utilisateurs u = new Utilisateurs(
-                signupEmail.getText().trim(), signupPassword.getText(),
-                signupNom.getText().trim(), signupPrenom.getText().trim(),
+                signupEmail.getText().trim(),
+                hashedPassword,  // ← Mot de passe haché
+                signupNom.getText().trim(),
+                signupPrenom.getText().trim(),
                 signupTel.getText().trim().isEmpty() ? null : signupTel.getText().trim(),
-                signupRole.getValue(), photoPath, LocalDateTime.now()
+                signupRole.getValue(),
+                photoPath,
+                LocalDateTime.now()
         );
 
         try {

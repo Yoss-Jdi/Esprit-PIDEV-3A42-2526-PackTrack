@@ -162,33 +162,34 @@ public class PasswordResetDialog {
                     boolean exists = service.afficher().stream()
                             .anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
 
-                    javafx.application.Platform.runLater(() -> {
-                        if (exists) {
-                            // Générer et envoyer le code
-                            String resetCode = EmailService.generateResetCode();
-                            boolean sent = EmailService.sendResetCode(email, resetCode, email.split("@")[0]);
-
-                            if (sent) {
-                                // Stocker la demande
-                                resetRequests.put(email, new ResetRequest(email, resetCode));
-
-                                // Animation de succès
-                                showSuccessAndTransition(mainContainer, step, () -> {
-                                    VBox step2 = (VBox) mainContainer.getChildren().get(1);
-                                    step2.setUserData(email); // Stocker l'email
-                                    step2.setVisible(true);
-                                    step2.setManaged(true);
-                                });
-                            } else {
-                                showError(errorLabel, "Erreur d'envoi d'email. Réessayez plus tard.");
-                                sendBtn.setDisable(false);
-                                sendBtn.setText("Envoyer le code");
-                            }
-                        } else {
+                    if (!exists) {
+                        javafx.application.Platform.runLater(() -> {
                             showError(errorLabel, "Aucun compte trouvé avec cet email");
                             sendBtn.setDisable(false);
                             sendBtn.setText("Envoyer le code");
                             animateShakeNode(emailInput);
+                        });
+                        return;
+                    }
+
+                    // Générer le code et envoyer l'email sur le thread background
+                    // (évite de bloquer le thread UI pendant la connexion SMTP)
+                    String resetCode = EmailService.generateResetCode();
+                    boolean sent = EmailService.sendResetCode(email, resetCode, email.split("@")[0]);
+
+                    javafx.application.Platform.runLater(() -> {
+                        if (sent) {
+                            resetRequests.put(email, new ResetRequest(email, resetCode));
+                            showSuccessAndTransition(mainContainer, step, () -> {
+                                VBox step2 = (VBox) mainContainer.getChildren().get(1);
+                                step2.setUserData(email);
+                                step2.setVisible(true);
+                                step2.setManaged(true);
+                            });
+                        } else {
+                            showError(errorLabel, "Erreur d'envoi d'email. Réessayez plus tard.");
+                            sendBtn.setDisable(false);
+                            sendBtn.setText("Envoyer le code");
                         }
                     });
                 } catch (SQLException ex) {
@@ -451,7 +452,9 @@ public class PasswordResetDialog {
                             .orElse(null);
 
                     if (target != null) {
-                        target.setMotDePasse(password);
+                        // HACHER LE NOUVEAU MOT DE PASSE
+                        String hashedPassword = PasswordUtil.hashPassword(password);
+                        target.setMotDePasse(hashedPassword);
                         service.modifier(target);
 
                         javafx.application.Platform.runLater(() -> {

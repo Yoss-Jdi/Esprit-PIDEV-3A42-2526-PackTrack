@@ -5,25 +5,63 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class EmailService {
 
-    // Configuration avec VOS identifiants
     private static final String SMTP_HOST = "smtp.gmail.com";
-    private static final String SMTP_PORT = "587";
     private static final String EMAIL_FROM = "bargaouiyassine860@gmail.com";
-    private static final String EMAIL_PASSWORD = "gser tfcx nwtw ntbs";  // Votre mot de passe d'application
+    private static final String EMAIL_PASSWORD = "gser tfcx nwtw ntbs";
 
+    /**
+     * Envoi asynchrone — ne bloque pas le thread JavaFX UI.
+     * onResult reçoit true si succès, false sinon (appelé sur un thread background).
+     * Utilisez Platform.runLater() dans le callback pour mettre à jour l'UI.
+     */
+    public static void sendResetCodeAsync(String toEmail, String resetCode,
+                                          String userName, Consumer<Boolean> onResult) {
+        CompletableFuture.supplyAsync(() -> sendResetCode(toEmail, resetCode, userName))
+                .thenAccept(onResult);
+    }
+
+    /**
+     * Tente d'abord STARTTLS sur le port 587, puis SSL sur le port 465 en fallback.
+     * Le port 587 est souvent bloqué par les firewalls/proxies réseau —
+     * le port 465 (SSL direct) passe plus facilement.
+     */
     public static boolean sendResetCode(String toEmail, String resetCode, String userName) {
+        // Tentative 1 : STARTTLS port 587 (standard)
+        if (trySend(toEmail, resetCode, userName, "587", false)) return true;
+
+        System.err.println("⚠️ Port 587 échoué, tentative sur port 465 (SSL)...");
+
+        // Tentative 2 : SSL direct port 465 (fallback si 587 bloqué par firewall)
+        return trySend(toEmail, resetCode, userName, "465", true);
+    }
+
+    private static boolean trySend(String toEmail, String resetCode, String userName,
+                                   String port, boolean useSSL) {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", SMTP_HOST);
-        props.put("mail.smtp.port", SMTP_PORT);
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        props.put("mail.smtp.connectiontimeout", "5000");
-        props.put("mail.smtp.timeout", "5000");
-        props.put("mail.smtp.writetimeout", "5000");
+        props.put("mail.smtp.port", port);
+        props.put("mail.smtp.ssl.trust", SMTP_HOST);
+        props.put("mail.smtp.connectiontimeout", "10000");
+        props.put("mail.smtp.timeout", "10000");
+        props.put("mail.smtp.writetimeout", "10000");
+
+        if (useSSL) {
+            // Port 465 : SSL direct (socketFactory)
+            props.put("mail.smtp.ssl.enable", "true");
+            props.put("mail.smtp.socketFactory.port", port);
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            props.put("mail.smtp.socketFactory.fallback", "false");
+        } else {
+            // Port 587 : STARTTLS
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.starttls.required", "true");
+        }
 
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
@@ -31,9 +69,7 @@ public class EmailService {
                 return new PasswordAuthentication(EMAIL_FROM, EMAIL_PASSWORD);
             }
         });
-
-        // Pour déboguer (décommentez si besoin)
-        // session.setDebug(true);
+        // session.setDebug(true); // Décommentez pour voir les échanges SMTP en détail
 
         try {
             MimeMessage message = new MimeMessage(session);
@@ -43,11 +79,10 @@ public class EmailService {
             message.setContent(generateHtmlEmail(userName, resetCode), "text/html; charset=utf-8");
 
             Transport.send(message);
-            System.out.println("✅ Email envoyé avec succès à " + toEmail);
+            System.out.println("✅ Email envoyé avec succès à " + toEmail + " (port " + port + ")");
             return true;
         } catch (Exception e) {
-            System.err.println("❌ Erreur envoi email: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("❌ Erreur envoi email (port " + port + "): " + e.getMessage());
             return false;
         }
     }
