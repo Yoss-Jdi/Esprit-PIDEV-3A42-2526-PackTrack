@@ -25,6 +25,7 @@ import org.bytedeco.opencv.opencv_core.*;
 import org.bytedeco.opencv.opencv_objdetect.CascadeClassifier;
 
 import com.gestioncolis.entities.Utilisateurs;
+import com.gestioncolis.enums.Role;
 import com.gestioncolis.services.UtilisateursServices;
 import com.gestioncolis.utils.PhotoManager;
 
@@ -467,23 +468,38 @@ public class FaceLoginController implements Initializable {
     private void handleContinue() {
         if (loggedInUser == null) return;
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/views/DashboardLayout.fxml"));
-            Scene scene = new Scene(loader.load(), 1200, 720);
-            DashboardController dc = loader.getController();
-            dc.setCurrentUser(loggedInUser);
             Stage stage = (Stage) emailField.getScene().getWindow();
-
-            // Propriétés pour le dashboard
-            stage.setTitle("TrackPack — Dashboard");
-            stage.setScene(scene);
             stage.setResizable(true);
             stage.setMinWidth(900);
             stage.setMinHeight(600);
+
+            if (loggedInUser.getRole() == com.gestioncolis.enums.Role.ADMIN) {
+                // Admin → Dashboard back-office
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/views/DashboardLayout.fxml"));
+                Scene scene = new Scene(loader.load(), 1200, 720);
+                DashboardController dc = loader.getController();
+                dc.setCurrentUser(loggedInUser);
+                stage.setTitle("TrackPack — Dashboard Admin");
+                stage.setScene(scene);
+            } else {
+                // CLIENT, LIVREUR, TECHNICIEN, ENTREPRISE → UserHome front-office
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/views/UserHomeView.fxml"));
+                Scene scene = new Scene(loader.load(), 1280, 760);
+                UserHomeController uhc = loader.getController();
+                uhc.setCurrentUser(loggedInUser);
+                stage.setTitle("TrackPack — Espace " + loggedInUser.getRole().name());
+                stage.setScene(scene);
+                stage.setWidth(1280);
+                stage.setHeight(760);
+            }
+
             stage.centerOnScreen();
 
         } catch (IOException e) {
-            System.err.println("❌ Navigation dashboard : " + e.getMessage());
+            System.err.println("❌ Navigation après face login : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -735,7 +751,7 @@ public class FaceLoginController implements Initializable {
                 st.setFromY(0.3);
                 st.setToX(1);
                 st.setToY(1);
-                st.setInterpolator(Interpolator.SPLINE(0.34, 1.2, 0.64, 1));
+                st.setInterpolator(Interpolator.SPLINE(0.34, 0.95, 0.64, 1.0));
                 st.play();
             });
             pause.play();
