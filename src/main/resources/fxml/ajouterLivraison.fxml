@@ -53,20 +53,35 @@
            maxWidth="Infinity"/>
 
     <!-- Bandeau IA -->
-    <VBox spacing="6" style="-fx-background-color: #f9f9f9; -fx-border-color: #e0e0e0;
-                             -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 12 16;">
+    <!-- Après le bandeau livreur, avant le tableau -->
+    <VBox spacing="8" maxWidth="Infinity"
+          style="-fx-background-color: white; -fx-border-color: #e0e0e0;
+             -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 16 24;">
+
+        <!-- Statut IA -->
         <Label fx:id="lblIaStatut" text="Sélectionnez un colis pour lancer l'analyse IA"
                style="-fx-font-size: 12px; -fx-text-fill: #888888;"/>
+
+        <!-- NOUVEAU : Contexte météo + trafic -->
+        <HBox spacing="16">
+            <Label fx:id="lblIaMeteo" text=""
+                   style="-fx-font-size: 12px; -fx-text-fill: #555;"/>
+            <Label fx:id="lblIaTrafic" text=""
+                   style="-fx-font-size: 12px; -fx-text-fill: #555;"/>
+        </HBox>
+
+        <!-- Distance et durée -->
         <Label fx:id="lblIaDistance" text=""
-               style="-fx-font-size: 13px; -fx-font-weight: bold;"/>
+               style="-fx-font-size: 13px;"/>
         <Label fx:id="lblIaDuree" text=""
-               style="-fx-font-size: 13px; -fx-font-weight: bold;"/>
+               style="-fx-font-size: 13px;"/>
     </VBox>
 
     <!-- Erreur -->
     <Label fx:id="lblErreur" text=""
            style="-fx-text-fill: #e74c3c; -fx-font-size: 13px; -fx-wrap-text: true;"
            maxWidth="Infinity"/>
+
 
     <!-- Tableau colis disponibles -->
     <VBox spacing="8" VBox.vgrow="ALWAYS" maxWidth="Infinity">

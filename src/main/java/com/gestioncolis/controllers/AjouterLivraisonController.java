@@ -38,6 +38,8 @@ public class AjouterLivraisonController {
     @FXML private Label  lblIaDuree;
     @FXML private Button btnEnregistrer;
     @FXML private Button btnLocalisation;
+    @FXML private Label  lblIaMeteo;
+    @FXML private Label  lblIaTrafic;
 
     @FXML private TableView<ColisAvecDistance>           tableColisDisponibles;
     @FXML private TableColumn<ColisAvecDistance, String> colCProximite;
@@ -440,10 +442,18 @@ public class AjouterLivraisonController {
                 System.out.println("[Prédiction] Trafic : " + trafic);
 
                 Platform.runLater(() -> {
-                    String contexte = String.format("%s %s | %s Trafic %s",
-                            meteo.getIcone(), meteo.getDescription(),
-                            trafic.getIcone(), trafic.getNiveau());
-                    lblIaStatut.setText("🔄 " + contexte);
+                    // Météo dans son propre label
+                    lblIaMeteo.setText(String.format("%s %s (%.1f°C)",
+                            meteo.getIcone(), meteo.getDescription(), meteo.getTemperature()));
+                    lblIaMeteo.setStyle("-fx-font-size: 12px; -fx-text-fill: #555; -fx-font-weight: bold;");
+
+                    // Trafic dans son propre label
+                    lblIaTrafic.setText(String.format("%s Trafic %s (×%.2f)",
+                            trafic.getIcone(), trafic.getNiveau(), trafic.coefficientImpact()));
+                    lblIaTrafic.setStyle("-fx-font-size: 12px; -fx-text-fill: #555; -fx-font-weight: bold;");
+
+                    // Statut de progression inchangé
+                    lblIaStatut.setText("🔄 Calcul en cours avec contexte temps réel…");
                 });
 
                 // Prédiction enrichie
@@ -481,11 +491,17 @@ public class AjouterLivraisonController {
     }
 
     private void afficherPredictionSucces(PredictionResult r) {
+        // Statut global
         setStatutIA("✅ Estimation IA disponible", "#27ae60");
+
+        // Distance
         lblIaDistance.setText(String.format("📍 Distance estimée : %.2f km", r.getDistanceKm()));
         lblIaDistance.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1e8449;");
+
+        // Durée
         lblIaDuree.setText("⏱ Durée estimée : " + r.getDureeFormatee());
         lblIaDuree.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1e8449;");
+
     }
 
     private void afficherPredictionEchec(String raison) {
@@ -499,6 +515,8 @@ public class AjouterLivraisonController {
         if (taskCourante != null && taskCourante.isRunning()) taskCourante.cancel(true);
         dernierePrediction = null;
         setStatutIA("Sélectionnez un colis pour lancer l'analyse IA", "#888888");
+        lblIaMeteo.setText("");      // NOUVEAU
+        lblIaTrafic.setText("");
         lblIaDistance.setText("");
         lblIaDuree.setText("");
         if (btnEnregistrer != null) btnEnregistrer.setDisable(false);
