@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.gestioncolis.controllers.UserHomeController"
+           stylesheets="@../css/user-home.css"
+           fx:id="rootContainer">
+
+    <VBox styleClass="modern-home" spacing="0" prefWidth="1280" prefHeight="760">
+
+        <!-- NAVBAR -->
+        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="30" prefHeight="70">
+
+            <!-- Logo Gauche -->
+            <HBox alignment="CENTER" spacing="10" styleClass="logo-container">
+                <StackPane styleClass="logo-icon">
+                    <FontIcon iconColor="#6366f1" iconSize="24" iconLiteral="fas-boxes" />
+                </StackPane>
+                <Text text="TrackPack" styleClass="logo-text" />
+            </HBox>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- Navigation Centre -->
+            <HBox alignment="CENTER" spacing="32" styleClass="nav-links">
+                <Label fx:id="navAccueil" text="Accueil" styleClass="nav-link, nav-link-active" onMouseClicked="#scrollToAccueil" />
+                <Label fx:id="navServices" text="Services" styleClass="nav-link" onMouseClicked="#scrollToServices" />
+                <Label fx:id="navEquipe" text="Équipe" styleClass="nav-link" onMouseClicked="#scrollToEquipe" />
+                <Label fx:id="navContact" text="Contact" styleClass="nav-link" onMouseClicked="#scrollToContact" />
+            </HBox>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- Session Droite avec menu déroulant -->
+            <HBox alignment="CENTER" spacing="12">
+                <!-- Bouton session cliquable -->
+                <HBox fx:id="userSessionContainer" alignment="CENTER" spacing="12" styleClass="session-container" onMouseClicked="#toggleDropdown">
+                    <!-- Avatar avec photo -->
+                    <StackPane styleClass="user-avatar-session" alignment="CENTER">
+                        <ImageView fx:id="userAvatarImage" fitWidth="34" fitHeight="34"
+                                   preserveRatio="true" styleClass="user-avatar-img" visible="false" managed="false" />
+                        <StackPane fx:id="userAvatarPlaceholder" styleClass="user-avatar-placeholder" visible="true" managed="true">
+                            <!-- Initiales ajoutées dynamiquement -->
+                        </StackPane>
+                    </StackPane>
+                    <VBox spacing="2" alignment="CENTER_LEFT">
+                        <Label fx:id="userNameLabel" text="Utilisateur" styleClass="user-name-session" />
+                        <Label fx:id="userRoleLabel" text="CLIENT" styleClass="user-role-session" />
+                    </VBox>
+                    <FontIcon iconColor="#64748b" iconSize="14" iconLiteral="fas-chevron-down" style="-fx-cursor: hand;" />
+                </HBox>
+
+                <!-- Bouton Messenger -->
+                <Button styleClass="chat-nav-btn" onAction="#handleOpenChat">
+                    <graphic>
+                        <FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fab-facebook-messenger" />
+                    </graphic>
+                </Button>
+            </HBox>
+
+        </HBox>
+
+        <!-- CONTENU SCROLLABLE -->
+        <ScrollPane fx:id="mainScrollPane" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="content-scroll" VBox.vgrow="ALWAYS">
+            <VBox spacing="0" styleClass="main-content">
+
+                <!-- SECTION ACCUEIL / HERO -->
+                <VBox fx:id="accueilSection" styleClass="hero-section-modern" alignment="CENTER">
+                    <VBox alignment="CENTER" spacing="20" styleClass="hero-content">
+                        <FontIcon iconColor="#6366f1" iconSize="72" iconLiteral="fas-boxes" styleClass="hero-icon" />
+                        <Label fx:id="welcomeHeroLabel" text="Bienvenue sur TrackPack" styleClass="hero-title-modern" />
+                        <Label text="La solution intelligente pour la gestion de vos colis et livraisons"
+                               styleClass="hero-subtitle-modern" wrapText="true" textAlignment="CENTER" />
+                        <HBox spacing="20" alignment="CENTER">
+                            <Button styleClass="btn-primary-modern" onAction="#handleNouveauColis">
+                                <graphic><FontIcon iconColor="white" iconSize="14" iconLiteral="fas-plus" /></graphic>
+                                Commencer
+                            </Button>
+                            <Button styleClass="btn-secondary-modern" onAction="#handleEnSavoirPlus">
+                                <graphic><FontIcon iconColor="#6366f1" iconSize="14" iconLiteral="fas-play" /></graphic>
+                                En savoir plus
+                            </Button>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- SECTION SERVICES -->
+                <VBox fx:id="servicesSection" styleClass="services-section-modern" spacing="40" alignment="CENTER">
+                    <VBox alignment="CENTER" spacing="12">
+                        <FontIcon iconColor="#6366f1" iconSize="36" iconLiteral="fas-cogs" />
+                        <Label text="Nos Services" styleClass="section-title-modern" />
+                        <Label text="Des solutions adaptées à tous vos besoins"
+                               styleClass="section-subtitle-modern" />
+                        <Rectangle styleClass="section-underline" width="60" height="3" />
+                    </VBox>
+                    <GridPane hgap="30" vgap="30" alignment="CENTER" styleClass="services-grid">
+                        <!-- Service 1 -->
+                        <VBox spacing="16" alignment="CENTER" styleClass="service-card-modern" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <StackPane styleClass="service-icon-modern">
+                                <FontIcon iconColor="#6366f1" iconSize="32" iconLiteral="fas-box" />
+                            </StackPane>
+                            <Label text="Gestion des colis" styleClass="service-title-modern" />
+                            <Label text="Créez, modifiez et suivez tous vos colis en un seul endroit"
+                                   styleClass="service-desc-modern" wrapText="true" textAlignment="CENTER" />
+                            <Button styleClass="service-btn" onAction="#handleGestionColis">En savoir plus</Button>
+                        </VBox>
+                        <!-- Service 2 -->
+                        <VBox spacing="16" alignment="CENTER" styleClass="service-card-modern" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <StackPane styleClass="service-icon-modern">
+                                <FontIcon iconColor="#10b981" iconSize="32" iconLiteral="fas-map-marker-alt" />
+                            </StackPane>
+                            <Label text="Suivi en temps réel" styleClass="service-title-modern" />
+                            <Label text="Localisez vos colis en temps réel avec géolocalisation"
+                                   styleClass="service-desc-modern" wrapText="true" textAlignment="CENTER" />
+                            <Button styleClass="service-btn" onAction="#handleSuiviColis">En savoir plus</Button>
+                        </VBox>
+                        <!-- Service 3 -->
+                        <VBox spacing="16" alignment="CENTER" styleClass="service-card-modern" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <StackPane styleClass="service-icon-modern">
+                                <FontIcon iconColor="#f59e0b" iconSize="32" iconLiteral="fas-rocket" />
+                            </StackPane>
+                            <Label text="Livraison express" styleClass="service-title-modern" />
+                            <Label text="Service de livraison rapide pour vos envois urgents"
+                                   styleClass="service-desc-modern" wrapText="true" textAlignment="CENTER" />
+                            <Button styleClass="service-btn" onAction="#handleLivraisonExpress">En savoir plus</Button>
+                        </VBox>
+                        <!-- Service 4 -->
+                        <VBox spacing="16" alignment="CENTER" styleClass="service-card-modern" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <StackPane styleClass="service-icon-modern">
+                                <FontIcon iconColor="#8b5cf6" iconSize="32" iconLiteral="fas-headset" />
+                            </StackPane>
+                            <Label text="Support 24/7" styleClass="service-title-modern" />
+                            <Label text="Une équipe dédiée pour vous accompagner 7j/7"
+                                   styleClass="service-desc-modern" wrapText="true" textAlignment="CENTER" />
+                            <Button styleClass="service-btn" onAction="#handleSupport">En savoir plus</Button>
+                        </VBox>
+                        <!-- Service 5 -->
+                        <VBox spacing="16" alignment="CENTER" styleClass="service-card-modern" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <StackPane styleClass="service-icon-modern">
+                                <FontIcon iconColor="#ec4899" iconSize="32" iconLiteral="fas-code" />
+                            </StackPane>
+                            <Label text="API Integration" styleClass="service-title-modern" />
+                            <Label text="Intégrez facilement nos services dans vos applications"
+                                   styleClass="service-desc-modern" wrapText="true" textAlignment="CENTER" />
+                            <Button styleClass="service-btn" onAction="#handleAPI">En savoir plus</Button>
+                        </VBox>
+                        <!-- Service 6 -->
+                        <VBox spacing="16" alignment="CENTER" styleClass="service-card-modern" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <StackPane styleClass="service-icon-modern">
+                                <FontIcon iconColor="#06b6d4" iconSize="32" iconLiteral="fas-chart-line" />
+                            </StackPane>
+                            <Label text="Statistiques avancées" styleClass="service-title-modern" />
+                            <Label text="Analysez vos performances avec des rapports détaillés"
+                                   styleClass="service-desc-modern" wrapText="true" textAlignment="CENTER" />
+                            <Button styleClass="service-btn" onAction="#handleStatistiques">En savoir plus</Button>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- SECTION ÉQUIPE -->
+                <VBox fx:id="equipeSection" styleClass="developers-section-modern" spacing="40" alignment="CENTER">
+                    <VBox alignment="CENTER" spacing="12">
+                        <FontIcon iconColor="#6366f1" iconSize="36" iconLiteral="fas-users" />
+                        <Label text="Notre Équipe" styleClass="section-title-modern" />
+                        <Label text="Des passionnés dédiés à votre satisfaction" styleClass="section-subtitle-modern" />
+                        <Rectangle styleClass="section-underline" width="60" height="3" />
+                    </VBox>
+                    <HBox spacing="25" alignment="CENTER" styleClass="developers-grid">
+                        <!-- Dev 1 -->
+                        <VBox spacing="12" alignment="CENTER" styleClass="developer-card-modern">
+                            <StackPane styleClass="dev-avatar-modern">
+                                <ImageView fx:id="dev1Image" fitWidth="100" fitHeight="100" preserveRatio="true" styleClass="dev-image" />
+                                <Circle radius="10" styleClass="online-status-modern" StackPane.alignment="BOTTOM_RIGHT" />
+                            </StackPane>
+                            <Label text="Bargaoui Yassine" styleClass="dev-name-modern" />
+                            <Label text="Lead Developer" styleClass="dev-role-modern" />
+                            <Label text="Expert Java/JavaFX, architecte de la solution" styleClass="dev-bio-modern" wrapText="true" textAlignment="CENTER" />
+                            <HBox spacing="12" alignment="CENTER" styleClass="dev-social-modern">
+                                <FontIcon iconColor="#3b82f6" iconSize="14" iconLiteral="fab-facebook" styleClass="social-icon-hover" />
+                                <FontIcon iconColor="#e1306c" iconSize="14" iconLiteral="fab-instagram" styleClass="social-icon-hover" />
+                            </HBox>
+                        </VBox>
+                        <!-- Dev 2 -->
+                        <VBox spacing="12" alignment="CENTER" styleClass="developer-card-modern">
+                            <StackPane styleClass="dev-avatar-modern">
+                                <ImageView fx:id="dev2Image" fitWidth="100" fitHeight="100" preserveRatio="true" styleClass="dev-image" />
+                                <Circle radius="10" styleClass="online-status-modern" StackPane.alignment="BOTTOM_RIGHT" />
+                            </StackPane>
+                            <Label text="Khalfaoui Rayen" styleClass="dev-name-modern" />
+                            <Label text="Backend Developer" styleClass="dev-role-modern" />
+                            <Label text="Spécialiste base de données et API REST" styleClass="dev-bio-modern" wrapText="true" textAlignment="CENTER" />
+                            <HBox spacing="12" alignment="CENTER" styleClass="dev-social-modern">
+                                <FontIcon iconColor="#3b82f6" iconSize="14" iconLiteral="fab-facebook" styleClass="social-icon-hover" />
+                                <FontIcon iconColor="#e1306c" iconSize="14" iconLiteral="fab-instagram" styleClass="social-icon-hover" />
+                            </HBox>
+                        </VBox>
+                        <!-- Dev 3 -->
+                        <VBox spacing="12" alignment="CENTER" styleClass="developer-card-modern">
+                            <StackPane styleClass="dev-avatar-modern">
+                                <ImageView fx:id="dev3Image" fitWidth="100" fitHeight="100" preserveRatio="true" styleClass="dev-image" />
+                                <Circle radius="10" styleClass="offline-status-modern" StackPane.alignment="BOTTOM_RIGHT" />
+                            </StackPane>
+                            <Label text="Selmi Mahdi" styleClass="dev-name-modern" />
+                            <Label text="UI/UX Designer" styleClass="dev-role-modern" />
+                            <Label text="Créative UI/UX avec passion pour les animations" styleClass="dev-bio-modern" wrapText="true" textAlignment="CENTER" />
+                            <HBox spacing="12" alignment="CENTER" styleClass="dev-social-modern">
+                                <FontIcon iconColor="#3b82f6" iconSize="14" iconLiteral="fab-facebook" styleClass="social-icon-hover" />
+                                <FontIcon iconColor="#e1306c" iconSize="14" iconLiteral="fab-instagram" styleClass="social-icon-hover" />
+                            </HBox>
+                        </VBox>
+                        <!-- Dev 4 -->
+                        <VBox spacing="12" alignment="CENTER" styleClass="developer-card-modern">
+                            <StackPane styleClass="dev-avatar-modern">
+                                <ImageView fx:id="dev4Image" fitWidth="100" fitHeight="100" preserveRatio="true" styleClass="dev-image" />
+                                <Circle radius="10" styleClass="online-status-modern" StackPane.alignment="BOTTOM_RIGHT" />
+                            </StackPane>
+                            <Label text="Jendoubi Yossra" styleClass="dev-name-modern" />
+                            <Label text="DevOps Engineer" styleClass="dev-role-modern" />
+                            <Label text="Automatisation et déploiement continu" styleClass="dev-bio-modern" wrapText="true" textAlignment="CENTER" />
+                            <HBox spacing="12" alignment="CENTER" styleClass="dev-social-modern">
+                                <FontIcon iconColor="#3b82f6" iconSize="14" iconLiteral="fab-facebook" styleClass="social-icon-hover" />
+                                <FontIcon iconColor="#e1306c" iconSize="14" iconLiteral="fab-instagram" styleClass="social-icon-hover" />
+                            </HBox>
+                        </VBox>
+                        <!-- Dev 5 -->
+                        <VBox spacing="12" alignment="CENTER" styleClass="developer-card-modern">
+                            <StackPane styleClass="dev-avatar-modern">
+                                <ImageView fx:id="dev5Image" fitWidth="100" fitHeight="100" preserveRatio="true" styleClass="dev-image" />
+                                <Circle radius="10" styleClass="online-status-modern" StackPane.alignment="BOTTOM_RIGHT" />
+                            </StackPane>
+                            <Label text="Yousfi Maisa" styleClass="dev-name-modern" />
+                            <Label text="QA Manager" styleClass="dev-role-modern" />
+                            <Label text="Garantie de la qualité et des performances" styleClass="dev-bio-modern" wrapText="true" textAlignment="CENTER" />
+                            <HBox spacing="12" alignment="CENTER" styleClass="dev-social-modern">
+                                <FontIcon iconColor="#3b82f6" iconSize="14" iconLiteral="fab-facebook" styleClass="social-icon-hover" />
+                                <FontIcon iconColor="#e1306c" iconSize="14" iconLiteral="fab-instagram" styleClass="social-icon-hover" />
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- SECTION CONTACT -->
+                <VBox fx:id="contactSection" styleClass="contact-section-modern" spacing="40" alignment="CENTER">
+                    <VBox alignment="CENTER" spacing="12">
+                        <FontIcon iconColor="#6366f1" iconSize="36" iconLiteral="fas-envelope" />
+                        <Label text="Contactez-nous" styleClass="section-title-modern" />
+                        <Label text="Une question ? Notre équipe est là pour vous répondre" styleClass="section-subtitle-modern" />
+                        <Rectangle styleClass="section-underline" width="60" height="3" />
+                    </VBox>
+                    <HBox spacing="40" alignment="CENTER" styleClass="contact-container">
+                        <VBox spacing="20" styleClass="contact-info">
+                            <HBox spacing="15" alignment="CENTER_LEFT">
+                                <StackPane styleClass="contact-icon-bg">
+                                    <FontIcon iconColor="#6366f1" iconSize="20" iconLiteral="fas-map-marker-alt" />
+                                </StackPane>
+                                <VBox spacing="4">
+                                    <Label text="Adresse" styleClass="contact-label" />
+                                    <Label text="Tunis, Tunisie" styleClass="contact-value" />
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="15" alignment="CENTER_LEFT">
+                                <StackPane styleClass="contact-icon-bg">
+                                    <FontIcon iconColor="#6366f1" iconSize="20" iconLiteral="fas-phone-alt" />
+                                </StackPane>
+                                <VBox spacing="4">
+                                    <Label text="Téléphone" styleClass="contact-label" />
+                                    <Label text="+216 70 000 000" styleClass="contact-value" />
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="15" alignment="CENTER_LEFT">
+                                <StackPane styleClass="contact-icon-bg">
+                                    <FontIcon iconColor="#6366f1" iconSize="20" iconLiteral="fas-envelope" />
+                                </StackPane>
+                                <VBox spacing="4">
+                                    <Label text="Email" styleClass="contact-label" />
+                                    <Label text="contact@trackpack.com" styleClass="contact-value" />
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="15" alignment="CENTER_LEFT">
+                                <StackPane styleClass="contact-icon-bg">
+                                    <FontIcon iconColor="#6366f1" iconSize="20" iconLiteral="fas-clock" />
+                                </StackPane>
+                                <VBox spacing="4">
+                                    <Label text="Horaires" styleClass="contact-label" />
+                                    <Label text="Lun - Ven : 9h - 18h" styleClass="contact-value" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                        <VBox spacing="15" styleClass="contact-form">
+                            <TextField fx:id="contactName" promptText="Votre nom" styleClass="contact-input" />
+                            <TextField fx:id="contactEmail" promptText="Votre email" styleClass="contact-input" />
+                            <TextArea fx:id="contactMessage" promptText="Votre message" prefRowCount="4" styleClass="contact-textarea" />
+                            <Button styleClass="btn-primary-modern" onAction="#handleSendMessage">
+                                <graphic><FontIcon iconColor="white" iconSize="14" iconLiteral="fas-paper-plane" /></graphic>
+                                Envoyer
+                            </Button>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- SECTION FOOTER -->
+                <VBox fx:id="footerSection" styleClass="footer-modern" spacing="20" alignment="CENTER">
+                    <HBox spacing="40" alignment="CENTER" styleClass="footer-links">
+                        <Label text="À propos" styleClass="footer-link-modern" />
+                        <Label text="Services" styleClass="footer-link-modern" />
+                        <Label text="Contact" styleClass="footer-link-modern" />
+                        <Label text="CGU" styleClass="footer-link-modern" />
+                        <Label text="Confidentialité" styleClass="footer-link-modern" />
+                    </HBox>
+                    <HBox spacing="24" alignment="CENTER" styleClass="footer-social">
+                        <FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fab-facebook-f" styleClass="social-icon-footer" />
+                        <FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fab-twitter" styleClass="social-icon-footer" />
+                        <FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fab-linkedin-in" styleClass="social-icon-footer" />
+                        <FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fab-instagram" styleClass="social-icon-footer" />
+                        <FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fab-github" styleClass="social-icon-footer" />
+                    </HBox>
+                    <Label text="© 2026 TrackPack. Tous droits réservés." styleClass="footer-copyright-modern" />
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+
+    </VBox>
+
+    <!-- Menu déroulant - taille compacte -->
+    <VBox fx:id="userDropdownMenu" styleClass="user-dropdown-menu" visible="false" managed="false" spacing="0" prefWidth="200" maxWidth="200" maxHeight="-Infinity" StackPane.alignment="TOP_LEFT">
+        <Button styleClass="dropdown-item" alignment="CENTER_LEFT" onAction="#handleEditProfile">
+            <graphic>
+                <FontIcon iconColor="#4f46e5" iconSize="16" iconLiteral="fas-user-edit" />
+            </graphic>
+            <text>Modifier mon profil</text>
+        </Button>
+        <Separator styleClass="dropdown-divider" />
+        <Button styleClass="dropdown-item,dropdown-item-danger" alignment="CENTER_LEFT" onAction="#handleLogout">
+            <graphic>
+                <FontIcon iconColor="#dc2626" iconSize="16" iconLiteral="fas-sign-out-alt" />
+            </graphic>
+            <text>Se déconnecter</text>
+        </Button>
+    </VBox>
+
+</StackPane>
