@@ -1,6 +1,7 @@
 package com.gestioncolis.controllers;
 
 import com.gestioncolis.models.Colis;
+import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.services.ColisService;
 import com.gestioncolis.utils.MapHelper;
 import javafx.fxml.FXML;
@@ -10,7 +11,7 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 
-public class ModifierColisController {
+public class ModifierColisController implements DashboardController.UserAware {
 
     @FXML private Label     lblTitre;
     @FXML private Label     lblStatutInfo;
@@ -31,6 +32,9 @@ public class ModifierColisController {
 
     private final ColisService service = new ColisService();
     private Colis colisEnCours;
+    
+    // ✅ NOUVEL ATTRIBUT POUR STOCKER L'UTILISATEUR COURANT
+    private Utilisateurs currentUser;
 
     @FXML
     public void initialize() {
@@ -48,7 +52,17 @@ public class ModifierColisController {
         }
     }
 
-    public void setColis(Colis c) {
+    /**
+     * ✅ IMPLÉMENTATION DE L'INTERFACE UserAware
+     * Permet au contrôleur d'être notifié de l'utilisateur courant lors du chargement
+     */
+    @Override
+    public void setCurrentUser(Utilisateurs user) {
+        this.currentUser = user;
+    }
+
+
+public void setColis(Colis c) {
         this.colisEnCours = c;
         lblTitre.setText("Modifier le colis #" + c.getId());
         lblStatutInfo.setText("Statut actuel : " + c.getStatut());
@@ -112,7 +126,18 @@ public class ModifierColisController {
     @FXML
     public void retourListe() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/listeColis.fxml"));
+            Utilisateurs u = currentUser != null ? currentUser : com.gestioncolis.utils.SessionManager.getInstance().getUtilisateurConnecte();
+            String target = (u != null && u.getRole() == com.gestioncolis.enums.Role.ADMIN)
+                    ? "/views/DashboardLayout.fxml"
+                    : "/fxml/listeColis.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(target));
+            Parent root = loader.load();
+            if (u != null) {
+                Object ctrl = loader.getController();
+                if (ctrl instanceof DashboardController.UserAware ua) {
+                    ua.setCurrentUser(u);
+                }
+            }
             tfDescription.getScene().setRoot(root);
         } catch (IOException e) {
             afficherErreur(lblErrGlobal, "Erreur navigation : " + e.getMessage());

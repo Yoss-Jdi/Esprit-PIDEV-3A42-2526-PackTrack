@@ -29,6 +29,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
+        </dependency>
         <!-- ═══ Tests ═══ -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -54,6 +55,11 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
             <version>${javafx.version}</version>
         </dependency>
 

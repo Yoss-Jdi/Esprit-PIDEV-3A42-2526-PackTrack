@@ -1,25 +1,33 @@
 package com.gestioncolis.controllers;
 
+import com.gestioncolis.enums.Role;
 import com.gestioncolis.utils.PasswordUtil;
 import com.gestioncolis.utils.PhotoManager;
+import com.gestioncolis.utils.SessionManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -74,9 +82,11 @@ public class UserHomeController implements Initializable {
     @FXML private VBox userDropdownMenu;
     @FXML private HBox userSessionContainer;
 
+    @FXML private Button btnGestionColis;
+
     private Utilisateurs currentUser;
     private boolean isDropdownVisible = false;
-    private javafx.event.EventHandler<javafx.scene.input.MouseEvent> closeDropdownFilter;
+    private EventHandler<MouseEvent> closeDropdownFilter;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -89,11 +99,11 @@ public class UserHomeController implements Initializable {
         closeDropdownFilter = event -> {
             if (isDropdownVisible && userDropdownMenu != null && userSessionContainer != null) {
                 // Utiliser sceneToLocal pour une détection fiable quelle que soit la hiérarchie de nœuds
-                javafx.geometry.Point2D clickInMenu = userDropdownMenu.sceneToLocal(event.getSceneX(), event.getSceneY());
+                Point2D clickInMenu = userDropdownMenu.sceneToLocal(event.getSceneX(), event.getSceneY());
                 boolean inMenu = userDropdownMenu.isVisible() &&
                         userDropdownMenu.getBoundsInLocal().contains(clickInMenu);
 
-                javafx.geometry.Point2D clickInSession = userSessionContainer.sceneToLocal(event.getSceneX(), event.getSceneY());
+                Point2D clickInSession = userSessionContainer.sceneToLocal(event.getSceneX(), event.getSceneY());
                 boolean inSession = userSessionContainer.getBoundsInLocal().contains(clickInSession);
 
                 // Ne fermer que si le clic est en dehors du menu ET de la session
@@ -107,7 +117,7 @@ public class UserHomeController implements Initializable {
 
     private void updateDropdownPosition() {
         if (userSessionContainer != null && userDropdownMenu != null) {
-            javafx.application.Platform.runLater(() -> {
+            Platform.runLater(() -> {
                 try {
                     // Attendre que le layout soit calculé
                     userDropdownMenu.applyCss();
@@ -225,7 +235,7 @@ public class UserHomeController implements Initializable {
         // Ajouter un filtre pour fermer le menu en cliquant ailleurs
         Scene scene = userSessionContainer.getScene();
         if (scene != null) {
-            scene.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, closeDropdownFilter);
+            scene.addEventFilter(MouseEvent.MOUSE_PRESSED, closeDropdownFilter);
         }
 
         isDropdownVisible = true;
@@ -253,7 +263,7 @@ public class UserHomeController implements Initializable {
             // Retirer le filtre
             Scene scene = userSessionContainer.getScene();
             if (scene != null && closeDropdownFilter != null) {
-                scene.removeEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, closeDropdownFilter);
+                scene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeDropdownFilter);
             }
         });
         timeline.play();
@@ -273,6 +283,9 @@ public class UserHomeController implements Initializable {
         System.out.println("handleLogout appelé");
         hideDropdown();
         try {
+            // ✅ DÉCONNECTION DE LA SESSION
+            SessionManager.getInstance().deconnecter();
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthView.fxml"));
             Scene scene = new Scene(loader.load(), 1100, 700);
             Stage stage = (Stage) userNameLabel.getScene().getWindow();
@@ -292,7 +305,7 @@ public class UserHomeController implements Initializable {
 
     private void openEditProfileDialog() {
         Stage dialogStage = new Stage();
-        dialogStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.initStyle(StageStyle.TRANSPARENT);
         dialogStage.initOwner(userNameLabel.getScene().getWindow());
 
@@ -305,9 +318,9 @@ public class UserHomeController implements Initializable {
 
         Scene scene = new Scene(dialogContent);
         scene.setFill(Color.TRANSPARENT);
-        String cssUrl = getClass().getResource("/css/user-home.css").toExternalForm();
+        URL cssUrl = getClass().getResource("/css/user-home.css");
         if (cssUrl != null) {
-            scene.getStylesheets().add(cssUrl);
+            scene.getStylesheets().add(cssUrl.toExternalForm());
         }
 
         dialogStage.setScene(scene);
@@ -332,13 +345,13 @@ public class UserHomeController implements Initializable {
     private VBox createEditProfileDialog(Stage dialogStage) {
         VBox container = new VBox(20);
         container.setStyle("-fx-background-color: white; -fx-background-radius: 28;");
-        container.setPadding(new javafx.geometry.Insets(32, 36, 36, 36));
+        container.setPadding(new Insets(32, 36, 36, 36));
         container.setMaxWidth(500);
         container.setEffect(new DropShadow(25, Color.rgb(0, 0, 0, 0.15)));
 
         // Header
         HBox header = new HBox(12);
-        header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        header.setAlignment(Pos.CENTER_LEFT);
 
         StackPane iconContainer = new StackPane();
         iconContainer.setPrefSize(56, 56);
@@ -407,7 +420,7 @@ public class UserHomeController implements Initializable {
 
         // Boutons
         HBox buttonBox = new HBox(16);
-        buttonBox.setAlignment(javafx.geometry.Pos.CENTER);
+        buttonBox.setAlignment(Pos.CENTER);
 
         Button cancelBtn = new Button("Annuler");
         cancelBtn.setStyle("-fx-background-color: transparent; -fx-border-color: #e2e8f0; -fx-border-width: 1.5; -fx-border-radius: 30; -fx-text-fill: #64748b; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 12 28; -fx-cursor: hand;");
@@ -445,7 +458,7 @@ public class UserHomeController implements Initializable {
 
     private VBox createPhotoSection() {
         VBox photoSection = new VBox(12);
-        photoSection.setAlignment(javafx.geometry.Pos.CENTER);
+        photoSection.setAlignment(Pos.CENTER);
         photoSection.setStyle("-fx-padding: 10 0 10 0;");
 
         StackPane photoContainer = new StackPane();
@@ -684,20 +697,41 @@ public class UserHomeController implements Initializable {
     public void setCurrentUser(Utilisateurs user) {
         this.currentUser = user;
         if (user != null) {
+            // Nom affiché
             String fullName = user.getPrenom() + " " + user.getNom();
-            if (fullName.length() > 20) {
-                fullName = fullName.substring(0, 18) + "...";
-            }
+            if (fullName.length() > 20) fullName = fullName.substring(0, 18) + "...";
             userNameLabel.setText(fullName);
-            userRoleLabel.setText(user.getRole().name());
-            welcomeHeroLabel.setText("Bienvenue, " + user.getPrenom() + " !");
+
+            // ✅ FIX 2a — Rôle formaté lisiblement (pas le nom brut de l'enum)
+            String roleDisplay = switch (user.getRole()) {
+                case ENTREPRISE -> "Entreprise";
+                case LIVREUR    -> "Livreur";
+                case CLIENT     -> "Client";
+                case ADMIN      -> "Administrateur";
+                case TECHNICIEN -> "Technicien";
+            };
+            userRoleLabel.setText(roleDisplay);
+            userRoleLabel.getStyleClass().removeIf(c -> c.startsWith("role-"));
             userRoleLabel.getStyleClass().add("role-" + user.getRole().name().toLowerCase());
+
+            // Message d'accueil
+            welcomeHeroLabel.setText("Bienvenue, " + user.getPrenom() + " !");
+
+            // ✅ FIX 2b — Bouton service card adapté au rôle
+            if (btnGestionColis != null) {
+                if (user.getRole() == Role.LIVREUR) {
+                    btnGestionColis.setText("Gestion des livraisons");
+                } else {
+                    btnGestionColis.setText("Gestion des colis");
+                }
+            }
+
+            // Photo utilisateur
             loadUserPhoto();
         }
     }
 
-    @FXML
-    private void scrollToAccueil() {
+    @FXML private void scrollToAccueil() {
         updateActiveNav(navAccueil);
         scrollToNode(accueilSection);
     }
@@ -731,7 +765,7 @@ public class UserHomeController implements Initializable {
 
     private void scrollToNode(VBox node) {
         if (mainScrollPane == null || node == null) return;
-        javafx.application.Platform.runLater(() -> {
+        Platform.runLater(() -> {
             double nodeY = node.localToScene(0, 0).getY();
             double scrollPaneY = mainScrollPane.localToScene(0, 0).getY();
             double contentHeight = mainScrollPane.getContent().getBoundsInLocal().getHeight();
@@ -746,15 +780,50 @@ public class UserHomeController implements Initializable {
         });
     }
 
-    @FXML private void handleGestionColis() { System.out.println("Gestion des colis"); }
-    @FXML private void handleSuiviColis() { System.out.println("Suivi des colis"); }
-    @FXML private void handleLivraisonExpress() { System.out.println("Livraison express"); }
-    @FXML private void handleSupport() { System.out.println("Support"); }
-    @FXML private void handleAPI() { System.out.println("API Integration"); }
-    @FXML private void handleStatistiques() { System.out.println("Statistiques"); }
+    @FXML
+    private void handleGestionColis() {
+        if (currentUser == null) return;
+        switch (currentUser.getRole()) {
+            case LIVREUR -> naviguerVers("/fxml/listeLivraisons.fxml");
+            default      -> naviguerVers("/fxml/listeColis.fxml");   // CLIENT, ENTREPRISE
+        }
+    }
 
-    @FXML private void handleNouveauColis() { System.out.println("Nouveau colis"); }
-    @FXML private void handleEnSavoirPlus() { System.out.println("En savoir plus"); }
+    @FXML private void handleSuiviColis() { 
+        showNotification("Suivi des colis - Prochainement disponible");
+        System.out.println("Suivi des colis");
+    }
+    @FXML private void handleLivraisonExpress() { 
+        showNotification("Livraison express - Prochainement disponible");
+        System.out.println("Livraison express"); 
+    }
+    @FXML private void handleSupport() { 
+        showNotification("Support - Prochainement disponible");
+        System.out.println("Support"); 
+    }
+    @FXML private void handleAPI() { 
+        showNotification("API Integration - Prochainement disponible");
+        System.out.println("API Integration"); 
+    }
+    @FXML private void handleStatistiques() { 
+        showNotification("Statistiques - Prochainement disponible");
+        System.out.println("Statistiques"); 
+    }
+
+    @FXML
+    private void handleNouveauColis() {
+        if (currentUser == null) return;
+        switch (currentUser.getRole()) {
+            case ENTREPRISE -> naviguerVers("/fxml/listeColis.fxml");
+            case LIVREUR    -> naviguerVers("/fxml/listeLivraisons.fxml");
+            default         -> naviguerVers("/fxml/listeColis.fxml");   // CLIENT
+        }
+    }
+
+    @FXML private void handleEnSavoirPlus() { 
+        showNotification("Découvrez nos services en scrollant vers le bas");
+        System.out.println("En savoir plus"); 
+    }
 
     @FXML
     private void handleSendMessage() {
@@ -762,6 +831,34 @@ public class UserHomeController implements Initializable {
         String email = contactEmail.getText();
         String message = contactMessage.getText();
         System.out.println("Message de " + name + " (" + email + "): " + message);
+        showNotification("Merci pour votre message! Nous vous répondrons bientôt.");
+    }
+
+    private void showNotification(String message) {
+        Label notification = new Label(message);
+        notification.setStyle("-fx-background-color: #6366f1; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 12 24; -fx-background-radius: 30; -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.3), 15, 0, 0, 3);");
+
+        StackPane root = (StackPane) userNameLabel.getScene().getRoot();
+        notification.setTranslateY(-50);
+        notification.setTranslateX(0);
+        root.getChildren().add(notification);
+
+        Timeline showAnim = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(notification.opacityProperty(), 0), new KeyValue(notification.translateYProperty(), -50)),
+                new KeyFrame(Duration.millis(300), new KeyValue(notification.opacityProperty(), 1), new KeyValue(notification.translateYProperty(), 20))
+        );
+
+        Timeline hideAnim = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(notification.opacityProperty(), 1), new KeyValue(notification.translateYProperty(), 20)),
+                new KeyFrame(Duration.millis(300), new KeyValue(notification.opacityProperty(), 0), new KeyValue(notification.translateYProperty(), -50))
+        );
+        hideAnim.setOnFinished(e -> root.getChildren().remove(notification));
+
+        showAnim.play();
+        Timeline autoHide = new Timeline(
+                new KeyFrame(Duration.seconds(3), e -> hideAnim.play())
+        );
+        autoHide.play();
     }
 
     @FXML
@@ -769,8 +866,8 @@ public class UserHomeController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChatView.fxml"));
             Scene scene = new Scene(loader.load(), 1280, 760);
-            String cssUrl = getClass().getResource("/css/user-home.css").toExternalForm();
-            if (cssUrl != null) scene.getStylesheets().add(cssUrl);
+            URL cssUrl = getClass().getResource("/css/user-home.css");
+            if (cssUrl != null) scene.getStylesheets().add(cssUrl.toExternalForm());
 
             ChatController chatCtrl = loader.getController();
             chatCtrl.setCurrentUser(currentUser);
@@ -788,7 +885,7 @@ public class UserHomeController implements Initializable {
             });
             ft.play();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Erreur ouverture chat: " + e.getMessage());
         }
     }
 
@@ -825,5 +922,43 @@ public class UserHomeController implements Initializable {
         initialsLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white;");
         userAvatarPlaceholder.getChildren().clear();
         userAvatarPlaceholder.getChildren().add(initialsLabel);
+    }
+    private void naviguerVers(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            javafx.scene.Parent view = loader.load();
+
+            // ✅ Passer l'utilisateur courant
+            Object controller = loader.getController();
+            if (controller instanceof DashboardController.UserAware ua) {
+                ua.setCurrentUser(currentUser);
+            }
+
+            // ✅ FIX 3 — Créer la scène avec les bonnes dimensions
+            //    et ajouter le CSS colis si présent
+            javafx.scene.Scene scene = new javafx.scene.Scene(view, 1280, 760);
+            java.net.URL cssColisCss = getClass().getResource("/css/colis.css");
+            if (cssColisCss != null) scene.getStylesheets().add(cssColisCss.toExternalForm());
+
+            Stage stage = (Stage) userNameLabel.getScene().getWindow();
+
+            FadeTransition ft = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
+            ft.setToValue(0);
+            ft.setOnFinished(e -> {
+                stage.setScene(scene);
+                // ✅ Garder les contraintes de taille pour éviter le décalage
+                stage.setMinWidth(1024);
+                stage.setMinHeight(700);
+                FadeTransition ftIn = new FadeTransition(Duration.millis(300), scene.getRoot());
+                ftIn.setFromValue(0);
+                ftIn.setToValue(1);
+                ftIn.play();
+            });
+            ft.play();
+
+        } catch (IOException e) {
+            System.err.println("Erreur navigation → " + fxmlPath + " : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

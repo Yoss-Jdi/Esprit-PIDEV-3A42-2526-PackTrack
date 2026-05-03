@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AjouterLivraisonController {
+public class AjouterLivraisonController implements DashboardController.UserAware {
 
     // ── Champs FXML ───────────────────────────────────────────────────
     @FXML private Label  lblLivreur;
@@ -60,6 +60,9 @@ public class AjouterLivraisonController {
     private Task<PredictionResult> taskCourante = null;
     private double[] localisationLivreur = null; // [lat, lon]
     private List<Colis> colisDisponiblesBruts = new ArrayList<>();
+    
+    // ✅ NOUVEL ATTRIBUT POUR STOCKER L'UTILISATEUR COURANT
+    private com.gestioncolis.entities.Utilisateurs currentUser;
 
     // ─────────────────────────────────────────────────────────────────
     // Initialisation
@@ -70,7 +73,7 @@ public class AjouterLivraisonController {
         // Nom du livreur connecté
         if (SessionManager.getInstance().isConnecte()) {
             lblLivreur.setText(
-                    SessionManager.getInstance().getUtilisateurConnecte().getDisplayName());
+                    SessionManager.getInstance().getDisplayName());
         } else {
             lblLivreur.setText("(mode dev)");
         }
@@ -139,6 +142,19 @@ public class AjouterLivraisonController {
 
         // Proposer la géolocalisation immédiatement
         Platform.runLater(this::proposerGeolocalisation);
+    }
+
+    /**
+     * ✅ IMPLÉMENTATION DE L'INTERFACE UserAware
+     * Permet au contrôleur d'être notifié de l'utilisateur courant lors du chargement
+     */
+    @Override
+    public void setCurrentUser(com.gestioncolis.entities.Utilisateurs user) {
+        this.currentUser = user;
+        // Mettre à jour le label du livreur si fourni
+        if (lblLivreur != null && user != null) {
+            lblLivreur.setText(user.getPrenom() + " " + user.getNom());
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -571,8 +587,18 @@ public class AjouterLivraisonController {
     @FXML
     public void retourListe() {
         try {
-            Parent root = FXMLLoader.load(
-                    getClass().getResource("/fxml/listeLivraisons.fxml"));
+            com.gestioncolis.entities.Utilisateurs u = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
+            String target = (u != null && u.getRole() == com.gestioncolis.enums.Role.ADMIN)
+                    ? "/views/DashboardLayout.fxml"
+                    : "/fxml/listeLivraisons.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(target));
+            Parent root = loader.load();
+            if (u != null) {
+                Object ctrl = loader.getController();
+                if (ctrl instanceof DashboardController.UserAware ua) {
+                    ua.setCurrentUser(u);
+                }
+            }
             tableColisDisponibles.getScene().setRoot(root);
         } catch (IOException e) {
             lblErreur.setText("Erreur navigation : " + e.getMessage());

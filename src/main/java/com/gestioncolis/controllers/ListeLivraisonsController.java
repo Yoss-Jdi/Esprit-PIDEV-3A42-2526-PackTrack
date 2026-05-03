@@ -1,7 +1,8 @@
 package com.gestioncolis.controllers;
 
+import com.gestioncolis.enums.Role;
 import com.gestioncolis.models.Livraison;
-import com.gestioncolis.models.Utilisateur;
+import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.services.LivraisonService;
 import com.gestioncolis.utils.QrCodeHelper;
 import com.gestioncolis.utils.SessionManager;
@@ -21,7 +22,7 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class ListeLivraisonsController {
+public class ListeLivraisonsController implements DashboardController.UserAware {
 
     @FXML private TableView<Livraison>           tableLivraisons;
     @FXML private TableColumn<Livraison, String> colDescriptionColis;
@@ -33,6 +34,7 @@ public class ListeLivraisonsController {
     @FXML private TableColumn<Livraison, String> colDateDebut;
     @FXML private TableColumn<Livraison, Void>   colActions;
     @FXML private Label                          lblMessage;
+    @FXML private Button                         btnAjouter;
 
     // ── Barre recherche / tri / filtre ────────────────────────────────
     @FXML private TextField        tfRecherche;
@@ -44,6 +46,9 @@ public class ListeLivraisonsController {
             DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     private ObservableList<Livraison> toutesLesLivraisons = FXCollections.observableArrayList();
+    
+    // ✅ NOUVEL ATTRIBUT POUR STOCKER L'UTILISATEUR COURANT
+    private Utilisateurs currentUser;
 
     @FXML
     public void initialize() {
@@ -69,11 +74,16 @@ public class ListeLivraisonsController {
         });
 
         // ── Colonne livreur (admin seulement) ─────────────────────────
-        Utilisateur u = SessionManager.getInstance().getUtilisateurConnecte();
-        boolean estAdmin = (u != null && u.getRole() == Utilisateur.Role.ROLE_ADMIN);
+        // ✅ UTILISER SOIT currentUser (SI PASSÉ VIA setCurrentUser) SOIT SessionManager (FALLBACK)
+        Utilisateurs u = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
+        boolean estAdmin = (u != null && u.getRole() == Role.ADMIN);
         colNomLivreur.setVisible(estAdmin);
         if (estAdmin) {
             colNomLivreur.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNomLivreur()));
+        }
+        if (btnAjouter != null) {
+            btnAjouter.setVisible(!estAdmin);
+            btnAjouter.setManaged(!estAdmin);
         }
 
         // ── Filtre statut ─────────────────────────────────────────────
@@ -101,22 +111,46 @@ public class ListeLivraisonsController {
         }
 
         ajouterColonneActions();
-        chargerDonnees();
+        // ✅ NE PAS appeler chargerDonnees() ici - sera appelé dans setCurrentUser()
+        // Pour les appels directs sans setCurrentUser(), charger avec fallback
+        if (currentUser == null) {
+            chargerDonnees();
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────
 
     private void chargerDonnees() {
         try {
-            Utilisateur u = SessionManager.getInstance().getUtilisateurConnecte();
-            if (u == null) return;
-            List<Livraison> liste = (u.getRole() == Utilisateur.Role.ROLE_ADMIN)
+            // ✅ UTILISER SOIT currentUser (SI PASSÉ VIA setCurrentUser) SOIT SessionManager (FALLBACK)
+            Utilisateurs u = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
+            if (u == null) {
+                afficherErreur("Aucun utilisateur connecté");
+                return;
+            }
+            List<Livraison> liste = (u.getRole() == Role.ADMIN)
                     ? service.getAll()
-                    : service.getByLivreur(u.getId());
+                    : service.getByLivreur(u.getIdUtilisateur());
             toutesLesLivraisons = FXCollections.observableArrayList(liste);
+            System.out.println("✅ Données chargées pour " + u.getRole().name() + " (id=" + u.getIdUtilisateur() + "): " + liste.size() + " livraisons");
             appliquerFiltreEtTri();
         } catch (SQLException e) {
             afficherErreur("Erreur chargement : " + e.getMessage());
+            System.err.println("❌ Erreur SQL: " + e);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * ✅ IMPLÉMENTATION DE L'INTERFACE UserAware
+     * Permet au contrôleur d'être notifié de l'utilisateur courant lors du chargement
+     */
+    @Override
+    public void setCurrentUser(Utilisateurs user) {
+        this.currentUser = user;
+        // Reconfigurer et recharger selon l'utilisateur défini
+        if (currentUser != null) {
+            chargerDonnees();
         }
     }
 
@@ -264,14 +298,28 @@ public class ListeLivraisonsController {
 
     @FXML public void ouvrirAjouter() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/ajouterLivraison.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ajouterLivraison.fxml"));
+            Parent root = loader.load();
+            AjouterLivraisonController ctrl = loader.getController();
+            ctrl.setCurrentUser(currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte());
             tableLivraisons.getScene().setRoot(root);
         } catch (IOException e) { afficherErreur("Erreur navigation : " + e.getMessage()); }
     }
 
     @FXML public void retourDashboard() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard.fxml"));
+            Utilisateurs u = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
+            String target = (u != null && u.getRole() == Role.ADMIN)
+                    ? "/views/DashboardLayout.fxml"
+                    : "/views/UserHomeView.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(target));
+            Parent root = loader.load();
+            if (u != null) {
+                Object ctrl = loader.getController();
+                if (ctrl instanceof DashboardController.UserAware ua) {
+                    ua.setCurrentUser(u);
+                }
+            }
             tableLivraisons.getScene().setRoot(root);
         } catch (IOException e) { afficherErreur("Erreur navigation : " + e.getMessage()); }
     }

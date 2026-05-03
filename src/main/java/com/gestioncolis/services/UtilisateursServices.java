@@ -2,7 +2,7 @@ package com.gestioncolis.services;
 
 import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.enums.Role;
-import com.gestioncolis.utils.MyDataBase;
+import com.gestioncolis.utils.MyConnection;
 import com.gestioncolis.utils.PasswordUtil;
 
 import java.sql.*;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class UtilisateursServices implements ICrud<Utilisateurs> {
 
-    private final Connection cnx = MyDataBase.getInstance().getConx();
+    private final Connection cnx = MyConnection.getInstance().getConnection();
 
     // ─────────────────────────────────────────────────────────────────────────
     // AJOUTER - Le mot de passe est déjà haché avant l'appel
@@ -108,6 +108,25 @@ public class UtilisateursServices implements ICrud<Utilisateurs> {
             liste.add(u);
         }
 
+        return liste;
+    }
+
+    public List<Utilisateurs> getClients() throws SQLException {
+        List<Utilisateurs> liste = new ArrayList<>();
+        PreparedStatement ps = cnx.prepareStatement(
+                "SELECT * FROM utilisateurs WHERE role = 'CLIENT' ORDER BY nom, prenom");
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Utilisateurs u = new Utilisateurs();
+            u.setIdUtilisateur(rs.getInt("id_utilisateur"));
+            u.setEmail(rs.getString("email"));
+            u.setNom(rs.getString("nom"));
+            u.setPrenom(rs.getString("prenom"));
+            u.setTelephone(rs.getString("telephone"));
+            u.setRole(Role.valueOf(rs.getString("role")));
+            u.setPhoto(rs.getString("photo"));
+            liste.add(u);
+        }
         return liste;
     }
 

@@ -21,6 +21,7 @@ import com.gestioncolis.enums.Role;
 import com.gestioncolis.services.UtilisateursServices;
 import com.gestioncolis.utils.PasswordResetDialog;
 import com.gestioncolis.utils.PhotoManager;
+import com.gestioncolis.utils.SessionManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -376,10 +377,10 @@ public class AuthController implements Initializable {
                 dashCtrl.setCurrentUser(user);
             } else {
                 // Charger le CSS pour l'interface utilisateur
-                String cssUrl = getClass().getResource("/css/user-home.css").toExternalForm();
-                if (cssUrl != null) {
-                    scene.getStylesheets().add(cssUrl);
-                }
+                SessionManager.getInstance().setUtilisateurConnecte(user);
+
+                java.net.URL cssUrl = getClass().getResource("/css/user-home.css");
+                if (cssUrl != null) scene.getStylesheets().add(cssUrl.toExternalForm());
 
                 UserHomeController userCtrl = loader.getController();
                 userCtrl.setCurrentUser(user);
@@ -814,6 +815,9 @@ public class AuthController implements Initializable {
      */
     private void redirectToAdminDashboard(Utilisateurs admin) {
         try {
+            // ✅ INITIALISER LA SESSION
+            SessionManager.getInstance().setUtilisateurConnecte(admin);
+            
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/DashboardLayout.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 720);
@@ -851,14 +855,17 @@ public class AuthController implements Initializable {
      */
     private void redirectToUserDashboard(Utilisateurs user) {
         try {
+            // ✅ INITIALISER LA SESSION
+            SessionManager.getInstance().setUtilisateurConnecte(user);
+            
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/UserHomeView.fxml"));
             Scene scene = new Scene(loader.load(), 1280, 760);
 
             // Ajouter le CSS
-            String cssUrl = getClass().getResource("/css/user-home.css").toExternalForm();
+            java.net.URL cssUrl = getClass().getResource("/css/user-home.css");
             if (cssUrl != null) {
-                scene.getStylesheets().add(cssUrl);
+                scene.getStylesheets().add(cssUrl.toExternalForm());
             }
 
             UserHomeController userCtrl = loader.getController();

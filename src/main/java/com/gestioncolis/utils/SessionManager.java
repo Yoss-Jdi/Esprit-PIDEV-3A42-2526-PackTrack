@@ -1,6 +1,8 @@
+
 package com.gestioncolis.utils;
 
-import com.gestioncolis.models.Utilisateur;
+import com.gestioncolis.entities.Utilisateurs;
+import com.gestioncolis.enums.Role;
 
 /**
  * Singleton qui conserve l'utilisateur connecté pour toute la session JavaFX.
@@ -15,7 +17,7 @@ import com.gestioncolis.models.Utilisateur;
 public class SessionManager {
 
     private static SessionManager instance;
-    private Utilisateur utilisateurConnecte;
+    private Utilisateurs utilisateurConnecte;
 
     private SessionManager() {}
 
@@ -24,11 +26,11 @@ public class SessionManager {
         return instance;
     }
 
-    public Utilisateur getUtilisateurConnecte() {
+    public Utilisateurs getUtilisateurConnecte() {
         return utilisateurConnecte;
     }
 
-    public void setUtilisateurConnecte(Utilisateur u) {
+    public void setUtilisateurConnecte(Utilisateurs u) {
         this.utilisateurConnecte = u;
     }
 
@@ -40,24 +42,30 @@ public class SessionManager {
         utilisateurConnecte = null;
     }
 
-    // ── Raccourcis pratiques ──────────────────────────────────────────
+    // ── Raccourcis ────────────────────────────────────────────────────────────
     public int getIdConnecte() {
         if (!isConnecte()) throw new IllegalStateException("Aucun utilisateur connecté");
-        return utilisateurConnecte.getId();
+        return utilisateurConnecte.getIdUtilisateur();  // ← était getId()
     }
 
     public boolean isEntreprise() {
-        return isConnecte() &&
-               utilisateurConnecte.getRole() == Utilisateur.Role.ROLE_ENTREPRISE;
+        return isConnecte() && utilisateurConnecte.getRole() == Role.ENTREPRISE;
     }
 
     public boolean isLivreur() {
-        return isConnecte() &&
-               utilisateurConnecte.getRole() == Utilisateur.Role.ROLE_LIVREUR;
+        return isConnecte() && utilisateurConnecte.getRole() == Role.LIVREUR;
     }
 
     public boolean isClient() {
-        return isConnecte() &&
-               utilisateurConnecte.getRole() == Utilisateur.Role.ROLE_CLIENT;
+        return isConnecte() && utilisateurConnecte.getRole() == Role.CLIENT;
+    }
+
+    // ── Méthode utilitaire pour l'affichage (remplace getDisplayName()) ───────
+    // Utilisateurs n'a pas de getDisplayName() → on le calcule ici
+    public String getDisplayName() {
+        if (!isConnecte()) return "";
+        String prenom = utilisateurConnecte.getPrenom() != null ? utilisateurConnecte.getPrenom() : "";
+        String nom    = utilisateurConnecte.getNom()    != null ? utilisateurConnecte.getNom()    : "";
+        return (prenom + " " + nom).trim();
     }
 }

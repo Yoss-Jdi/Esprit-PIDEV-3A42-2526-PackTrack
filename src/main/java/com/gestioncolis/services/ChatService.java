@@ -3,7 +3,7 @@ package com.gestioncolis.services;
 import com.gestioncolis.entities.Conversation;
 import com.gestioncolis.entities.Message;
 import com.gestioncolis.entities.Utilisateurs;
-import com.gestioncolis.utils.MyDataBase;
+import com.gestioncolis.utils.MyConnection;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ChatService {
 
-    private final Connection cnx = MyDataBase.getInstance().getConx();
+    private final Connection cnx = MyConnection.getInstance().getConnection();
 
     public int getOrCreateConversation(int userId1, int userId2) throws SQLException {
         String query = "SELECT id_conv FROM conversations WHERE (user1_id = ? AND user2_id = ?) OR (user1_id = ? AND user2_id = ?)";

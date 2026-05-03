@@ -110,7 +110,10 @@
                             <Label text="Gestion des colis" styleClass="service-title-modern" />
                             <Label text="Créez, modifiez et suivez tous vos colis en un seul endroit"
                                    styleClass="service-desc-modern" wrapText="true" textAlignment="CENTER" />
-                            <Button styleClass="service-btn" onAction="#handleGestionColis">En savoir plus</Button>
+                            <Button fx:id="btnGestionColis"
+                                    text="Gestion des colis"
+                                    styleClass="service-btn"
+                                    onAction="#handleGestionColis"/>
                         </VBox>
                         <!-- Service 2 -->
                         <VBox spacing="16" alignment="CENTER" styleClass="service-card-modern" GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -222,7 +225,7 @@
                                 <ImageView fx:id="dev4Image" fitWidth="100" fitHeight="100" preserveRatio="true" styleClass="dev-image" />
                                 <Circle radius="10" styleClass="online-status-modern" StackPane.alignment="BOTTOM_RIGHT" />
                             </StackPane>
-                            <Label text="Jendoubi Yossra" styleClass="dev-name-modern" />
+                            <Label text="Jendoubi Yosra" styleClass="dev-name-modern" />
                             <Label text="DevOps Engineer" styleClass="dev-role-modern" />
                             <Label text="Automatisation et déploiement continu" styleClass="dev-bio-modern" wrapText="true" textAlignment="CENTER" />
                             <HBox spacing="12" alignment="CENTER" styleClass="dev-social-modern">

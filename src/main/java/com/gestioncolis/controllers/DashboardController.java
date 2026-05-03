@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import com.gestioncolis.entities.Utilisateurs;
+import com.gestioncolis.utils.SessionManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -83,8 +84,8 @@ public class DashboardController implements Initializable {
     // ═════════════════════════════════════════════════════════════════════════
     @FXML private void handleNavDashboard()    { navigate(btnDashboard,    "Tableau de bord", "Admin › Accueil",       "/views/DashboardHomeView.fxml"); }
     @FXML private void handleNavUtilisateurs() { navigate(btnUtilisateurs, "Utilisateurs",    "Admin › Utilisateurs",  "/views/UsersView.fxml"); }
-    @FXML private void handleNavLivraisons()   { navigate(btnLivraisons,   "Livraisons",      "Admin › Livraisons",    null); }
-    @FXML private void handleNavColis()        { navigate(btnColis,        "Colis",           "Admin › Colis",         null); }
+    @FXML private void handleNavLivraisons()   { navigate(btnLivraisons,   "Livraisons",      "Admin › Livraisons",    "/fxml/listeLivraisons.fxml"); }
+    @FXML private void handleNavColis()        { navigate(btnColis,        "Colis",           "Admin › Colis",         "/fxml/listeColis.fxml"); }
     @FXML private void handleNavReclamations() { navigate(btnReclamations, "Réclamations",    "Admin › Réclamations",  null); }
     @FXML private void handleNavEntreprises()  { navigate(btnEntreprises,  "Entreprises",     "Admin › Entreprises",   null); }
     @FXML private void handleNavParametres()   { navigate(btnParametres,   "Paramètres",      "Admin › Paramètres",    null); }
@@ -92,6 +93,9 @@ public class DashboardController implements Initializable {
     @FXML
     private void handleLogout() {
         try {
+            // ✅ DÉCONNECTION DE LA SESSION
+            SessionManager.getInstance().deconnecter();
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthView.fxml"));
             Scene scene = new Scene(loader.load(), 1100, 700);
             Stage stage = (Stage) contentArea.getScene().getWindow();

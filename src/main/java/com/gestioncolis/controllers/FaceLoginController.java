@@ -28,6 +28,7 @@ import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.enums.Role;
 import com.gestioncolis.services.UtilisateursServices;
 import com.gestioncolis.utils.PhotoManager;
+import com.gestioncolis.utils.SessionManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -473,7 +474,9 @@ public class FaceLoginController implements Initializable {
             stage.setMinWidth(900);
             stage.setMinHeight(600);
 
-            if (loggedInUser.getRole() == com.gestioncolis.enums.Role.ADMIN) {
+            SessionManager.getInstance().setUtilisateurConnecte(loggedInUser);
+
+            if (loggedInUser.getRole() == Role.ADMIN) {
                 // Admin → Dashboard back-office
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/views/DashboardLayout.fxml"));

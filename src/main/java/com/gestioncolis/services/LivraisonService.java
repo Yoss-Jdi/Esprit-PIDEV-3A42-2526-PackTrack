@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LivraisonService implements ICrud<Livraison> {
+public class LivraisonService implements ICrudCL<Livraison> {
 
     private Connection cnx;
     private final ColisService colisService = new ColisService();

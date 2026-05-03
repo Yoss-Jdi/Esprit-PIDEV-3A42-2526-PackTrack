@@ -1,7 +1,8 @@
 package com.gestioncolis.controllers;
 
+import com.gestioncolis.enums.Role;
 import com.gestioncolis.models.Colis;
-import com.gestioncolis.models.Utilisateur;
+import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.services.ColisService;
 import com.gestioncolis.utils.QrCodeHelper;
 import com.gestioncolis.utils.SessionManager;
@@ -21,7 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListeColisController {
+public class ListeColisController implements DashboardController.UserAware {
 
     @FXML private TableView<Colis>           tableColis;
     @FXML private TableColumn<Colis, String> colDescription;
@@ -41,6 +42,9 @@ public class ListeColisController {
 
     private final ColisService service = new ColisService();
     private ObservableList<Colis> tousLesColis = FXCollections.observableArrayList();
+    
+    // ✅ NOUVEL ATTRIBUT POUR STOCKER L'UTILISATEUR COURANT
+    private Utilisateurs currentUser;
 
     @FXML
     public void initialize() {
@@ -86,39 +90,67 @@ public class ListeColisController {
             tfRecherche.textProperty().addListener((obs, old, val) -> appliquerFiltreEtTri());
         }
 
-        configurerSelonRole();
         ajouterColonneActions();
-        chargerDonnees();
+        // ✅ NE PAS appeler chargerDonnees() ici - sera appelé dans setCurrentUser()
+        // Pour les appels directs sans setCurrentUser(), charger avec fallback
+        if (currentUser == null) {
+            configurerSelonRole();
+            chargerDonnees();
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────
 
     private void configurerSelonRole() {
-        Utilisateur u = SessionManager.getInstance().getUtilisateurConnecte();
+        // ✅ UTILISER SOIT currentUser (SI PASSÉ VIA setCurrentUser) SOIT SessionManager (FALLBACK)
+        Utilisateurs u = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
         if (u == null) return;
-        boolean estClient = (u.getRole() == Utilisateur.Role.ROLE_CLIENT);
+        
+        boolean estClient = (u.getRole() == Role.CLIENT);
+        boolean estAdmin = (u.getRole() == Role.ADMIN);
         if (btnAjouter != null) {
-            btnAjouter.setVisible(!estClient);
-            btnAjouter.setManaged(!estClient);
+            btnAjouter.setVisible(!(estClient || estAdmin));
+            btnAjouter.setManaged(!(estClient || estAdmin));
         }
         colActions.setVisible(!estClient);
     }
 
     private void chargerDonnees() {
         try {
-            Utilisateur u = SessionManager.getInstance().getUtilisateurConnecte();
-            if (u == null) return;
+            // ✅ UTILISER SOIT currentUser (SI PASSÉ VIA setCurrentUser) SOIT SessionManager (FALLBACK)
+            Utilisateurs u = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
+            if (u == null) {
+                afficherErreur("Aucun utilisateur connecté");
+                return;
+            }
             List<Colis> liste;
             switch (u.getRole()) {
-                case ROLE_ADMIN      -> liste = service.getAll();
-                case ROLE_CLIENT     -> liste = service.getByDestinataire(u.getId());
-                case ROLE_ENTREPRISE -> liste = service.getByExpediteur(u.getId());
-                default              -> liste = new ArrayList<>();
+                case ADMIN      -> liste = service.getAll();
+                case CLIENT     -> liste = service.getByDestinataire(u.getIdUtilisateur());
+                case ENTREPRISE -> liste = service.getByExpediteur(u.getIdUtilisateur());
+                default         -> liste = new ArrayList<>();
             }
             tousLesColis = FXCollections.observableArrayList(liste);
+            System.out.println("✅ Données chargées pour " + u.getRole().name() + " (id=" + u.getIdUtilisateur() + "): " + liste.size() + " colis");
             appliquerFiltreEtTri();
         } catch (SQLException e) {
             afficherErreur("Erreur chargement : " + e.getMessage());
+            System.err.println("❌ Erreur SQL: " + e);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * ✅ IMPLÉMENTATION DE L'INTERFACE UserAware
+     * Permet au contrôleur d'être notifié de l'utilisateur courant lors du chargement
+     */
+    @Override
+    public void setCurrentUser(Utilisateurs user) {
+        this.currentUser = user;
+        // Reconfigurer et recharger selon l'utilisateur défini
+        if (currentUser != null) {
+            configurerSelonRole();
+            chargerDonnees();
         }
     }
 
@@ -230,6 +262,7 @@ public class ListeColisController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/modifierColis.fxml"));
             Parent root = loader.load();
             ModifierColisController ctrl = loader.getController();
+            ctrl.setCurrentUser(currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte());
             ctrl.setColis(colis);
             tableColis.getScene().setRoot(root);
         } catch (IOException e) {
@@ -257,14 +290,28 @@ public class ListeColisController {
 
     @FXML public void ouvrirAjouter() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/ajouterColis.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ajouterColis.fxml"));
+            Parent root = loader.load();
+            AjouterColisController ctrl = loader.getController();
+            ctrl.setCurrentUser(currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte());
             tableColis.getScene().setRoot(root);
         } catch (IOException e) { afficherErreur("Erreur navigation : " + e.getMessage()); }
     }
 
     @FXML public void retourDashboard() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard.fxml"));
+            Utilisateurs u = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
+            String target = (u != null && u.getRole() == Role.ADMIN)
+                    ? "/views/DashboardLayout.fxml"
+                    : "/views/UserHomeView.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(target));
+            Parent root = loader.load();
+            if (u != null) {
+                Object ctrl = loader.getController();
+                if (ctrl instanceof DashboardController.UserAware ua) {
+                    ua.setCurrentUser(u);
+                }
+            }
             tableColis.getScene().setRoot(root);
         } catch (IOException e) { afficherErreur("Erreur navigation : " + e.getMessage()); }
     }
@@ -300,3 +347,4 @@ public class ListeColisController {
         lblMessage.setText(msg);
     }
 }
+

@@ -1,9 +1,9 @@
 package com.gestioncolis.controllers;
 
 import com.gestioncolis.models.Colis;
-import com.gestioncolis.models.Utilisateur;
+import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.services.ColisService;
-import com.gestioncolis.services.UtilisateurService;
+import com.gestioncolis.services.UtilisateursServices;
 import com.gestioncolis.utils.MapHelper;
 import com.gestioncolis.utils.SessionManager;
 import javafx.application.Platform;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AjouterColisController {
+public class AjouterColisController implements DashboardController.UserAware {
 
     @FXML private TextField             tfDescription;
     @FXML private TextField             tfArticles;
@@ -28,7 +28,7 @@ public class AjouterColisController {
     @FXML private TextField             tfDestination;
     @FXML private TextField             tfPoids;
     @FXML private TextField             tfDimensions;
-    @FXML private ComboBox<Utilisateur> cbDestinataire;
+    @FXML private ComboBox<Utilisateurs> cbDestinataire;
     @FXML private Button                btnMapDepart;
     @FXML private Button                btnMapDestination;
 
@@ -41,27 +41,30 @@ public class AjouterColisController {
     @FXML private Label lblErrGlobal;
 
     private final ColisService       colisService = new ColisService();
-    private final UtilisateurService userService  = new UtilisateurService();
+    private final UtilisateursServices userService  = new UtilisateursServices();
 
     // ── État interne du ComboBox ──────────────────────────────────────
-    private ObservableList<Utilisateur> tousLesClients;
-    private FilteredList<Utilisateur>   clientsFiltres;
+    private ObservableList<Utilisateurs> tousLesClients;
+    private FilteredList<Utilisateurs>   clientsFiltres;
     /** Référence forte vers l'utilisateur sélectionné — ne dépend pas de getValue() */
-    private Utilisateur utilisateurSelectionne = null;
+    private Utilisateurs utilisateurSelectionne = null;
     /** Flag pour ignorer les événements texte déclenchés programmatiquement */
     private boolean miseAJourProgrammatique = false;
+    
+    // ✅ NOUVEL ATTRIBUT POUR STOCKER L'UTILISATEUR COURANT
+    private Utilisateurs currentUser;
 
     // ── Converter partagé ─────────────────────────────────────────────
-    private final StringConverter<Utilisateur> converter = new StringConverter<>() {
+    private final StringConverter<Utilisateurs> converter = new StringConverter<>() {
         @Override
-        public String toString(Utilisateur u) {
+        public String toString(Utilisateurs u) {
             if (u == null) return "";
             String nom = (u.getPrenom() != null ? u.getPrenom() : "")
                     + " " + (u.getNom() != null ? u.getNom() : "");
             return nom.trim() + " — " + u.getEmail();
         }
         @Override
-        public Utilisateur fromString(String s) {
+        public Utilisateurs fromString(String s) {
             if (s == null || tousLesClients == null) return null;
             return tousLesClients.stream()
                     .filter(u -> converter.toString(u).equals(s))
@@ -74,6 +77,15 @@ public class AjouterColisController {
         configurerComboBoxAvecRecherche();
         chargerClients();
         configurerBoutonsMap();
+    }
+
+    /**
+     * ✅ IMPLÉMENTATION DE L'INTERFACE UserAware
+     * Permet au contrôleur d'être notifié de l'utilisateur courant lors du chargement
+     */
+    @Override
+    public void setCurrentUser(Utilisateurs user) {
+        this.currentUser = user;
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -105,7 +117,7 @@ public class AjouterColisController {
 
         cbDestinataire.setCellFactory(lv -> new ListCell<>() {
             @Override
-            protected void updateItem(Utilisateur u, boolean empty) {
+            protected void updateItem(Utilisateurs u, boolean empty) {
                 super.updateItem(u, empty);
                 if (empty || u == null) { setText(null); setStyle(""); return; }
                 String nom = (u.getPrenom() != null ? u.getPrenom() : "")
@@ -155,7 +167,7 @@ public class AjouterColisController {
 
     private void chargerClients() {
         try {
-            List<Utilisateur> clients = userService.getClients();
+            List<Utilisateurs> clients = userService.getClients();
             if (clients.isEmpty()) {
                 afficherErreur(lblErrGlobal, "Aucun client (ROLE_CLIENT) trouvé en base.");
             }
@@ -222,7 +234,7 @@ public class AjouterColisController {
         if (!valide) return;
 
         int expediteurId   = SessionManager.getInstance().getIdConnecte();
-        int destinataireId = utilisateurSelectionne.getId();
+        int destinataireId = utilisateurSelectionne.getIdUtilisateur();
 
         Colis c = new Colis(
                 desc,
@@ -247,7 +259,18 @@ public class AjouterColisController {
     @FXML
     public void retourListe() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/listeColis.fxml"));
+            Utilisateurs u = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
+            String target = (u != null && u.getRole() == com.gestioncolis.enums.Role.ADMIN)
+                    ? "/views/DashboardLayout.fxml"
+                    : "/fxml/listeColis.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(target));
+            Parent root = loader.load();
+            if (u != null) {
+                Object ctrl = loader.getController();
+                if (ctrl instanceof DashboardController.UserAware ua) {
+                    ua.setCurrentUser(u);
+                }
+            }
             tfDescription.getScene().setRoot(root);
         } catch (IOException e) {
             afficherErreur(lblErrGlobal, "Erreur navigation : " + e.getMessage());

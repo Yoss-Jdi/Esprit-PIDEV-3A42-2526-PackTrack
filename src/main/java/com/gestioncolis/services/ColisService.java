@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ColisService implements ICrud<Colis> {
+public class ColisService implements ICrudCL<Colis> {
 
     private final Connection cnx = MyConnection.getInstance().getConnection();
 
