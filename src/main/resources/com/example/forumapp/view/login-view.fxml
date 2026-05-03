@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.example.forumapp.controllers.LoginController"
+           styleClass="login-root">
+    <children>
+        <HBox alignment="CENTER" maxWidth="920" spacing="0" styleClass="login-shell">
+            <children>
+                <!-- Left brand panel -->
+                <VBox spacing="14" prefWidth="380" styleClass="brand-panel" HBox.hgrow="NEVER">
+                    <padding><Insets bottom="40" left="40" right="40" top="40"/></padding>
+                    <children>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <children>
+                                <Label text="💬" styleClass="brand-emoji"/>
+                                <Label text="ForumFX" styleClass="app-title"/>
+                            </children>
+                        </HBox>
+                        <Region prefHeight="8"/>
+                        <Label text="La communaute qui rassemble developpeurs et passionnes. Posez vos questions, partagez vos idees et construisez ensemble."
+                               styleClass="hero-copy" wrapText="true"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <VBox spacing="10" styleClass="demo-card">
+                            <children>
+                                <Label text="Acces rapide" styleClass="section-title-light"/>
+                                <HBox spacing="8">
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#fillAdminCredentials"
+                                                styleClass="pill-button-light" text="🔑 Admin"/>
+                                        <Button mnemonicParsing="false" onAction="#fillUserCredentials"
+                                                styleClass="pill-button-ghost" text="👤 Utilisateur"/>
+                                    </children>
+                                </HBox>
+                                <Label text="admin@test.com / admin123" styleClass="demo-copy"/>
+                                <Label text="user@test.com / user123" styleClass="demo-copy"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <!-- Right login form -->
+                <VBox prefWidth="460" spacing="8" styleClass="login-card" HBox.hgrow="ALWAYS">
+                    <padding><Insets bottom="40" left="44" right="44" top="40"/></padding>
+                    <children>
+                        <Label text="Bienvenue" styleClass="panel-title"/>
+                        <Label text="Connectez-vous pour rejoindre la discussion."
+                               styleClass="section-subtitle" wrapText="true"/>
+                        <Region prefHeight="14"/>
+                        <Label text="Adresse email" styleClass="field-label"/>
+                        <TextField fx:id="emailField" promptText="vous@exemple.com" styleClass="compact-field"/>
+                        <Region prefHeight="6"/>
+                        <Label text="Mot de passe" styleClass="field-label"/>
+                        <PasswordField fx:id="passwordField" onAction="#handleLogin"
+                                       promptText="••••••••" styleClass="compact-field"/>
+                        <Region prefHeight="12"/>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                onAction="#handleLogin" styleClass="primary-button" text="Se connecter"/>
+                        <Label fx:id="statusLabel" styleClass="status-copy" wrapText="true"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Separator styleClass="subtle-separator"/>
+                        <HBox spacing="12" alignment="CENTER">
+                            <children>
+                                <Label text="JavaFX 21" styleClass="note-copy"/>
+                                <Label text="·" styleClass="note-copy"/>
+                                <Label text="MySQL" styleClass="note-copy"/>
+                                <Label text="·" styleClass="note-copy"/>
+                                <Label text="MVC" styleClass="note-copy"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</StackPane>
