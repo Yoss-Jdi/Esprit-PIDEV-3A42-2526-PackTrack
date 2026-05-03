@@ -1,0 +1,178 @@
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #f4f6f9;
+}
+
+/* ───────────────── NAVBAR ───────────────── */
+.navbar {
+    -fx-background-color: white;
+    -fx-padding: 10 20;
+    -fx-border-color: #ddd;
+    -fx-border-width: 0 0 1 0;
+    -fx-alignment: center-left;
+    -fx-spacing: 15;
+}
+
+.logo {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #343a40;
+}
+
+/* ───────────────── SIDEBAR ───────────────── */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #0d6efd, #0b5ed7);
+    -fx-padding: 20;
+    -fx-spacing: 10;
+    -fx-pref-width: 230px;
+}
+
+/* TITRES */
+.sidebar-title {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 11px;
+    -fx-padding: 10 0 5 5;
+}
+
+/* MENU BUTTON */
+.menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+}
+
+.menu-btn:hover {
+    -fx-background-color: rgba(255,255,255,0.15);
+}
+
+/* ACTIVE */
+.menu-btn.active {
+    -fx-background-color: white;
+    -fx-text-fill: #0d6efd;
+}
+
+/* SUB MENU */
+.menu-sub-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e9ecef;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 8 25;
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+}
+
+.menu-sub-btn:hover {
+    -fx-background-color: rgba(255,255,255,0.2);
+    -fx-text-fill: white;
+}
+
+/* TITLED PANE (DROPDOWN) */
+.menu-group {
+    -fx-background-color: transparent;
+}
+
+.titled-pane > .title {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15;
+}
+
+.titled-pane:expanded > .title {
+    -fx-background-color: rgba(255,255,255,0.2);
+    -fx-background-radius: 8;
+}
+
+.titled-pane > .content {
+    -fx-background-color: transparent;
+    -fx-padding: 5 0 5 0;
+}
+
+/* ───────────────── CONTENT ───────────────── */
+.content {
+    -fx-padding: 25;
+    -fx-spacing: 20;
+    -fx-background-color: #f4f6f9;
+}
+
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+}
+
+/* ───────────────── CARDS ───────────────── */
+.card {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 3);
+}
+
+.card-title {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6c757d;
+}
+
+.card-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+}
+
+/* ───────────────── BUTTONS ───────────────── */
+.btn-primary {
+    -fx-background-color: #0d6efd;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #0b5ed7;
+}
+
+.btn-danger {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #bb2d3b;
+}
+
+/* ───────────────── TABLE ───────────────── */
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #fafafa;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #cfe2ff;
+}
