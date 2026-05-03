@@ -1,6 +1,6 @@
 package com.gestioncolis.controllers;
 
-import com.gestioncolis.services.PredictionService;
+import com.gestioncolis.services.PredictionServiceFacRec;
 import com.gestioncolis.utils.MyDataBase;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -33,7 +33,7 @@ public class FactureStatsController {
     @FXML private Label             labelModele;
     @FXML private ProgressIndicator progressPrediction;
 
-    private final PredictionService predictionService = new PredictionService();
+    private final PredictionServiceFacRec predictionService = new PredictionServiceFacRec();
 
     // Retry config
     private static final int MAX_TENTATIVES = 10;   // essais max

@@ -8,6 +8,7 @@ com\gestioncolis\services\FactureService.class
 com\gestioncolis\entities\Recompense.class
 com\gestioncolis\controllers\RecompenseTableController$NotifType.class
 com\gestioncolis\entities\Livreur.class
+com\gestioncolis\services\PredictionServiceFacRec.class
 com\gestioncolis\controllers\RecompenseDialogController$3.class
 com\gestioncolis\gui\RecompenseDialog.class
 com\gestioncolis\controllers\FactureStatsController$1.class

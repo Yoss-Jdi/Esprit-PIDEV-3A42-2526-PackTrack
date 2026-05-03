@@ -28,6 +28,12 @@ public class DashboardController implements Initializable {
     @FXML private Button btnColis;
     @FXML private Button btnReclamations;
     @FXML private Button btnEntreprises;
+    @FXML private Button btnFactures;
+    @FXML private Button btnAjoutFacture;
+    @FXML private Button btnRecompenses;
+    @FXML private Button btnAjoutRecompense;
+    @FXML private Button btnStatsFactures;
+    @FXML private Button btnStatsRecompenses;
     @FXML private Button btnParametres;
 
     // ─── Sidebar user info ─────────────────────────────────────────────────────
@@ -86,16 +92,29 @@ public class DashboardController implements Initializable {
     @FXML private void handleNavUtilisateurs() { navigate(btnUtilisateurs, "Utilisateurs",    "Admin › Utilisateurs",  "/views/UsersView.fxml"); }
     @FXML private void handleNavLivraisons()   { navigate(btnLivraisons,   "Livraisons",      "Admin › Livraisons",    "/fxml/listeLivraisons.fxml"); }
     @FXML private void handleNavColis()        { navigate(btnColis,        "Colis",           "Admin › Colis",         "/fxml/listeColis.fxml"); }
-    @FXML private void handleNavReclamations() { navigate(btnReclamations, "Réclamations",    "Admin › Réclamations",  null); }
-    @FXML private void handleNavEntreprises()  { navigate(btnEntreprises,  "Entreprises",     "Admin › Entreprises",   null); }
-    @FXML private void handleNavParametres()   { navigate(btnParametres,   "Paramètres",      "Admin › Paramètres",    null); }
+    @FXML private void handleNavReclamations()    { navigate(btnReclamations,    "Réclamations",        "Admin › Réclamations",          null); }
+    @FXML private void handleNavEntreprises()     { navigate(btnEntreprises,     "Entreprises",         "Admin › Entreprises",           null); }
+
+    // ── Factures ──────────────────────────────────────────────────────────────
+    @FXML private void handleNavAjoutFacture()    { navigate(btnAjoutFacture,    "Ajouter Facture",     "Admin › Factures › Ajouter",    "/com/gestioncolis/facture-view.fxml"); }
+    @FXML private void handleNavFactures()        { navigate(btnFactures,        "Liste Factures",      "Admin › Factures › Liste",      "/com/gestioncolis/facture-table-view.fxml"); }
+
+    // ── Récompenses ───────────────────────────────────────────────────────────
+    @FXML private void handleNavAjoutRecompense() { navigate(btnAjoutRecompense, "Ajouter Récompense",  "Admin › Récompenses › Ajouter", "/com/gestioncolis/recompense-view.fxml"); }
+    @FXML private void handleNavRecompenses()     { navigate(btnRecompenses,     "Liste Récompenses",   "Admin › Récompenses › Liste",   "/com/gestioncolis/recompense-table-view.fxml"); }
+
+    // ── Statistiques ──────────────────────────────────────────────────────────
+    @FXML private void handleNavStatsFactures()   { navigate(btnStatsFactures,   "Stats Factures",      "Admin › Stats › Factures",      "/com/gestioncolis/facture-stats.fxml"); }
+    @FXML private void handleNavStatsRecompenses(){ navigate(btnStatsRecompenses,"Stats Récompenses",   "Admin › Stats › Récompenses",   "/com/gestioncolis/recompense-stats.fxml"); }
+
+    @FXML private void handleNavParametres()      { navigate(btnParametres,      "Paramètres",          "Admin › Paramètres",            null); }
 
     @FXML
     private void handleLogout() {
         try {
             // ✅ DÉCONNECTION DE LA SESSION
             SessionManager.getInstance().deconnecter();
-            
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthView.fxml"));
             Scene scene = new Scene(loader.load(), 1100, 700);
             Stage stage = (Stage) contentArea.getScene().getWindow();

@@ -37,17 +37,7 @@
 
                 <Label text="PRINCIPAL" styleClass="nav-section-label"/>
 
-                <Button fx:id="btnDashboard"
-                        styleClass="nav-btn,nav-btn-active"
-                        onAction="#handleNavDashboard">
-                    <graphic>
-                        <HBox spacing="12" alignment="CENTER_LEFT">
-                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-chart-pie"/>
-                            <Label text="Tableau de bord"
-                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
-                        </HBox>
-                    </graphic>
-                </Button>
+
 
                 <Label text="GESTION" styleClass="nav-section-label"/>
 
@@ -99,13 +89,85 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="btnEntreprises"
+
+
+                <Label text="FINANCES" styleClass="nav-section-label"/>
+
+                <!-- Factures : Ajouter -->
+                <Button fx:id="btnAjoutFacture"
                         styleClass="nav-btn"
-                        onAction="#handleNavEntreprises">
+                        onAction="#handleNavAjoutFacture">
                     <graphic>
                         <HBox spacing="12" alignment="CENTER_LEFT">
-                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-building"/>
-                            <Label text="Entreprises"
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-plus-circle"/>
+                            <Label text="Ajouter Facture"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <!-- Factures : Liste -->
+                <Button fx:id="btnFactures"
+                        styleClass="nav-btn"
+                        onAction="#handleNavFactures">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-file-invoice"/>
+                            <Label text="Liste Factures"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <!-- Récompenses : Ajouter -->
+                <Button fx:id="btnAjoutRecompense"
+                        styleClass="nav-btn"
+                        onAction="#handleNavAjoutRecompense">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-plus-circle"/>
+                            <Label text="Ajouter Récompense"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <!-- Récompenses : Liste -->
+                <Button fx:id="btnRecompenses"
+                        styleClass="nav-btn"
+                        onAction="#handleNavRecompenses">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-gift"/>
+                            <Label text="Liste Récompenses"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Label text="STATISTIQUES" styleClass="nav-section-label"/>
+
+                <!-- Stats Factures -->
+                <Button fx:id="btnStatsFactures"
+                        styleClass="nav-btn"
+                        onAction="#handleNavStatsFactures">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-chart-bar"/>
+                            <Label text="Stats Factures"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <!-- Stats Récompenses -->
+                <Button fx:id="btnStatsRecompenses"
+                        styleClass="nav-btn"
+                        onAction="#handleNavStatsRecompenses">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-chart-pie"/>
+                            <Label text="Stats Récompenses"
                                    style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
                         </HBox>
                     </graphic>
