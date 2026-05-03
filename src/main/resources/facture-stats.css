@@ -1,0 +1,85 @@
+/* ═══════════════════════════════════════════════════
+   facture-stats.css
+   Styles pour le LineChart avec 2 séries :
+   - Série 0 : CA réel      (bleu plein)
+   - Série 1 : CA prédit    (orange pointillés)
+═══════════════════════════════════════════════════ */
+
+/* ── Fond du graphique ─────────────────────────────── */
+.chart {
+    -fx-background-color: white;
+    -fx-padding: 10;
+}
+
+.chart-plot-background {
+    -fx-background-color: #fafafa;
+}
+
+/* ── Série 0 : CA réel (bleu) ──────────────────────── */
+.default-color0.chart-series-line {
+    -fx-stroke: #2563eb;
+    -fx-stroke-width: 2.5px;
+}
+
+.default-color0.chart-line-symbol {
+    -fx-background-color: #2563eb, white;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* ── Série 1 : CA prédit (orange pointillés) ───────── */
+.default-color1.chart-series-line {
+    -fx-stroke: #f97316;
+    -fx-stroke-width: 2px;
+    -fx-stroke-dash-array: 10 6;
+}
+
+.default-color1.chart-line-symbol {
+    -fx-background-color: #f97316, white;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* ── Légende ───────────────────────────────────────── */
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.default-color0.chart-legend-item-symbol {
+    -fx-background-color: #2563eb;
+}
+
+.default-color1.chart-legend-item-symbol {
+    -fx-background-color: #f97316;
+}
+
+/* ── Axes ──────────────────────────────────────────── */
+.axis-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+.axis {
+    -fx-tick-label-fill: #6b7280;
+    -fx-font-size: 11px;
+}
+
+/* ── Grille ────────────────────────────────────────── */
+.chart-horizontal-grid-lines {
+    -fx-stroke: #e5e7eb;
+    -fx-stroke-width: 0.8px;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+/* ── Tooltip ───────────────────────────────────────── */
+.chart-tooltip {
+    -fx-background-color: white;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-font-size: 12px;
+    -fx-text-fill: #374151;
+}
