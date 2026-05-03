@@ -124,7 +124,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>com.esprit.MainApp</mainClass>
+                    <mainClass>com.gestioncolis.MainApp</mainClass>
                 </configuration>
             </plugin>
 
