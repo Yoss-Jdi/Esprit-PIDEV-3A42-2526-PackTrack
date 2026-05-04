@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gestioncolis.controllers.modifytechnicien"
+            styleClass="page">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="top-navbar">
+            <padding>
+                <Insets bottom="18.0" left="24.0" right="24.0" top="18.0" />
+            </padding>
+            <Label text="Modifier un technicien" styleClass="title-label" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button onAction="#handleOpenChatbot" styleClass="chat-launch-button" text="Assistant IA" />
+            <Label text="Navigation principale" styleClass="nav-chip" />
+        </HBox>
+    </top>
+    <left>
+        <VBox spacing="14.0" styleClass="sidebar">
+            <padding>
+                <Insets bottom="24.0" left="18.0" right="18.0" top="24.0" />
+            </padding>
+            <Label text="Modules" styleClass="sidebar-title" />
+            <Button maxWidth="Infinity" onAction="#handleGoVehicules" styleClass="sidebar-button" text="Vehicule" />
+            <Button maxWidth="Infinity" onAction="#handleGoTechniciens" styleClass="sidebar-button-active" text="Technicien" />
+        </VBox>
+    </left>
+    <center>
+        <BorderPane>
+            <top>
+                <VBox spacing="6.0" styleClass="page-header">
+                    <padding>
+                        <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+                    </padding>
+                    <Label fx:id="formTitleLabel" text="Modifier un technicien" styleClass="title-label" />
+                    <Label text="Mettez a jour les informations du technicien et les vehicules dont il est responsable." styleClass="subtitle-label" />
+                </VBox>
+            </top>
+            <center>
+                <VBox spacing="18.0">
+                    <padding>
+                        <Insets bottom="24.0" left="24.0" right="24.0" top="0.0" />
+                    </padding>
+                    <GridPane hgap="16.0" vgap="14.0" styleClass="form-card">
+                        <padding>
+                            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+                        </padding>
+
+                        <Label text="Nom" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="nomField" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Prenom" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="prenomField" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Specialite" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="specialiteField" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="Telephone" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField fx:id="telephoneField" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <Label text="Email" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField fx:id="emailField" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                        <Label text="Vehicules" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <ListView fx:id="vehiculesListView" prefHeight="180.0" styleClass="data-table" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    </GridPane>
+
+                    <Label fx:id="feedbackLabel" styleClass="info-label feedback-info" wrapText="true" />
+
+                    <HBox spacing="12.0">
+                        <Button text="Mettre a jour" onAction="#handleUpdate" styleClass="primary-button" />
+                        <Button text="Retour" onAction="#handleBack" styleClass="secondary-button" />
+                    </HBox>
+                </VBox>
+            </center>
+        </BorderPane>
+    </center>
+</BorderPane>

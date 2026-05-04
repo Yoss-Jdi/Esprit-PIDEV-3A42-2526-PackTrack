@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6e716f64-baff-42e3-b347-d450f87da705" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ERROR_VISUALIZATION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/QUICK_FIX_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_DOCS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RES_SUMMARY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STARTUP_ERROR_FIX.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/START_HERE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/distance_and_duration_estimator/venv/Lib/site-packages/pip/_internal/operations/build/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/distance_and_duration_estimator/venv/Lib/site-packages/pip/_internal/operations/build/build_tracker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/distance_and_duration_estimator/venv/Lib/site-packages/pip/_internal/operations/build/metadata.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/distance_and_duration_estimator/venv/Lib/site-packages/pip/_internal/operations/build/metadata_editable.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/distance_and_duration_estimator/venv/Lib/site-packages/pip/_internal/operations/build/metadata_legacy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/distance_and_duration_estimator/venv/Lib/site-packages/pip/_internal/operations/build/wheel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/distance_and_duration_estimator/venv/Lib/site-packages/pip/_internal/operations/build/wheel_editable.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/distance_and_duration_estimator/venv/Lib/site-packages/pip/_internal/operations/build/wheel_legacy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/extract_resources.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fix_startup.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hs_err_pid35788.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/HelloApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/HelloController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/RayenFxApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/SceneNavigator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/addContoller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/addtechnicien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/chatbot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/displayContoller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/displaytechnicien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/modifyContoller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/modifytechnicien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/stat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/entities/technicien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/entities/vehicule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/EmailService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/OllamaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/PdfGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/Servicetechnicien.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/Servicevehicule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/utils/DataSource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/utils/ValidationUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/add.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/addtechnicien.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/chatbot.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/display.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/displaytechnicien.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/hello-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modify.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modifytechnicien.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/stat.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/RayenFxApplication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/add.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/addtechnicien.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/chatbot.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/chatbot$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/chatbot$ConversationTurn.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/chatbot.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/stat.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/display.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/displaytechnicien.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/hello-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/modify.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/modifytechnicien.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/services/EmailService$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/services/EmailService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/services/OllamaService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/stat.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/utils/ValidationUtils.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/HelloApplication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/HelloController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/MainApp.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/RayenFxApplication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/SceneNavigator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/admin-dashboard.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/admin.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/AdminDashboardController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/AjouterColisController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/AjouterColisController$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/AjouterColisController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/AjouterLivraisonController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/AjouterLivraisonController$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/AjouterLivraisonController$3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/AjouterLivraisonController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/AuthController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ChatController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ColisAvecDistance.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/DashboardController$UserAware.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/DashboardController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/DashboardHomeController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/DashboardHomeController$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/DashboardHomeController$3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/DashboardHomeController$4.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/DashboardHomeController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FaceLoginController$FloatPointer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FaceLoginController$IntPointer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FaceLoginController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FactureController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FactureController$NotifType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FactureController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FactureStatsController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FactureStatsController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FactureTableController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FactureTableController$NotifType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/FactureTableController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ListeColisController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ListeColisController$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ListeColisController$3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ListeColisController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ListeLivraisonsController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ListeLivraisonsController$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ListeLivraisonsController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/ModifierColisController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseDialogController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseDialogController$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseDialogController$3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseDialogController$NotifType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseDialogController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseStatsController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseTableController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseTableController$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseTableController$NotifType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/RecompenseTableController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/UserHomeController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/UserHomeController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/UsersController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/UsersController$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/UsersController$3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/UsersController$4.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/UsersController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/UsersFormController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/addContoller.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/addtechnicien$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/addtechnicien.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/chatbot$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/chatbot$ConversationTurn.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/chatbot.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/displayContoller.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/displaytechnicien.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/modifyContoller.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/modifytechnicien$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/modifytechnicien.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/controllers/stat.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/entities/Conversation.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/entities/Facture.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/entities/Livreur.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/entities/Message.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/entities/Recompense.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/entities/Utilisateurs.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/entities/technicien.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/entities/vehicule.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/enums/Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/exceptions/ColisException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/exceptions/ColisIndisponibleException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/exceptions/LivraisonIntrouvableException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/exceptions/StatutInvalideException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/exceptions/ValidationException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/facture-stats.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/facture-table-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/facture-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/gui/FactureDialog$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/gui/FactureDialog$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/gui/FactureDialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/gui/FactureGUI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/gui/RecompenseDialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/gui/SignaturePadDialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/main/MainFX.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/models/Colis.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/models/Livraison.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/models/Utilisateur.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/recompense-dialog.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/recompense-stats.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/recompense-table-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/recompense-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/AiService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/ChatService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/CloudinaryService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/ColisService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/EmailService$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/EmailService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/FactureService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/GeolocalisationService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/ICrud.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/ICrudCL.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/LivraisonService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/MailService$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/MailService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/MeteoService$MeteoResult.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/MeteoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/OllamaService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/PdfGenerator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/PdfService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/PredictionResult.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/PredictionService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/PredictionServiceFacRec.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/QrCodeService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/RecompenseService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/Servicetechnicien.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/Servicevehicule.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/TraficService$TraficResult.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/TraficService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/services/UtilisateursServices.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/templates/facture.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/CloudinaryConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/DataSource.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/DialogUtil.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/EmailService$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/EmailService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/EmojiPicker.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/EnvLoader.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/ExportManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/IconUtil.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/MapHelper$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/MapHelper$MapBridge.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/MapHelper.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/MyConnection.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/MyDataBase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/NotificationUtil.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/PasswordResetDialog$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/PasswordResetDialog$ResetRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/PasswordResetDialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/PasswordUtil.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/PhotoManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/QrCodeHelper.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/SessionManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/gestioncolis/utils/ValidationUtils.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/css/auth.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/css/dashboard.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/css/face-login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/css/user-home.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/facture-stats.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/fxml/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/fxml/ajouterColis.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/fxml/ajouterLivraison.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/fxml/dashboard.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/fxml/listeColis.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/fxml/listeLivraisons.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/fxml/login.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/fxml/modifierColis.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/devs/mahdi.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/devs/maisa.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/devs/rayen.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/devs/yassine.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/devs/yosra.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/094fdd9e-3393-412e-9df8-ebf587b600bb.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/0e676cbc-893d-4fd0-8b14-82a2bc4d7d52.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/12215bd9-493a-4fc9-8889-f7588dc1ded5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/2b9cc72b-7939-463e-ba2f-9f77362748b0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/38d99da6-fe87-43a9-903d-65d5630e9d23.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/3df693a1-d8db-47f9-8c32-a8296c5e710f.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/4dc6f905-5089-4727-a4db-6f94e558a6c1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/5e85ee7e-d10c-4697-a583-1fec68c6fe50.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/657e0905-54b8-47c5-b141-560345deba2c.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/81d4f912-1d4d-4e25-8dc6-86950afc26ef.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/92887d3e-dfc3-42be-ba1d-cb1df1b41900.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/a8a95c36-dee7-4f91-9418-63c5a95ae1a2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/b59db836-f411-452e-affd-529e3f7ea8cf.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/cd03662d-be64-4e35-b04d-edd28d27a9a5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/e23d5d42-2820-4206-8999-ba166f675666.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/images/profiles/f0d4c510-f6ec-4585-8870-203d3cac567b.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/views/AuthView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/views/ChatView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/views/DashboardHomeView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/views/DashboardLayout.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/views/FaceLoginView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/views/UserHomeView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/views/UsersFormView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/views/UsersView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/rayen-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/gestioncolis/services/ColisServiceTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/gestioncolis/services/LivraisonServiceTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Mydocs/Java_esp/Pidev_packtrack" value="3C07KjoWjfHgqfBio9uADNpM9Cq" />
+    </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Exception" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/23/javafx-graphics-23-win.jar!/javafx/geometry/Pos.class" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="3C07KjoWjfHgqfBio9uADNpM9Cq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.MainApp.executor": "Run",
+    "JUnit.ColisServiceTest.executor": "Run",
+    "JUnit.ColisServiceTest.testAjouterColis.executor": "Run",
+    "JUnit.LivraisonServiceTest.executor": "Run",
+    "Maven.Pidev_packtrack [dependency:resolve].executor": "Run",
+    "Maven.Pidev_packtrack [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "Maven.TrackPack [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "Maven.final_prjct [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "Maven.rayen [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feature/module-vehicule-integration",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Mydocs/Java_esp/Pidev_packtrack/src/test/java/com/gestioncolis/services",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\test\java\com\gestioncolis\services" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\resources\fxml" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\java\com\gestioncolis\utils" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\java\com\gestioncolis\services" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\java\com\gestioncolis\models" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\java\com\gestioncolis\controllers" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\test\java\com\gestioncolis\services" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn dependency:resolve" />
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.LivraisonServiceTest">
+    <configuration name="MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.gestioncolis.MainApp" />
+      <module name="Pidev_packtrack" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestioncolis.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ColisServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Pidev_packtrack" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestioncolis.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestioncolis.services" />
+      <option name="MAIN_CLASS_NAME" value="com.gestioncolis.services.ColisServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ColisServiceTest.testAjouterColis" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Pidev_packtrack" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestioncolis.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestioncolis.services" />
+      <option name="MAIN_CLASS_NAME" value="com.gestioncolis.services.ColisServiceTest" />
+      <option name="METHOD_NAME" value="testAjouterColis" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LivraisonServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Pidev_packtrack" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestioncolis.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestioncolis.services" />
+      <option name="MAIN_CLASS_NAME" value="com.gestioncolis.services.LivraisonServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.LivraisonServiceTest" />
+        <item itemvalue="JUnit.ColisServiceTest" />
+        <item itemvalue="JUnit.ColisServiceTest.testAjouterColis" />
+        <item itemvalue="Application.MainApp" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6e716f64-baff-42e3-b347-d450f87da705" name="Changes" comment="" />
+      <created>1775510574876</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1775510574876</updated>
+      <workItem from="1775510576137" duration="5012000" />
+      <workItem from="1775662213066" duration="11086000" />
+      <workItem from="1775733920962" duration="4920000" />
+      <workItem from="1775836705302" duration="8713000" />
+      <workItem from="1775899943816" duration="7289000" />
+      <workItem from="1775938860189" duration="5295000" />
+      <workItem from="1775992452242" duration="9798000" />
+      <workItem from="1776008968613" duration="4991000" />
+      <workItem from="1776154821955" duration="2085000" />
+      <workItem from="1776345513624" duration="5216000" />
+      <workItem from="1776362302754" duration="95000" />
+      <workItem from="1776362406622" duration="299000" />
+      <workItem from="1776362721841" duration="977000" />
+      <workItem from="1776363724251" duration="4823000" />
+      <workItem from="1776511985806" duration="3783000" />
+      <workItem from="1776605456262" duration="7275000" />
+      <workItem from="1776614463756" duration="1344000" />
+      <workItem from="1776702212636" duration="3460000" />
+      <workItem from="1776760072783" duration="1599000" />
+      <workItem from="1776876758694" duration="4521000" />
+      <workItem from="1776938798912" duration="3399000" />
+      <workItem from="1776951367619" duration="973000" />
+      <workItem from="1777025164046" duration="1292000" />
+      <workItem from="1777026656872" duration="467000" />
+      <workItem from="1777027158378" duration="3064000" />
+      <workItem from="1777052848060" duration="3521000" />
+      <workItem from="1777112462312" duration="5220000" />
+      <workItem from="1777194938233" duration="11750000" />
+      <workItem from="1777304704185" duration="12602000" />
+      <workItem from="1777364656702" duration="3938000" />
+      <workItem from="1777373823491" duration="1171000" />
+      <workItem from="1777713347379" duration="7581000" />
+      <workItem from="1777722588534" duration="39338000" />
+      <workItem from="1777852638398" duration="1777000" />
+      <workItem from="1777887112808" duration="6851000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
