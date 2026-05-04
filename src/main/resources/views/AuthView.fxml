@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane prefHeight="700" prefWidth="1100" stylesheets="@../css/auth.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestioncolis.controllers.AuthController">
+
+    <!-- Background avec effet glassmorphism -->
+    <Pane prefHeight="700" prefWidth="1100" styleClass="root-bg">
+        <Pane styleClass="bg-gradient-overlay" />
+    </Pane>
+
+    <!-- Animated BG Particles / Blobs -->
+    <Pane mouseTransparent="true" prefHeight="700" prefWidth="1100">
+        <Circle fx:id="blob1" centerX="200" centerY="150" radius="280" styleClass="bg-blob,blob-1" />
+        <Circle fx:id="blob2" centerX="950" centerY="580" radius="220" styleClass="bg-blob,blob-2" />
+        <Circle fx:id="blob3" centerX="900" centerY="120" radius="130" styleClass="bg-blob,blob-3" />
+        <Circle fx:id="blob4" centerX="180" centerY="600" radius="110" styleClass="bg-blob,blob-4" />
+        <Circle fx:id="blob5" centerX="500" centerY="350" radius="180" styleClass="bg-blob,blob-5" opacity="0.15" />
+    </Pane>
+
+    <!-- Card Container avec effet glass -->
+    <HBox fx:id="cardContainer" alignment="CENTER" maxHeight="620" maxWidth="980" prefHeight="620" prefWidth="980" styleClass="card-container" spacing="0">
+
+        <!-- LEFT PANEL - Glass effect modern -->
+        <StackPane fx:id="leftPanel" prefHeight="620" prefWidth="400" styleClass="left-panel">
+            <!-- Fond avec effet glass -->
+            <Pane styleClass="glass-panel" />
+            <Circle radius="250" styleClass="panel-deco-circle,deco-big" translateX="-80" translateY="-80" StackPane.alignment="TOP_LEFT" />
+            <Circle radius="140" styleClass="panel-deco-circle,deco-small" translateX="60" translateY="60" StackPane.alignment="BOTTOM_RIGHT" />
+            <Circle radius="60" styleClass="panel-deco-circle,deco-dot" translateX="-30" translateY="200" StackPane.alignment="TOP_RIGHT" />
+
+            <VBox alignment="CENTER" spacing="28" StackPane.alignment="CENTER">
+
+                <!-- Logo animé -->
+                <StackPane prefHeight="100" prefWidth="100" styleClass="logo-container">
+                    <Circle radius="50" styleClass="logo-outer" />
+                    <Circle radius="36" styleClass="logo-inner" />
+                    <Circle radius="28" styleClass="logo-glow" />
+                    <FontIcon iconColor="white" iconSize="32" iconLiteral="fas-boxes" />
+                </StackPane>
+
+                <!-- Brand name -->
+                <Text text="TrackPack" styleClass="brand-name" />
+
+                <VBox alignment="CENTER" spacing="12">
+                    <Text fx:id="panelTitle" styleClass="panel-title" text="Bienvenue !" />
+                    <Text fx:id="panelSubtitle" styleClass="panel-subtitle" text="Connectez-vous pour accéder&#10;à votre espace TrackPack." textAlignment="CENTER" />
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="12" style="-fx-padding: 20 0 0 0;">
+                    <Text fx:id="switchHint" styleClass="switch-hint" text="Pas encore de compte ?" />
+                    <Button fx:id="switchBtn" onAction="#handleSwitch" styleClass="switch-btn" text="S'inscrire">
+                        <graphic>
+                            <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-arrow-right" />
+                        </graphic>
+                    </Button>
+                </VBox>
+            </VBox>
+        </StackPane>
+
+        <!-- RIGHT PANEL - Forms avec animation de transition -->
+        <StackPane fx:id="formStack" prefHeight="620" prefWidth="580" styleClass="form-container">
+
+            <!-- LOGIN FORM -->
+            <ScrollPane fx:id="loginPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="form-scroll" vbarPolicy="NEVER">
+                <VBox alignment="TOP_CENTER" spacing="0" styleClass="form-box">
+
+                    <VBox alignment="CENTER" spacing="8" style="-fx-padding: 0 0 16 0;">
+                        <Text styleClass="form-title" text="Connexion" />
+                        <Text styleClass="form-sub" text="Bienvenue sur TrackPack" />
+                    </VBox>
+
+                    <VBox prefWidth="400" spacing="20" style="-fx-padding: 20 0 0 0;">
+
+                        <!-- Champ Email avec icône -->
+                        <VBox spacing="6">
+                            <Label styleClass="field-label" text="Adresse e-mail">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-envelope" />
+                                </graphic>
+                            </Label>
+                            <TextField fx:id="loginEmail" promptText="votre@email.com" styleClass="field-input" />
+                            <Label fx:id="loginEmailErr" managed="false" styleClass="field-error" visible="false" />
+                        </VBox>
+
+                        <!-- Champ Mot de passe avec icône -->
+                        <VBox spacing="6">
+                            <Label styleClass="field-label" text="Mot de passe">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-lock" />
+                                </graphic>
+                            </Label>
+                            <PasswordField fx:id="loginPassword" promptText="••••••••" styleClass="field-input" />
+                            <Label fx:id="loginPassErr" managed="false" styleClass="field-error" visible="false" />
+                            <HBox alignment="CENTER_RIGHT">
+                                <Hyperlink fx:id="forgotLink" styleClass="forgot-link" text="Mot de passe oublié ?" onAction="#handleForgotPassword">
+                                    <graphic>
+                                        <FontIcon iconColor="#6366f1" iconSize="10" iconLiteral="fas-question-circle" />
+                                    </graphic>
+                                </Hyperlink>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Global error -->
+                        <Label fx:id="loginGlobalErr" managed="false" styleClass="global-error" visible="false" wrapText="true" />
+
+                        <!-- Bouton Submit -->
+                        <Button fx:id="loginBtn" onAction="#handleLogin" prefWidth="400" styleClass="primary-btn" text="Se connecter">
+                            <graphic>
+                                <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-arrow-right" />
+                            </graphic>
+                        </Button>
+
+                        <Button fx:id="faceLoginBtn"
+                                onAction="#handleFaceLogin"
+                                prefWidth="400"
+                                styleClass="face-login-btn"
+                                text="  Se connecter avec le visage">
+                            <graphic>
+                                <FontIcon iconColor="#6366f1" iconSize="16" iconLiteral="fas-user-check" />
+                            </graphic>
+                        </Button>
+
+                        <!-- Séparateur -->
+                        <HBox alignment="CENTER" spacing="12" style="-fx-padding: 20 0 0 0;">
+                            <Pane styleClass="divider-line" />
+                            <Label text="ou" style=" -fx-text-fill: #94a3b8; -fx-font-size: 11px;" />
+                            <Pane styleClass="divider-line" />
+                        </HBox>
+
+                        <!-- Demo hint -->
+                        <HBox alignment="CENTER" spacing="8">
+                            <FontIcon iconColor="#94a3b8" iconSize="12" iconLiteral="fas-info-circle" />
+                            <Label text="admin@trackpack.com / 123456" style="-fx-text-fill: #94a3b8; -fx-font-size: 11px;" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+            <!-- SIGNUP FORM -->
+            <ScrollPane fx:id="signupPane" fitToWidth="true" hbarPolicy="NEVER" opacity="0" styleClass="form-scroll" vbarPolicy="AS_NEEDED" visible="false">
+                <VBox alignment="TOP_CENTER" spacing="0" styleClass="form-box">
+
+                    <VBox alignment="CENTER" spacing="8" style="-fx-padding: 0 0 16 0;">
+                        <Text styleClass="form-title" text="Créer un compte" />
+                        <Text styleClass="form-sub" text="Rejoignez la communauté TrackPack" />
+                    </VBox>
+
+                    <VBox prefWidth="400" spacing="14" style="-fx-padding: 10 0 16 0;">
+
+                        <!-- Nom + Prénom en 2 colonnes -->
+                        <HBox spacing="14">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label styleClass="field-label" text="Nom">
+                                    <graphic>
+                                        <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-user" />
+                                    </graphic>
+                                </Label>
+                                <TextField fx:id="signupNom" promptText="Dupont" styleClass="field-input" />
+                                <Label fx:id="nomErr" managed="false" styleClass="field-error" visible="false" />
+                            </VBox>
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label styleClass="field-label" text="Prénom">
+                                    <graphic>
+                                        <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-user-circle" />
+                                    </graphic>
+                                </Label>
+                                <TextField fx:id="signupPrenom" promptText="Jean" styleClass="field-input" />
+                                <Label fx:id="prenomErr" managed="false" styleClass="field-error" visible="false" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- Email -->
+                        <VBox spacing="5">
+                            <Label styleClass="field-label" text="Adresse e-mail">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-envelope" />
+                                </graphic>
+                            </Label>
+                            <TextField fx:id="signupEmail" promptText="jean.dupont@email.com" styleClass="field-input" />
+                            <Label fx:id="emailErr" managed="false" styleClass="field-error" visible="false" />
+                        </VBox>
+
+                        <!-- Téléphone -->
+                        <VBox spacing="5">
+                            <Label styleClass="field-label" text="Téléphone">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-phone-alt" />
+                                </graphic>
+                            </Label>
+                            <TextField fx:id="signupTel" promptText="+33 6 12 34 56 78" styleClass="field-input" />
+                            <Label fx:id="telErr" managed="false" styleClass="field-error" visible="false" />
+                        </VBox>
+
+                        <!-- Rôle -->
+                        <VBox spacing="5">
+                            <Label styleClass="field-label" text="Rôle">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-user-tag" />
+                                </graphic>
+                            </Label>
+                            <ComboBox fx:id="signupRole" prefWidth="400" promptText="Sélectionner un rôle" styleClass="field-combo" />
+                            <Label fx:id="roleErr" managed="false" styleClass="field-error" visible="false" />
+                        </VBox>
+
+                        <!-- Photo de profil -->
+                        <VBox spacing="8">
+                            <Label styleClass="field-label" text="Photo de profil">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-camera" />
+                                </graphic>
+                            </Label>
+                            <HBox alignment="CENTER_LEFT" spacing="14">
+                                <StackPane fx:id="photoPreviewCircle" prefHeight="64" prefWidth="64" styleClass="photo-preview-circle">
+                                    <FontIcon iconColor="#818cf8" iconSize="32" iconLiteral="fas-user-circle" />
+                                    <ImageView fx:id="photoPreviewImg" fitHeight="64" fitWidth="64" managed="false" preserveRatio="false" styleClass="photo-preview-img" visible="false" />
+                                </StackPane>
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <Button fx:id="photoPickerBtn" maxWidth="Infinity" onAction="#handlePhotoPick" styleClass="photo-picker-btn" text="  Choisir une photo">
+                                        <graphic>
+                                            <FontIcon iconColor="#6b7280" iconSize="14" iconLiteral="fas-folder-open" />
+                                        </graphic>
+                                    </Button>
+                                    <Label fx:id="photoNameLabel" styleClass="photo-name-label" text="Aucun fichier sélectionné" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Mot de passe -->
+                        <VBox spacing="5">
+                            <Label styleClass="field-label" text="Mot de passe">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-key" />
+                                </graphic>
+                            </Label>
+                            <PasswordField fx:id="signupPassword" promptText="•••••••• (minimum 6 caractères)" styleClass="field-input" />
+                            <HBox spacing="6" alignment="CENTER_LEFT" style="-fx-padding: 4 0 0 0;">
+                                <Rectangle fx:id="s1" arcHeight="4" arcWidth="4" height="5" styleClass="strength-seg,seg-weak" width="94" />
+                                <Rectangle fx:id="s2" arcHeight="4" arcWidth="4" height="5" styleClass="strength-seg,seg-weak" width="94" />
+                                <Rectangle fx:id="s3" arcHeight="4" arcWidth="4" height="5" styleClass="strength-seg,seg-weak" width="94" />
+                                <Rectangle fx:id="s4" arcHeight="4" arcWidth="4" height="5" styleClass="strength-seg,seg-weak" width="94" />
+                            </HBox>
+                            <Label fx:id="passErr" managed="false" styleClass="field-error" visible="false" />
+                        </VBox>
+
+                        <!-- Confirmer -->
+                        <VBox spacing="5">
+                            <Label styleClass="field-label" text="Confirmer le mot de passe">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconSize="12" iconLiteral="fas-check-double" />
+                                </graphic>
+                            </Label>
+                            <PasswordField fx:id="signupConfirm" promptText="Répéter le mot de passe" styleClass="field-input" />
+                            <Label fx:id="confirmErr" managed="false" styleClass="field-error" visible="false" />
+                        </VBox>
+
+                        <!-- CGU modern -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 8 0 0 0;">
+                            <CheckBox fx:id="cguCheck" styleClass="cgu-check" />
+                            <TextFlow>
+                                <Text styleClass="cgu-text" text="J'accepte les " />
+                                <Hyperlink styleClass="cgu-link" text="Conditions Générales d'Utilisation" />
+                            </TextFlow>
+                        </HBox>
+                        <Label fx:id="cguErr" managed="false" styleClass="field-error" visible="false" />
+
+                        <!-- Global error -->
+                        <Label fx:id="signupGlobalErr" managed="false" styleClass="global-error" visible="false" wrapText="true" />
+
+                        <!-- Submit -->
+                        <Button fx:id="signupBtn" onAction="#handleSignup" prefWidth="400" styleClass="primary-btn" text="Créer mon compte">
+                            <graphic>
+                                <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-user-plus" />
+                            </graphic>
+                        </Button>
+
+                        <Region prefHeight="10" />
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+        </StackPane>
+    </HBox>
+
+</StackPane>

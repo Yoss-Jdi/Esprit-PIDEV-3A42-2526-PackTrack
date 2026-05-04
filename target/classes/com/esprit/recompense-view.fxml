@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox stylesheets="@/recompense.css"
+      xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.esprit.controllers.RecompenseDialogController">
+
+    <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 15;"
+           text="Gestion des Récompenses" />
+
+    <VBox prefWidth="500" spacing="12"
+          style="-fx-padding: 20;"
+          styleClass="card">
+
+        <Label style="-fx-font-size: 16px; -fx-font-weight: bold;"
+               text="Ajouter / Modifier Récompense" />
+
+        <ComboBox fx:id="typeField" promptText="Type" />
+
+        <TextField fx:id="valeurField" promptText="Valeur" />
+
+        <TextArea fx:id="descriptionField" promptText="Description" />
+
+        <TextField fx:id="seuilField" promptText="Seuil" />
+
+        <!-- ✅ FIX 1 : onAction ajouté -->
+        <Button fx:id="btnGenererIA"
+                mnemonicParsing="false"
+                text="✨ Generer avec l IA"
+                onAction="#genererDescriptionIA"
+                style="-fx-background-color: #667eea;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;
+                       -fx-background-radius: 8;
+                       -fx-cursor: hand;" />
+
+        <!-- ✅ FIX 2 : labelIA ajouté (obligatoire sinon NullPointerException) -->
+        <Label fx:id="labelIA"
+               text=""
+               style="-fx-font-size: 11px; -fx-font-style: italic; -fx-text-fill: #667eea;" />
+
+        <ComboBox fx:id="factureCombo" promptText="Facture" />
+
+        <ComboBox fx:id="livreurComboBox" promptText="Livreur" />
+
+        <Button onAction="#enregistrer"
+                style="-fx-background-color: #2563eb; -fx-text-fill: white;"
+                text="Enregistrer" />
+
+    </VBox>
+
+</VBox>

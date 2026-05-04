@@ -1,0 +1,94 @@
+.root {
+    -fx-background-color: #f5f7fb;
+    -fx-font-family: "Segoe UI";
+}
+
+/* MAIN PANE */
+#ajouterRecompense {
+    -fx-background-color: #f5f7fb;
+}
+
+/* CARD STYLE (IMPORTANT AJOUT) */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-spacing: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 4);
+}
+
+/* TITLES */
+.label {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* FORM TITLE FIX (au lieu de label:first-child ❌) */
+.title {
+    -fx-font-size: 20px;
+    -fx-text-fill: #0f172a;
+    -fx-font-weight: bold;
+}
+
+/* INPUTS */
+.text-field,
+.text-area,
+.combo-box,
+.date-picker {
+    -fx-background-color: white;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8;
+}
+
+/* FOCUS */
+.text-field:focused,
+.text-area:focused,
+.combo-box:focused,
+.date-picker:focused {
+    -fx-border-color: #2563eb;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.15), 6, 0, 0, 0);
+}
+
+/* BUTTONS */
+.button {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-padding: 10 18;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+/* PRIMARY HOVER */
+.button:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+/* SECONDARY BUTTON FIX (au lieu de nth-child ❌) */
+.secondary-button {
+    -fx-background-color: #374151;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #111827;
+}
+.error-field {
+    -fx-border-color: #e53935;
+    -fx-border-width: 2;
+    -fx-border-radius: 7;
+    -fx-background-color: #fff5f5;
+}
+/* MESSAGE */
+#messageLabel {
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.error-field {
+    -fx-border-color: #ef4444;
+    -fx-border-width: 2;
+    -fx-background-color: #fef2f2;
+}

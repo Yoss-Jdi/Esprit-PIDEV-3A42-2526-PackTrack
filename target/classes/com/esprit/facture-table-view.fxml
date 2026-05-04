@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.esprit.controllers.FactureTableController"
+      spacing="10"
+      prefWidth="1000"
+      prefHeight="650">
+
+    <!-- Titre -->
+    <Label text="Liste des Factures"
+           style="-fx-font-size:20px;
+                  -fx-font-weight:bold;
+                  -fx-padding:15;" />
+
+    <!-- Recherche -->
+    <HBox spacing="10" style="-fx-padding:0 15 0 15;">
+
+        <TextField fx:id="searchField"
+                   promptText="🔍 Recherche dynamique..."
+                   HBox.hgrow="ALWAYS"/>
+
+        <ComboBox fx:id="triCombo"
+                  promptText="Trier par..."
+                  prefWidth="220"
+                  onAction="#trierFactures"/>
+
+        <Button text="Reset"
+                onAction="#resetAll"/>
+    </HBox>
+
+    <!-- Tableau -->
+    <TableView fx:id="factureTable"
+               VBox.vgrow="ALWAYS">
+
+        <columns>
+
+            <TableColumn fx:id="numeroColumn"
+                         text="Numéro"
+                         prefWidth="140"/>
+
+            <TableColumn fx:id="montantHTColumn"
+                         text="HT"
+                         prefWidth="100"/>
+
+            <TableColumn fx:id="montantTTCColumn"
+                         text="TTC"
+                         prefWidth="100"/>
+
+            <TableColumn fx:id="tvaColumn"
+                         text="TVA"
+                         prefWidth="90"/>
+
+            <TableColumn fx:id="statutColumn"
+                         text="Statut"
+                         prefWidth="130"/>
+
+            <TableColumn fx:id="livraisonColumn"
+                         text="Livraison"
+                         prefWidth="120"/>
+
+            <TableColumn fx:id="actionsColumn"
+                         text="Actions"
+                         prefWidth="280"/>
+
+        </columns>
+
+    </TableView>
+
+    <!-- Message -->
+    <Label fx:id="messageLabel"
+           style="-fx-padding:10 15 15 15;
+                  -fx-text-fill:#16a34a;
+                  -fx-font-weight:bold;" />
+
+</VBox>

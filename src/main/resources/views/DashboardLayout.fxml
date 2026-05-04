@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gestioncolis.controllers.DashboardController"
+            stylesheets="@../css/dashboard.css"
+            styleClass="dash-root"
+            prefWidth="1280" prefHeight="760">
+
+    <!-- LEFT — SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar">
+
+            <!-- Logo -->
+            <VBox styleClass="sidebar-logo-box">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <StackPane prefWidth="40" prefHeight="40"
+                               style="-fx-background-color: linear-gradient(to bottom right, #818cf8, #4f46e5); -fx-background-radius: 12;">
+                        <FontIcon iconColor="#ffffff" iconSize="20" iconLiteral="fas-boxes"/>
+                    </StackPane>
+                    <VBox spacing="0">
+                        <Label styleClass="sidebar-logo-text" text="TrackPack"/>
+                        <Label styleClass="sidebar-logo-sub"  text="ADMINISTRATION"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Navigation -->
+            <VBox VBox.vgrow="ALWAYS" spacing="2"
+                  style="-fx-padding: 10 0 10 0;">
+
+                <Label text="PRINCIPAL" styleClass="nav-section-label"/>
+
+
+
+                <Label text="GESTION" styleClass="nav-section-label"/>
+
+                <Button fx:id="btnUtilisateurs"
+                        styleClass="nav-btn"
+                        onAction="#handleNavUtilisateurs">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-users"/>
+                            <Label text="Utilisateurs"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnLivraisons"
+                        styleClass="nav-btn"
+                        onAction="#handleNavLivraisons">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-shipping-fast"/>
+                            <Label text="Livraisons"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnColis"
+                        styleClass="nav-btn"
+                        onAction="#handleNavColis">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-box-open"/>
+                            <Label text="Colis"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnReclamations"
+                        styleClass="nav-btn"
+                        onAction="#handleNavReclamations">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-comment-dots"/>
+                            <Label text="Réclamations"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+
+
+                <Label text="FINANCES" styleClass="nav-section-label"/>
+
+                <!-- Factures : Ajouter -->
+                <Button fx:id="btnAjoutFacture"
+                        styleClass="nav-btn"
+                        onAction="#handleNavAjoutFacture">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-plus-circle"/>
+                            <Label text="Ajouter Facture"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <!-- Factures : Liste -->
+                <Button fx:id="btnFactures"
+                        styleClass="nav-btn"
+                        onAction="#handleNavFactures">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-file-invoice"/>
+                            <Label text="Liste Factures"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <!-- Récompenses : Ajouter -->
+                <Button fx:id="btnAjoutRecompense"
+                        styleClass="nav-btn"
+                        onAction="#handleNavAjoutRecompense">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-plus-circle"/>
+                            <Label text="Ajouter Récompense"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <!-- Récompenses : Liste -->
+                <Button fx:id="btnRecompenses"
+                        styleClass="nav-btn"
+                        onAction="#handleNavRecompenses">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-gift"/>
+                            <Label text="Liste Récompenses"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Label text="STATISTIQUES" styleClass="nav-section-label"/>
+
+                <!-- Stats Factures -->
+                <Button fx:id="btnStatsFactures"
+                        styleClass="nav-btn"
+                        onAction="#handleNavStatsFactures">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-chart-bar"/>
+                            <Label text="Stats Factures"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <!-- Stats Récompenses -->
+                <Button fx:id="btnStatsRecompenses"
+                        styleClass="nav-btn"
+                        onAction="#handleNavStatsRecompenses">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-chart-pie"/>
+                            <Label text="Stats Récompenses"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Label text="SYSTÈME" styleClass="nav-section-label"/>
+
+                <Button fx:id="btnParametres"
+                        styleClass="nav-btn"
+                        onAction="#handleNavParametres">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-cog"/>
+                            <Label text="Paramètres"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+            </VBox>
+
+            <!-- User card -->
+            <HBox fx:id="sidebarUserBox" styleClass="sidebar-user-box"
+                  alignment="CENTER_LEFT" spacing="12">
+                <StackPane styleClass="sidebar-avatar" alignment="CENTER">
+                    <Label fx:id="avatarInitials" text="A"
+                           style="-fx-font-size:14px; -fx-font-weight:bold; -fx-text-fill:white;"/>
+                </StackPane>
+                <VBox spacing="3" HBox.hgrow="ALWAYS">
+                    <Label fx:id="sidebarUserName" text="Admin"
+                           styleClass="sidebar-username"/>
+                    <Label styleClass="sidebar-role-badge" text="ADMIN"/>
+                </VBox>
+                <Button styleClass="sidebar-logout-btn" onAction="#handleLogout">
+                    <graphic>
+                        <FontIcon iconColor="#fca5a5" iconSize="16" iconLiteral="fas-sign-out-alt"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </left>
+
+    <!-- CENTER -->
+    <center>
+        <VBox styleClass="content-area">
+
+            <!-- Topbar -->
+            <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="16">
+                <VBox HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" spacing="2">
+                    <Label fx:id="topbarTitle" text="Tableau de bord"
+                           styleClass="topbar-title"/>
+                    <Text fx:id="topbarBreadcrumb" text="Admin › Accueil"
+                          styleClass="topbar-breadcrumb"/>
+                </VBox>
+
+                <!-- User badge in topbar -->
+                <HBox alignment="CENTER" spacing="10"
+                      style="-fx-background-color:#f0f2f7; -fx-background-radius:20; -fx-padding:8 16 8 16;">
+                    <FontIcon iconColor="#22c55e" iconSize="10" iconLiteral="fas-circle"/>
+                    <Label fx:id="topbarUserInfo" text=""
+                           style="-fx-text-fill:#475569; -fx-font-size:12px; -fx-font-weight:bold;"/>
+                </HBox>
+            </HBox>
+
+            <!-- Dynamic content -->
+            <StackPane fx:id="contentArea" VBox.vgrow="ALWAYS"
+                       styleClass="content-area"/>
+        </VBox>
+    </center>
+
+</BorderPane>
