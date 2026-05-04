@@ -21,25 +21,13 @@
                 <Insets bottom="18.0" left="24.0" right="24.0" top="18.0" />
             </padding>
             <VBox spacing="6.0">
-                <Label text="Rayen Fleet Manager" styleClass="nav-brand" />
                 <Label text="Vue statistique de la charge des techniciens par vehicule." styleClass="nav-caption" />
             </VBox>
             <Region HBox.hgrow="ALWAYS" />
-            <Button onAction="#handleOpenChatbot" styleClass="chat-launch-button" text="Assistant IA" />
-            <Label text="Analyse rapide" styleClass="nav-chip" />
+
         </HBox>
     </top>
-    <left>
-        <VBox spacing="14.0" styleClass="sidebar">
-            <padding>
-                <Insets bottom="24.0" left="18.0" right="18.0" top="24.0" />
-            </padding>
-            <Label text="Modules" styleClass="sidebar-title" />
-            <Button maxWidth="Infinity" onAction="#handleGoVehicules" styleClass="sidebar-button" text="Vehicule" />
-            <Button maxWidth="Infinity" onAction="#handleGoTechniciens" styleClass="sidebar-button" text="Technicien" />
-            <Button maxWidth="Infinity" onAction="#handleGoStats" styleClass="sidebar-button-active" text="Statistiques" />
-        </VBox>
-    </left>
+
     <center>
         <BorderPane>
             <top>

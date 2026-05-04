@@ -35,10 +35,6 @@
             <VBox VBox.vgrow="ALWAYS" spacing="2"
                   style="-fx-padding: 10 0 10 0;">
 
-                <Label text="PRINCIPAL" styleClass="nav-section-label"/>
-
-                
-
                 <Label text="GESTION" styleClass="nav-section-label"/>
 
                 <Button fx:id="btnUtilisateurs"
@@ -89,11 +85,36 @@
                     </graphic>
                 </Button>
 
+                <!-- ═══════ FLOTTE ═══════ -->
+                <Label text="FLOTTE" styleClass="nav-section-label"/>
 
+                <Button fx:id="btnVehicules"
+                        styleClass="nav-btn"
+                        onAction="#handleNavVehicules">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-car"/>
+                            <Label text="Véhicules"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
 
+                <Button fx:id="btnTechniciens"
+                        styleClass="nav-btn"
+                        onAction="#handleNavTechniciens">
+                    <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#c7d2fe" iconSize="16" iconLiteral="fas-tools"/>
+                            <Label text="Techniciens"
+                                   style="-fx-font-size:13px; -fx-text-fill:inherit;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <!-- ═══════ FINANCES ═══════ -->
                 <Label text="FINANCES" styleClass="nav-section-label"/>
 
-                <!-- Factures : Ajouter -->
                 <Button fx:id="btnAjoutFacture"
                         styleClass="nav-btn"
                         onAction="#handleNavAjoutFacture">
@@ -106,7 +127,6 @@
                     </graphic>
                 </Button>
 
-                <!-- Factures : Liste -->
                 <Button fx:id="btnFactures"
                         styleClass="nav-btn"
                         onAction="#handleNavFactures">
@@ -119,7 +139,6 @@
                     </graphic>
                 </Button>
 
-                <!-- Récompenses : Ajouter -->
                 <Button fx:id="btnAjoutRecompense"
                         styleClass="nav-btn"
                         onAction="#handleNavAjoutRecompense">
@@ -132,7 +151,6 @@
                     </graphic>
                 </Button>
 
-                <!-- Récompenses : Liste -->
                 <Button fx:id="btnRecompenses"
                         styleClass="nav-btn"
                         onAction="#handleNavRecompenses">
@@ -147,7 +165,6 @@
 
                 <Label text="STATISTIQUES" styleClass="nav-section-label"/>
 
-                <!-- Stats Factures -->
                 <Button fx:id="btnStatsFactures"
                         styleClass="nav-btn"
                         onAction="#handleNavStatsFactures">
@@ -160,7 +177,6 @@
                     </graphic>
                 </Button>
 
-                <!-- Stats Récompenses -->
                 <Button fx:id="btnStatsRecompenses"
                         styleClass="nav-btn"
                         onAction="#handleNavStatsRecompenses">
@@ -222,6 +238,19 @@
                     <Text fx:id="topbarBreadcrumb" text="Admin › Accueil"
                           styleClass="topbar-breadcrumb"/>
                 </VBox>
+
+                <!-- Chatbot button -->
+                <Button onAction="#handleOpenChatbot"
+                        style="-fx-background-color:#4f46e5; -fx-text-fill:white;
+                               -fx-background-radius:8; -fx-font-size:12px;
+                               -fx-cursor:hand; -fx-padding:8 16;">
+                    <graphic>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <FontIcon iconColor="#ffffff" iconSize="14" iconLiteral="fas-robot"/>
+                            <Label text="Assistant IA" style="-fx-text-fill:white; -fx-font-size:12px;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
 
                 <!-- User badge in topbar -->
                 <HBox alignment="CENTER" spacing="10"

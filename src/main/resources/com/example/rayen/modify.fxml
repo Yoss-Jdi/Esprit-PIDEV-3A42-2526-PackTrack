@@ -15,27 +15,8 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.gestioncolis.controllers.modifyContoller"
             styleClass="page">
-    <top>
-        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="top-navbar">
-            <padding>
-                <Insets bottom="18.0" left="24.0" right="24.0" top="18.0" />
-            </padding>
-            <Label text="Modifier un vehicule" styleClass="title-label" />
-            <Region HBox.hgrow="ALWAYS" />
-            <Button onAction="#handleOpenChatbot" styleClass="chat-launch-button" text="Assistant IA" />
-            <Label text="Navigation principale" styleClass="nav-chip" />
-        </HBox>
-    </top>
-    <left>
-        <VBox spacing="14.0" styleClass="sidebar">
-            <padding>
-                <Insets bottom="24.0" left="18.0" right="18.0" top="24.0" />
-            </padding>
-            <Label text="Modules" styleClass="sidebar-title" />
-            <Button maxWidth="Infinity" onAction="#handleGoVehicules" styleClass="sidebar-button-active" text="Vehicule" />
-            <Button maxWidth="Infinity" onAction="#handleGoTechniciens" styleClass="sidebar-button" text="Technicien" />
-        </VBox>
-    </left>
+
+
     <center>
         <BorderPane>
             <top>
