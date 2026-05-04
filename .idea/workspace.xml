@@ -5,65 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e716f64-baff-42e3-b347-d450f87da705" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/HelloController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/RayenFxApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/RayenFxApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/SceneNavigator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/SceneNavigator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/addContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/addContoller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/addtechnicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/addtechnicien.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/chatbot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/chatbot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/displayContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/displayContoller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/displaytechnicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/displaytechnicien.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/modifyContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/modifyContoller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/modifytechnicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/modifytechnicien.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/stat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/stat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/entities/technicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/entities/technicien.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/entities/vehicule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/entities/vehicule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/EmailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/OllamaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/OllamaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/PdfGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/PdfGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/Servicetechnicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/Servicetechnicien.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/Servicevehicule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/Servicevehicule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/utils/DataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/utils/DataSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/utils/ValidationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/utils/ValidationUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/add.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/add.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/addtechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/addtechnicien.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/chatbot.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/chatbot.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/display.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/display.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/displaytechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/displaytechnicien.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/hello-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modify.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modify.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modifytechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modifytechnicien.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/stat.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/stat.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/HelloApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/HelloController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/SceneNavigator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/add.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/add.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/addtechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/addtechnicien.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/chatbot.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/chatbot.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/addContoller.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/addtechnicien$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/addtechnicien.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/displayContoller.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/displaytechnicien.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/modifyContoller.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/modifytechnicien$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/modifytechnicien.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/display.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/display.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/displaytechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/displaytechnicien.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/entities/technicien.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/entities/vehicule.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/hello-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/modify.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/modify.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/modifytechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/modifytechnicien.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/services/PdfGenerator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/services/Servicetechnicien.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/services/Servicevehicule.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/stat.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/stat.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/utils/DataSource.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,7 +219,7 @@
       <workItem from="1777713347379" duration="7581000" />
       <workItem from="1777722588534" duration="39338000" />
       <workItem from="1777852638398" duration="1777000" />
-      <workItem from="1777887112808" duration="5303000" />
+      <workItem from="1777887112808" duration="6851000" />
     </task>
     <servers />
   </component>
