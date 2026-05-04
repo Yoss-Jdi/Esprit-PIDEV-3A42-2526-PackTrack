@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.gestioncolis.controllers.UserDashboardController"
+           styleClass="dashboard-root">
+    
+    <BorderPane fx:id="mainLayout">
+        <!-- TOP: Navigation Bar -->
+        <top>
+            <HBox alignment="CENTER_LEFT" spacing="14" styleClass="topbar">
+                <padding><Insets bottom="10" left="24" right="24" top="10"/></padding>
+                <children>
+                    <Label text="💬" styleClass="topbar-emoji"/>
+                    <Label text="ForumFX" styleClass="brand-mark"/>
+                    <Region prefWidth="1" styleClass="topbar-divider"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="searchField" promptText="🔍  Rechercher un forum ou post..." styleClass="search-field" prefWidth="280"/>
+                    
+                    <Button mnemonicParsing="false" onAction="#toggleNotifications" styleClass="topbar-button" text="🔔">
+                        <graphic>
+                            <Label fx:id="bellBadge" styleClass="notification-badge" text="0" visible="false" 
+                                   style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-size: 9px; -fx-padding: 2 5; -fx-background-radius: 10;"/>
+                        </graphic>
+                    </Button>
+
+                    <Button mnemonicParsing="false" onAction="#toggleChatbot" styleClass="primary-button-sm" text="🤖 Assistant IA"/>
+                    <Label fx:id="currentUserLabel" styleClass="user-pill"/>
+                    <Button fx:id="adminButton" mnemonicParsing="false" onAction="#handleGoToAdmin" styleClass="primary-button-sm" text="🛠️ Administration" visible="false" managed="false"/>
+                    <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="topbar-button" text="Deconnexion"/>
+                </children>
+            </HBox>
+        </top>
+
+        <!-- CENTER: Layout (Content | Details) -->
+        <center>
+            <HBox spacing="12" styleClass="main-container">
+                <padding><Insets bottom="14" left="14" right="14" top="14"/></padding>
+                <children>
+                    
+                    <!-- ZONE 2: CENTER CONTENT -->
+                    <ScrollPane HBox.hgrow="ALWAYS" styleClass="center-scroll" fitToWidth="true" hbarPolicy="NEVER">
+                        <VBox spacing="12" styleClass="content-area">
+                            <padding><Insets bottom="16" left="16" right="16" top="16"/></padding>
+                            <children>
+                                
+                                <!-- Header -->
+                                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="surface-card">
+                                    <padding><Insets bottom="16" left="16" right="16" top="16"/></padding>
+                                    <children>
+                                        <Label text="🌐 Sélection du Forum :" styleClass="section-title"/>
+                                        <ComboBox fx:id="forumComboBox" promptText="Choisir un forum déroulant..." prefWidth="280" styleClass="compact-combo"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Button fx:id="togglePostComposerButton" mnemonicParsing="false" onAction="#togglePostComposer" styleClass="primary-button" text="➕ Nouveau Post"/>
+                                    </children>
+                                </HBox>
+
+                                <!-- Post Composer Card -->
+                                <VBox fx:id="postComposerCard" spacing="10" styleClass="composer-card" managed="false" visible="false">
+                                    <padding><Insets bottom="16" left="16" right="16" top="16"/></padding>
+                                    <children>
+                                        <Label fx:id="postFormTitleLabel" styleClass="composer-label" text="✏️ Créer une nouvelle publication"/>
+                                        <TextField fx:id="postTitleField" promptText="Titre accrocheur..." styleClass="compact-field"/>
+                                        <TextArea fx:id="postContentArea" prefRowCount="3" promptText="Partagez vos idées ici..." wrapText="true" styleClass="compact-area"/>
+
+                                        <HBox alignment="CENTER_LEFT" spacing="10">
+                                            <children>
+                                                <Button fx:id="choosePostImageButton" mnemonicParsing="false" onAction="#handleChoosePostImage" styleClass="ghost-button-sm" text="🖼 Ajouter une Image"/>
+                                                <Button fx:id="clearPostImageButton" mnemonicParsing="false" onAction="#handleClearPostImage" styleClass="danger-button-sm" text="✕ Retirer Image"/>
+                                                <Label fx:id="postImageNameLabel" styleClass="meta-label" text="Aucune image"/>
+                                            </children>
+                                        </HBox>
+                                        <ImageView fx:id="postImagePreview" fitHeight="180" fitWidth="320" managed="false" preserveRatio="true" smooth="true" visible="false"/>
+                                        <HBox spacing="10" alignment="CENTER_LEFT">
+                                            <children>
+                                                <Button fx:id="savePostButton" mnemonicParsing="false" onAction="#handleSavePost" styleClass="primary-button-sm" text="Publier"/>
+                                                <Button fx:id="resetPostButton" mnemonicParsing="false" onAction="#handleResetPost" styleClass="ghost-button-sm" text="Annuler"/>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                                
+                                <HBox alignment="CENTER_LEFT">
+                                    <Label fx:id="postCountLabel" styleClass="count-badge" text="0 posts"/>
+                                </HBox>
+
+                                <ListView fx:id="postListView" prefHeight="600" VBox.vgrow="ALWAYS"/>
+                            </children>
+                        </VBox>
+                    </ScrollPane>
+
+                    <!-- ZONE 3: RIGHT DETAIL PANEL -->
+                    <ScrollPane prefWidth="340" styleClass="detail-scroll" fitToWidth="true" hbarPolicy="NEVER">
+                        <VBox spacing="12" styleClass="detail-panel">
+                            <padding><Insets bottom="16" left="16" right="16" top="16"/></padding>
+                            <children>
+                                <Label fx:id="selectedPostLabel" styleClass="detail-title" text="Sélectionnez un post"/>
+                                <Label fx:id="forumTitleLabel" styleClass="detail-subtitle" text=""/>
+                                <Label fx:id="forumDescriptionLabel" styleClass="detail-description" text=""/>
+                                <Separator/>
+                                <Label fx:id="commentFormTitleLabel" styleClass="composer-label" text="💬 Ajouter un commentaire"/>
+                                <VBox fx:id="commentComposerCard" spacing="10" styleClass="composer-card">
+                                    <padding><Insets bottom="12" left="12" right="12" top="12"/></padding>
+                                    <children>
+                                        <TextArea fx:id="commentContentArea" prefRowCount="2" promptText="Donnez votre avis..." wrapText="true" styleClass="compact-area"/>
+                                        <HBox spacing="8">
+                                            <children>
+                                                <Button fx:id="saveCommentButton" mnemonicParsing="false" onAction="#handleSaveComment" styleClass="primary-button-sm" text="Commenter"/>
+                                                <Button fx:id="resetCommentButton" mnemonicParsing="false" onAction="#handleResetComment" styleClass="ghost-button-sm" text="Annuler"/>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                                <ListView fx:id="commentListView" VBox.vgrow="ALWAYS"/>
+                                <HBox spacing="8" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#handleDownloadMyPosts" styleClass="primary-button" text="📄 Exporter mes posts en PDF"/>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </ScrollPane>
+
+                    <!-- ZONE 4: RIGHT PANEL (Chatbot AI) -->
+                    <VBox fx:id="chatbotPanel" prefWidth="300" managed="false" visible="false" styleClass="detail-panel" spacing="12">
+                        <padding><Insets bottom="16" left="16" right="16" top="16"/></padding>
+                        <children>
+                            <Label text="🤖 Forum Companion" styleClass="detail-title"/>
+                            <Label text="Gemini 2.5 Flash" styleClass="detail-subtitle"/>
+                            <Separator/>
+                            <ScrollPane fx:id="chatScrollPane" VBox.vgrow="ALWAYS" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;">
+                                <content>
+                                    <VBox fx:id="chatMessages" spacing="10">
+                                        <padding><Insets bottom="5" left="5" right="5" top="5"/></padding>
+                                    </VBox>
+                                </content>
+                            </ScrollPane>
+                            <HBox spacing="8">
+                                <children>
+                                    <TextField fx:id="chatInput" HBox.hgrow="ALWAYS" promptText="Posez votre question..." styleClass="compact-field" onAction="#handleSendMessage"/>
+                                    <Button mnemonicParsing="false" onAction="#handleSendMessage" styleClass="primary-button-sm" text="Envoyer"/>
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+                </children>
+            </HBox>
+        </center>
+    </BorderPane>
+
+    <!-- Overlay for Notifications (positioned at top right) -->
+    <VBox fx:id="notificationOverlayContainer" pickOnBounds="false" alignment="TOP_RIGHT" style="-fx-padding: 65 24 0 0;">
+        <children>
+            <!-- NotificationPanel will be injected here -->
+        </children>
+    </VBox>
+</StackPane>

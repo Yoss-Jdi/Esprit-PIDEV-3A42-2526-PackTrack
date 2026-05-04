@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gestioncolis.controllers.AdminDashboardController"
+            styleClass="dashboard-root">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="14" styleClass="topbar">
+            <padding><Insets bottom="10" left="24" right="24" top="10"/></padding>
+            <children>
+                <Label text="💬" styleClass="topbar-emoji"/>
+                <Label text="ForumFX" styleClass="brand-mark"/>
+                <Region prefWidth="1" styleClass="topbar-divider"/>
+                <Label text="Administration" styleClass="topbar-subtitle-admin"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button mnemonicParsing="false" onAction="#handleViewForum" styleClass="topbar-button" text="🏠 Voir le Forum"/>
+                <Button mnemonicParsing="false" onAction="#handleOpenChatbot" styleClass="primary-button-sm" text="🤖 Chatbot"/>
+                <Label fx:id="currentUserLabel" styleClass="user-pill"/>
+                <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="topbar-button" text="Deconnexion"/>
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="admin-tabs">
+            <tabs>
+                <!-- Dashboard tab -->
+                <Tab text="Tableau de bord">
+                    <content>
+                        <ScrollPane fitToWidth="true" styleClass="admin-scroll-pane">
+                            <VBox spacing="24" styleClass="admin-tab-content">
+                                <padding><Insets bottom="28" left="28" right="28" top="28"/></padding>
+                                <children>
+                                    <Label text="Vue d'ensemble" styleClass="panel-title"/>
+                                    <HBox spacing="18">
+                                        <children>
+                                            <VBox spacing="6" styleClass="stat-card stat-users" HBox.hgrow="ALWAYS">
+                                                <padding><Insets bottom="20" left="22" right="22" top="20"/></padding>
+                                                <children>
+                                                    <Label text="👥 Utilisateurs" styleClass="stat-label"/>
+                                                    <Label fx:id="statsUsersValue" styleClass="stat-value" text="0"/>
+                                                </children>
+                                            </VBox>
+                                            <VBox spacing="6" styleClass="stat-card stat-forums" HBox.hgrow="ALWAYS">
+                                                <padding><Insets bottom="20" left="22" right="22" top="20"/></padding>
+                                                <children>
+                                                    <Label text="🌐 Forums" styleClass="stat-label"/>
+                                                    <Label fx:id="statsForumsValue" styleClass="stat-value" text="0"/>
+                                                </children>
+                                            </VBox>
+                                            <VBox spacing="6" styleClass="stat-card stat-posts" HBox.hgrow="ALWAYS">
+                                                <padding><Insets bottom="20" left="22" right="22" top="20"/></padding>
+                                                <children>
+                                                    <Label text="📝 Posts" styleClass="stat-label"/>
+                                                    <Label fx:id="statsPostsValue" styleClass="stat-value" text="0"/>
+                                                </children>
+                                            </VBox>
+                                            <VBox spacing="6" styleClass="stat-card stat-comments" HBox.hgrow="ALWAYS">
+                                                <padding><Insets bottom="20" left="22" right="22" top="20"/></padding>
+                                                <children>
+                                                    <Label text="💬 Commentaires" styleClass="stat-label"/>
+                                                    <Label fx:id="statsCommentsValue" styleClass="stat-value" text="0"/>
+                                                </children>
+                                            </VBox>
+                                            <VBox spacing="6" styleClass="stat-card stat-likes" HBox.hgrow="ALWAYS">
+                                                <padding><Insets bottom="20" left="22" right="22" top="20"/></padding>
+                                                <children>
+                                                    <Label text="❤️ Likes" styleClass="stat-label"/>
+                                                    <Label fx:id="statsLikesValue" styleClass="stat-value" text="0"/>
+                                                </children>
+                                            </VBox>
+                                        </children>
+                                    </HBox>
+                                    
+                                    <VBox spacing="12" styleClass="surface-card">
+                                        <padding><Insets bottom="20" left="20" right="20" top="20"/></padding>
+                                        <children>
+                                            <Label text="⚡ Dernières Activités" styleClass="section-title"/>
+                                            <TableView fx:id="activityTable" prefHeight="300">
+                                                <placeholder>
+                                                    <Label text="Aucune activité récente."/>
+                                                </placeholder>
+                                                <columns>
+                                                    <TableColumn fx:id="activityTypeColumn" prefWidth="120" text="Type"/>
+                                                    <TableColumn fx:id="activityContentColumn" prefWidth="400" text="Contenu"/>
+                                                    <TableColumn fx:id="activityAuthorColumn" prefWidth="150" text="Auteur"/>
+                                                    <TableColumn fx:id="activityDateColumn" prefWidth="150" text="Date"/>
+                                                </columns>
+                                            </TableView>
+                                        </children>
+                                    </VBox>
+                                </children>
+                            </VBox>
+                        </ScrollPane>
+                    </content>
+                </Tab>
+
+                <!-- Forums tab -->
+                <Tab text="Forums">
+                    <content>
+                        <SplitPane dividerPositions="0.65" styleClass="admin-split">
+                            <items>
+                                <VBox spacing="12" styleClass="table-panel">
+                                    <padding><Insets bottom="18" left="18" right="18" top="18"/></padding>
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" spacing="10">
+                                            <children>
+                                                <Label text="Forums" styleClass="section-title"/>
+                                                <Region HBox.hgrow="ALWAYS"/>
+                                                <TextField fx:id="forumSearchField" promptText="🔍 Rechercher un forum..." styleClass="search-field" prefWidth="250"/>
+                                            </children>
+                                        </HBox>
+                                        <TableView fx:id="forumTable" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                                <TableColumn fx:id="forumTitleColumn" prefWidth="200" text="Titre"/>
+                                                <TableColumn fx:id="forumDescriptionColumn" prefWidth="350" text="Description"/>
+                                                <TableColumn fx:id="forumPostCountColumn" prefWidth="80" text="Posts"/>
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+                                <VBox spacing="12" styleClass="editor-panel">
+                                    <padding><Insets bottom="18" left="18" right="18" top="18"/></padding>
+                                    <children>
+                                        <Label fx:id="forumEditorTitleLabel" styleClass="section-title" text="Creer un forum"/>
+                                        <Label text="Titre" styleClass="field-label"/>
+                                        <TextField fx:id="forumTitleField" promptText="Nom du forum" styleClass="compact-field"/>
+                                        <Label text="Description" styleClass="field-label"/>
+                                        <TextArea fx:id="forumDescriptionArea" prefRowCount="5" promptText="Decrivez le sujet du forum..." wrapText="true" styleClass="compact-area"/>
+                                        <HBox spacing="10">
+                                            <children>
+                                                <Button mnemonicParsing="false" onAction="#handleSaveForum" styleClass="primary-button-sm" text="Enregistrer"/>
+                                                <Button mnemonicParsing="false" onAction="#handleResetForum" styleClass="ghost-button-sm" text="Reinitialiser"/>
+                                                <Region HBox.hgrow="ALWAYS"/>
+                                                <Button mnemonicParsing="false" onAction="#handleDeleteForum" styleClass="danger-button-sm" text="Supprimer"/>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </items>
+                        </SplitPane>
+                    </content>
+                </Tab>
+
+                <!-- Posts tab -->
+                <Tab text="Posts">
+                    <content>
+                        <SplitPane dividerPositions="0.65" styleClass="admin-split">
+                            <items>
+                                <VBox spacing="12" styleClass="table-panel">
+                                    <padding><Insets bottom="18" left="18" right="18" top="18"/></padding>
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" spacing="10">
+                                            <children>
+                                                <Label text="Posts" styleClass="section-title"/>
+                                                <Region HBox.hgrow="ALWAYS"/>
+                                                <TextField fx:id="postSearchField" promptText="🔍 Rechercher un post..." styleClass="search-field" prefWidth="250"/>
+                                            </children>
+                                        </HBox>
+                                        <TableView fx:id="postTable" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                                <TableColumn fx:id="postTitleColumn" prefWidth="220" text="Titre"/>
+                                                <TableColumn fx:id="postForumColumn" prefWidth="160" text="Forum"/>
+                                                <TableColumn fx:id="postAuthorColumn" prefWidth="140" text="Auteur"/>
+                                                <TableColumn fx:id="postCommentCountColumn" prefWidth="70" text="Comms"/>
+                                                <TableColumn fx:id="postLikeColumn" prefWidth="70" text="Likes"/>
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+                                <VBox spacing="12" styleClass="editor-panel">
+                                    <padding><Insets bottom="18" left="18" right="18" top="18"/></padding>
+                                    <children>
+                                        <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
+                                            <VBox spacing="12">
+                                                <Label fx:id="postEditorTitleLabel" styleClass="section-title" text="Creer un post"/>
+                                                <Label text="Forum" styleClass="field-label"/>
+                                                <ComboBox fx:id="postForumComboBox" maxWidth="1.7976931348623157E308" promptText="Choisir un forum" styleClass="compact-combo"/>
+                                                <Label text="Titre" styleClass="field-label"/>
+                                                <TextField fx:id="adminPostTitleField" promptText="Titre du post" styleClass="compact-field"/>
+                                                <Label text="Contenu" styleClass="field-label"/>
+                                                <TextArea fx:id="adminPostContentArea" prefRowCount="5" promptText="Redigez le contenu..." wrapText="true" styleClass="compact-area"/>
+                                                <Label text="Image" styleClass="field-label"/>
+                                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                                    <children>
+                                                        <Button fx:id="chooseAdminPostImageButton" mnemonicParsing="false"
+                                                                onAction="#handleChooseAdminPostImage" styleClass="ghost-button-sm" text="Choisir une image"/>
+                                                        <Button fx:id="clearAdminPostImageButton" mnemonicParsing="false"
+                                                                onAction="#handleClearAdminPostImage" styleClass="ghost-button-sm" text="Retirer"/>
+                                                        <Label fx:id="adminPostImageNameLabel" styleClass="meta-label" text="Aucune image"/>
+                                                    </children>
+                                                </HBox>
+                                                <ImageView fx:id="adminPostImagePreview" fitHeight="150" fitWidth="280" managed="false"
+                                                           preserveRatio="true" smooth="true" visible="false"/>
+                                                <VBox fx:id="aiAssistantContainer" spacing="10"/>
+                                                <HBox spacing="10">
+                                                    <children>
+                                                        <Button mnemonicParsing="false" onAction="#handleSavePost" styleClass="primary-button-sm" text="Enregistrer le Post"/>
+                                                        <Button mnemonicParsing="false" onAction="#handlePublishAiComment" styleClass="primary-button-sm" text="💬 Publier en commentaire" style="-fx-background-color: #10b981;"/>
+                                                        <Button mnemonicParsing="false" onAction="#handleResetPost" styleClass="ghost-button-sm" text="Reinitialiser"/>
+                                                        <Button mnemonicParsing="false" onAction="#handleAnalyzePostComments" styleClass="primary-button-sm" text="📊 Analyser"/>
+                                                        <Region HBox.hgrow="ALWAYS"/>
+                                                        <Button mnemonicParsing="false" onAction="#handleDeletePost" styleClass="danger-button-sm" text="Supprimer"/>
+                                                    </children>
+                                                </HBox>
+                                            </VBox>
+                                        </ScrollPane>
+                                    </children>
+                                </VBox>
+                            </items>
+                        </SplitPane>
+                    </content>
+                </Tab>
+
+
+                <!-- Users management tab -->
+                <Tab text="Utilisateurs">
+                    <content>
+                        <SplitPane dividerPositions="0.65" styleClass="admin-split">
+                            <items>
+                                <VBox spacing="12" styleClass="table-panel">
+                                    <padding><Insets bottom="18" left="18" right="18" top="18"/></padding>
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" spacing="10">
+                                            <children>
+                                                <Label text="Utilisateurs" styleClass="section-title"/>
+                                                <Region HBox.hgrow="ALWAYS"/>
+                                                <TextField fx:id="userSearchField" promptText="🔍 Rechercher un utilisateur..." styleClass="search-field" prefWidth="250"/>
+                                            </children>
+                                        </HBox>
+                                        <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                                <TableColumn fx:id="userIdColumn" prefWidth="60" text="ID"/>
+                                                <TableColumn fx:id="userNameColumn" prefWidth="180" text="Nom"/>
+                                                <TableColumn fx:id="userEmailColumn" prefWidth="220" text="Email"/>
+                                                <TableColumn fx:id="userRoleColumn" prefWidth="100" text="Role"/>
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+                                <VBox spacing="12" styleClass="editor-panel">
+                                    <padding><Insets bottom="18" left="18" right="18" top="18"/></padding>
+                                    <children>
+                                        <Label fx:id="userEditorTitleLabel" styleClass="section-title" text="Gérer l'utilisateur"/>
+                                        <Label text="Nom" styleClass="field-label"/>
+                                        <TextField fx:id="userNomField" editable="false" styleClass="compact-field"/>
+                                        <Label text="Email" styleClass="field-label"/>
+                                        <TextField fx:id="userEmailField" editable="false" styleClass="compact-field"/>
+                                        <Label text="Rôle" styleClass="field-label"/>
+                                        <ComboBox fx:id="userRoleComboBox" maxWidth="1.7976931348623157E308" styleClass="compact-combo"/>
+                                        <Label text="Mot de passe (optionnel)" styleClass="field-label"/>
+                                        <PasswordField fx:id="userPasswordField" promptText="Nouveau mot de passe" styleClass="compact-field"/>
+                                        
+                                        <Region VBox.vgrow="ALWAYS"/>
+                                        
+                                        <HBox spacing="10">
+                                            <children>
+                                                <Button mnemonicParsing="false" onAction="#handleSaveUser" styleClass="primary-button-sm" text="Enregistrer"/>
+                                                <Button mnemonicParsing="false" onAction="#handleResetUser" styleClass="ghost-button-sm" text="Annuler"/>
+                                                <Region HBox.hgrow="ALWAYS"/>
+                                                <Button mnemonicParsing="false" onAction="#handleDeleteUser" styleClass="danger-button-sm" text="Supprimer"/>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </items>
+                        </SplitPane>
+                    </content>
+                </Tab>
+
+
+            </tabs>
+        </TabPane>
+    </center>
+</BorderPane>
