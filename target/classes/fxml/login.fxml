@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.gestioncolis.controllers.LoginController"
+      alignment="CENTER"
+      spacing="0"
+      style="-fx-background-color: #f0f2f5;"
+      prefWidth="Infinity" prefHeight="Infinity">
+
+    <!-- Carte centrale -->
+    <VBox alignment="CENTER" spacing="22"
+          style="-fx-background-color: white;
+                 -fx-border-color: #e0e0e0;
+                 -fx-border-radius: 12; -fx-background-radius: 12;
+                 -fx-padding: 48 52;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4);"
+          maxWidth="400">
+
+        <!-- Logo / titre -->
+        <Label text="📦" style="-fx-font-size: 52px;"/>
+        <VBox alignment="CENTER" spacing="4">
+            <Label text="PackTrack"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <Label text="Connectez-vous à votre espace"
+                   style="-fx-font-size: 13px; -fx-text-fill: #95a5a6;"/>
+        </VBox>
+
+        <Region prefHeight="8"/>
+
+        <!-- Email -->
+        <VBox spacing="6" maxWidth="300">
+            <Label text="Adresse e-mail"
+                   style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+            <TextField fx:id="tfEmail" promptText="exemple@mail.com"
+                       style="-fx-pref-height: 42px; -fx-pref-width: 300px;
+                              -fx-border-color: #ddd; -fx-border-radius: 6;
+                              -fx-background-radius: 6; -fx-padding: 0 12;
+                              -fx-font-size: 13px;"/>
+        </VBox>
+
+        <!-- Mot de passe -->
+        <VBox spacing="6" maxWidth="300">
+            <Label text="Mot de passe"
+                   style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+            <PasswordField fx:id="pfMotDePasse" promptText="••••••••"
+                           style="-fx-pref-height: 42px; -fx-pref-width: 300px;
+                                  -fx-border-color: #ddd; -fx-border-radius: 6;
+                                  -fx-background-radius: 6; -fx-padding: 0 12;
+                                  -fx-font-size: 13px;"/>
+        </VBox>
+
+        <!-- Message erreur -->
+        <Label fx:id="lblErreur" text=""
+               style="-fx-text-fill: #e74c3c; -fx-font-size: 12px; -fx-wrap-text: true;"
+               maxWidth="300"/>
+
+        <!-- Bouton connexion -->
+        <Button text="Se connecter" onAction="#seConnecter"
+                maxWidth="300" prefHeight="44"
+                style="-fx-background-color: #2c3e50; -fx-text-fill: white;
+                       -fx-background-radius: 8; -fx-font-size: 14px;
+                       -fx-font-weight: bold; -fx-cursor: hand;"/>
+
+        <Region prefHeight="4"/>
+
+        <Label fx:id="lblRole" text=""
+               style="-fx-font-size: 11px; -fx-text-fill: #27ae60; -fx-font-style: italic;"/>
+
+    </VBox>
+
+</VBox>

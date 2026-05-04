@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestioncolis.controllers.ChatController"
+      styleClass="chat-container"
+      spacing="0"
+      prefWidth="1280"
+      prefHeight="760">
+
+    <!-- HEADER CHAT -->
+    <HBox styleClass="chat-header" alignment="CENTER_LEFT" spacing="16" prefHeight="70">
+
+        <Button styleClass="chat-back-btn" onAction="#handleBackToHome">
+            <graphic>
+                <FontIcon iconColor="#6366f1" iconSize="18" iconLiteral="fas-arrow-left" />
+            </graphic>
+        </Button>
+
+        <StackPane styleClass="chat-header-avatar">
+            <Circle radius="22" fill="linear-gradient(to bottom right, #6366f1, #4f46e5)" />
+            <FontIcon iconColor="white" iconSize="20" iconLiteral="fas-comments" />
+        </StackPane>
+
+        <VBox spacing="4">
+            <Label text="Messages" styleClass="chat-header-title" />
+            <Label fx:id="chatStatusLabel" text="Connecté" styleClass="chat-header-status" />
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <HBox spacing="8">
+            <Button styleClass="chat-action-btn" onAction="#handleNewConversation">
+                <graphic><FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fas-plus" /></graphic>
+            </Button>
+            <Button styleClass="chat-action-btn" onAction="#handleSearchMessages">
+                <graphic><FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fas-search" /></graphic>
+            </Button>
+            <Button styleClass="chat-action-btn" onAction="#handleSettings">
+                <graphic><FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fas-cog" /></graphic>
+            </Button>
+        </HBox>
+
+    </HBox>
+
+    <HBox VBox.vgrow="ALWAYS" spacing="0">
+
+        <!-- SIDEBAR DES CONVERSATIONS -->
+        <VBox styleClass="chat-sidebar" spacing="0" prefWidth="340" minWidth="300">
+
+            <HBox styleClass="chat-search-container" alignment="CENTER_LEFT" spacing="8">
+                <FontIcon iconColor="#94a3b8" iconSize="14" iconLiteral="fas-search" />
+                <TextField fx:id="searchConversations" promptText="Rechercher une conversation..."
+                           styleClass="chat-search-input" />
+                <Region HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <ScrollPane fx:id="conversationsList" fitToWidth="true" hbarPolicy="NEVER" styleClass="chat-conversations-scroll" VBox.vgrow="ALWAYS">
+                <VBox fx:id="conversationsContainer" spacing="0" />
+            </ScrollPane>
+
+            <Separator styleClass="chat-sidebar-separator" />
+
+            <HBox fx:id="userProfileCard" styleClass="chat-user-profile" alignment="CENTER_LEFT" spacing="12">
+                <StackPane styleClass="chat-sidebar-avatar" alignment="CENTER">
+                    <FontIcon iconColor="white" iconSize="20" iconLiteral="fas-user" />
+                </StackPane>
+                <VBox spacing="2">
+                    <Label fx:id="sidebarUserName" text="Utilisateur" styleClass="chat-sidebar-name" />
+                    <Label fx:id="sidebarUserRole" text="CLIENT" styleClass="chat-sidebar-role" />
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button styleClass="chat-logout-btn" onAction="#handleLogout">
+                    <graphic><FontIcon iconColor="#ef4444" iconSize="16" iconLiteral="fas-sign-out-alt" /></graphic>
+                </Button>
+            </HBox>
+
+        </VBox>
+
+        <!-- ZONE DE CHAT -->
+        <VBox styleClass="chat-main-area" HBox.hgrow="ALWAYS" spacing="0">
+
+            <!-- En-tête conversation active -->
+            <HBox fx:id="chatActiveHeader" styleClass="chat-active-header" alignment="CENTER_LEFT" spacing="12" visible="false" managed="false">
+                <StackPane>
+                    <Circle radius="24" fill="linear-gradient(to bottom right, #6366f1, #4f46e5)" />
+                    <FontIcon iconColor="white" iconSize="18" iconLiteral="fas-user-circle" />
+                    <Circle fx:id="onlineStatus" radius="6" fill="#22c55e" StackPane.alignment="BOTTOM_RIGHT" />
+                </StackPane>
+                <VBox spacing="3" HBox.hgrow="ALWAYS">
+                    <Label fx:id="activeContactName" text="Contact" styleClass="chat-active-name" />
+                    <Label fx:id="activeContactStatus" text="En ligne" styleClass="chat-active-status" />
+                </VBox>
+                <Button styleClass="chat-delete-conv-btn" onAction="#handleDeleteConversation">
+                    <graphic><FontIcon iconColor="#ef4444" iconSize="16" iconLiteral="fas-trash-alt" /></graphic>
+                </Button>
+            </HBox>
+
+            <!-- Zone des messages -->
+            <ScrollPane fx:id="messagesScroll" fitToWidth="true" styleClass="chat-messages-scroll" VBox.vgrow="ALWAYS">
+                <VBox fx:id="messagesContainer" spacing="8" styleClass="chat-messages-container" />
+            </ScrollPane>
+
+            <!-- Zone de saisie -->
+            <VBox styleClass="chat-input-area" spacing="12">
+                <HBox spacing="12" alignment="CENTER">
+                    <TextField fx:id="messageInput" promptText="Écrivez votre message..."
+                               styleClass="chat-message-input" HBox.hgrow="ALWAYS" onAction="#handleSendMessage" />
+
+                    <Button styleClass="chat-emoji-btn" onAction="#handleOpenEmoji">
+                        <graphic><FontIcon iconColor="#f59e0b" iconSize="20" iconLiteral="fas-smile-wink" /></graphic>
+                    </Button>
+
+                    <Button styleClass="chat-send-btn" onAction="#handleSendMessage">
+                        <graphic><FontIcon iconColor="white" iconSize="16" iconLiteral="fas-paper-plane" /></graphic>
+                    </Button>
+                </HBox>
+
+                <Label fx:id="typingIndicator" text="..." styleClass="chat-typing-indicator" visible="false" managed="false" />
+            </VBox>
+
+            <!-- Message de bienvenue -->
+            <VBox fx:id="welcomeChatBox" alignment="CENTER" spacing="20" VBox.vgrow="ALWAYS">
+                <StackPane styleClass="chat-welcome-icon" alignment="CENTER">
+                    <FontIcon iconColor="#6366f1" iconSize="64" iconLiteral="fas-comments" />
+                </StackPane>
+                <Label text="TrackPack Messenger" styleClass="chat-welcome-title" />
+                <Label text="Sélectionnez une conversation pour commencer à discuter"
+                       styleClass="chat-welcome-subtitle" textAlignment="CENTER" wrapText="true" />
+            </VBox>
+
+            <!-- Panneau nouvelle conversation -->
+            <VBox fx:id="newChatPanel" spacing="16" visible="false" managed="false" VBox.vgrow="ALWAYS" styleClass="new-chat-panel">
+                <VBox spacing="8">
+                    <Label text="Nouvelle conversation" styleClass="new-chat-title" />
+                    <Label text="Rechercher un utilisateur par nom ou email" styleClass="new-chat-subtitle" />
+                </VBox>
+                <HBox styleClass="new-chat-search" spacing="8" alignment="CENTER_LEFT">
+                    <FontIcon iconColor="#94a3b8" iconSize="14" iconLiteral="fas-search" />
+                    <TextField fx:id="searchUserField" promptText="Nom, prénom ou email..."
+                               styleClass="new-chat-input" HBox.hgrow="ALWAYS" />
+                </HBox>
+                <ScrollPane fitToWidth="true" styleClass="search-results-scroll" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="searchResultsContainer" spacing="0" />
+                </ScrollPane>
+            </VBox>
+
+        </VBox>
+
+    </HBox>
+
+</VBox>

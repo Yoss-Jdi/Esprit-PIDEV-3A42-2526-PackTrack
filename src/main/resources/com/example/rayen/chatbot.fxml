@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/17.0.2-ea"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.gestioncolis.controllers.chatbot"
+           styleClass="chat-window-root">
+    <children>
+        <VBox prefHeight="620.0" prefWidth="330.0" styleClass="chat-window-shell">
+            <VBox spacing="10.0" styleClass="chat-header">
+                <padding>
+                    <Insets bottom="18.0" left="20.0" right="20.0" top="18.0" />
+                </padding>
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <StackPane minHeight="44.0" minWidth="44.0" prefHeight="44.0" prefWidth="44.0" styleClass="chat-avatar">
+                        <Label text="AI" styleClass="chat-avatar-text" />
+                    </StackPane>
+                    <VBox spacing="2.0">
+                        <Label text="Chat with" styleClass="chat-header-caption" />
+                        <Label text="Rayen Assistant" styleClass="chat-header-title" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleClose" styleClass="chat-header-close" text="x" />
+                </HBox>
+                <Label fx:id="assistantStatusLabel" styleClass="chat-header-status" text="Assistant local Ollama" />
+            </VBox>
+
+            <VBox spacing="14.0" styleClass="chat-body" VBox.vgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="14.0" left="18.0" right="18.0" top="16.0" />
+                </padding>
+                <ScrollPane fx:id="messagesScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="chat-scroll" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="messagesBox" fillWidth="true" spacing="12.0" styleClass="chat-messages">
+                            <padding>
+                                <Insets bottom="4.0" left="2.0" right="2.0" top="4.0" />
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+                <FlowPane fx:id="quickActionsPane" hgap="10.0" prefWrapLength="250.0" vgap="10.0">
+                    <Button onAction="#handleQuickVehicule" styleClass="chat-quick-button" text="Ajouter vehicule" />
+                    <Button onAction="#handleQuickTechnicien" styleClass="chat-quick-button" text="Affecter technicien" />
+                    <Button onAction="#handleQuickStats" styleClass="chat-quick-button" text="Lire les stats" />
+                    <Button onAction="#handleQuickDocuments" styleClass="chat-quick-button" text="Email / PDF" />
+                </FlowPane>
+            </VBox>
+
+            <VBox spacing="10.0" styleClass="chat-footer">
+                <padding>
+                    <Insets bottom="18.0" left="18.0" right="18.0" top="2.0" />
+                </padding>
+                <Separator />
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <TextField fx:id="messageField" onAction="#handleSend" promptText="Enter your message..." styleClass="chat-input" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="sendButton" onAction="#handleSend" styleClass="chat-send-button" text=">" />
+                </HBox>
+                <HBox alignment="CENTER" spacing="4.0">
+                    <Label styleClass="chat-powered-label" text="POWERED BY" />
+                    <Label styleClass="chat-powered-brand" text="OLLAMA" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </children>
+</StackPane>
