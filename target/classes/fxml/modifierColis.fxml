@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.gestioncolis.controllers.ModifierColisController"
+      spacing="20"
+      maxWidth="Infinity" maxHeight="Infinity"
+      alignment="TOP_CENTER"
+      style="-fx-background-color: #f4f4f4; -fx-padding: 32 60;">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="14" maxWidth="860">
+        <Button text="← Retour" onAction="#retourListe"
+                style="-fx-background-color: transparent; -fx-border-color: #ccc;
+                       -fx-border-radius: 6; -fx-background-radius: 6;
+                       -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 8 16;"/>
+        <Label fx:id="lblTitre" text="Modifier le colis"
+               style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    </HBox>
+
+    <!-- Formulaire centré et élargi -->
+    <VBox spacing="16"
+          maxWidth="860"
+          style="-fx-background-color: white; -fx-border-color: #ddd;
+                 -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 36;">
+
+        <!-- Statut en lecture seule -->
+        <Label fx:id="lblStatutInfo" text=""
+               style="-fx-font-size: 13px; -fx-text-fill: #2980b9;
+                      -fx-background-color: #eaf4fb; -fx-padding: 8 14;
+                      -fx-border-radius: 6; -fx-background-radius: 6;" maxWidth="Infinity"/>
+
+        <!-- Description + Articles -->
+        <HBox spacing="16">
+
+            <!-- Description -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Description" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <TextField fx:id="tfDescription" promptText="Min. 5 caractères"
+                           style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
+                                  -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                <Label fx:id="lblErrDescription" text=""
+                       visible="false" managed="false"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+            </VBox>
+
+            <!-- Articles -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Articles" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <TextField fx:id="tfArticles" promptText="Liste des articles"
+                           style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
+                                  -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                <!-- Pas d'erreur pour articles (facultatif) -->
+            </VBox>
+
+        </HBox>
+
+        <!-- Adresses avec boutons carte -->
+        <HBox spacing="16">
+
+            <!-- Adresse de départ -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="📍 Adresse de départ"
+                       style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <HBox spacing="8">
+                    <TextField fx:id="tfDepart"
+                               HBox.hgrow="ALWAYS"
+                               promptText="Ville / adresse de départ"
+                               style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
+                                      -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                    <Button fx:id="btnMapDepart" text="🗺️"
+                            style="-fx-pref-height: 40px; -fx-pref-width: 44px;
+                                   -fx-background-color: #2980b9; -fx-text-fill: white;
+                                   -fx-border-radius: 6; -fx-background-radius: 6;
+                                   -fx-font-size: 16px; -fx-cursor: hand;">
+                        <tooltip><Tooltip text="Rechercher une adresse"/></tooltip>
+                    </Button>
+                </HBox>
+                <Label fx:id="lblErrDepart" text=""
+                       visible="false" managed="false"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+            </VBox>
+
+            <!-- Adresse de destination -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="🏁 Adresse de destination"
+                       style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <HBox spacing="8">
+                    <TextField fx:id="tfDestination"
+                               HBox.hgrow="ALWAYS"
+                               promptText="Ville / adresse de destination"
+                               style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
+                                      -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                    <Button fx:id="btnMapDestination" text="🗺️"
+                            style="-fx-pref-height: 40px; -fx-pref-width: 44px;
+                                   -fx-background-color: #2980b9; -fx-text-fill: white;
+                                   -fx-border-radius: 6; -fx-background-radius: 6;
+                                   -fx-font-size: 16px; -fx-cursor: hand;">
+                        <tooltip><Tooltip text="Rechercher une adresse"/></tooltip>
+                    </Button>
+                </HBox>
+                <Label fx:id="lblErrDestination" text=""
+                       visible="false" managed="false"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+            </VBox>
+
+        </HBox>
+
+        <!-- Poids & Dimensions -->
+        <HBox spacing="16">
+
+            <!-- Poids -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="⚖️ Poids (kg)" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <TextField fx:id="tfPoids" promptText="Ex : 2.5"
+                           style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
+                                  -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                <Label fx:id="lblErrPoids" text=""
+                       visible="false" managed="false"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+            </VBox>
+
+            <!-- Dimensions -->
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="📐 Dimensions" style="-fx-font-size: 13px; -fx-text-fill: #555; -fx-font-weight: bold;"/>
+                <TextField fx:id="tfDimensions" promptText="Ex : 30x20x10 cm"
+                           style="-fx-pref-height: 40px; -fx-border-color: #ddd; -fx-font-size: 13px;
+                                  -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;"/>
+                <!-- Pas d'erreur pour dimensions (facultatif) -->
+            </VBox>
+
+        </HBox>
+
+        <!-- Note statut -->
+        <Label text="ℹ️ Le statut du colis est géré automatiquement par le système."
+               style="-fx-font-size: 12px; -fx-text-fill: #999; -fx-font-style: italic;"/>
+
+        <Separator/>
+
+        <!-- Erreur système globale -->
+        <Label fx:id="lblErrGlobal" text=""
+               visible="false" managed="false"
+               style="-fx-text-fill: #e74c3c; -fx-font-size: 13px; -fx-wrap-text: true;"
+               maxWidth="Infinity"/>
+
+        <!-- Boutons -->
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <Button text="💾  Enregistrer les modifications" onAction="#enregistrer"
+                    style="-fx-background-color: #2c3e50; -fx-text-fill: white;
+                           -fx-background-radius: 8; -fx-font-size: 14px; -fx-font-weight: bold;
+                           -fx-cursor: hand; -fx-padding: 12 32;"/>
+            <Button text="Annuler" onAction="#retourListe"
+                    style="-fx-background-color: transparent; -fx-border-color: #ccc;
+                           -fx-border-radius: 8; -fx-background-radius: 8;
+                           -fx-font-size: 13px; -fx-cursor: hand; -fx-padding: 12 24;"/>
+        </HBox>
+    </VBox>
+
+</VBox>

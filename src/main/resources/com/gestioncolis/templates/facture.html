@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Facture ${numero}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; font-size: 12px; color: #333; line-height: 1.6; padding: 40px; }
+        .header { border-bottom: 3px solid #667eea; padding-bottom: 20px; margin-bottom: 30px; }
+        .header h1 { color: #667eea; font-size: 28px; margin-bottom: 5px; }
+        .header .subtitle { color: #666; font-size: 14px; }
+        .company-info { text-align: right; margin-bottom: 30px; }
+        .company-info h2 { font-size: 18px; color: #333; margin-bottom: 5px; }
+        .company-info p { font-size: 11px; color: #666; margin: 2px 0; }
+        .invoice-details { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 30px; }
+        .invoice-details table { width: 100%; border-collapse: collapse; }
+        .invoice-details td { padding: 8px; border: none; }
+        .invoice-details .label { font-weight: bold; color: #667eea; width: 40%; }
+        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .items-table thead { background: #667eea; color: white; }
+        .items-table th { padding: 12px; text-align: left; font-weight: bold; font-size: 12px; }
+        .items-table td { padding: 12px; border-bottom: 1px solid #e0e0e0; }
+        .text-right { text-align: right; }
+        .totals { width: 40%; margin-left: auto; border-collapse: collapse; }
+        .totals td { padding: 10px; border-bottom: 1px solid #e0e0e0; }
+        .totals .label { font-weight: bold; text-align: left; }
+        .totals .amount { text-align: right; font-weight: bold; }
+        .total-row { background: #667eea; color: white; font-size: 16px; }
+        .total-row td { border-bottom: none; }
+        .status-badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .status-payee { background: #d1e7dd; color: #0f5132; }
+        .status-en-attente { background: #fff3cd; color: #664d03; }
+        .status-annulee { background: #f8d7da; color: #842029; }
+        .qr-section { margin-top: 40px; border-top: 2px solid #667eea; padding-top: 20px; display: table; width: 100%; }
+        .qr-left { display: table-cell; vertical-align: middle; width: 120px; }
+        .qr-left img { width: 100px; height: 100px; border: 2px solid #667eea; border-radius: 8px; padding: 4px; }
+        .qr-right { display: table-cell; vertical-align: middle; padding-left: 20px; }
+        .qr-right h3 { color: #667eea; font-size: 13px; margin-bottom: 6px; }
+        .qr-right p { font-size: 10px; color: #555; margin: 2px 0; }
+        .qr-right .url { font-size: 9px; color: #667eea; word-break: break-all; margin-top: 6px; }
+        .verified-badge { display: inline-block; background: #d1e7dd; color: #0f5132; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-top: 6px; }
+        .signature-section {
+            margin-top: 40px;
+            border-top: 2px dashed #667eea;
+            padding-top: 24px;
+            display: table;
+            width: 100%;
+
+            page-break-before: always;
+            page-break-inside: avoid;
+        }
+        .sig-block-left { display: table-cell; width: 48%; vertical-align: top; }
+        .sig-block-right { display: table-cell; width: 48%; vertical-align: top; text-align: right; }
+        .sig-spacer { display: table-cell; width: 4%; }
+        .sig-label { font-size: 10px; font-weight: bold; color: #667eea; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .sig-image-box { border: 1.5px solid #667eea; border-radius: 8px; width: 240px; height: 90px; background: #f8f9ff; overflow: hidden; }
+        .sig-image-box img { width: 240px; height: 90px; }
+        .sig-name-line { margin-top: 8px; border-top: 1px solid #999; width: 240px; padding-top: 4px; font-size: 10px; color: #555; }
+        .sig-certified { margin-top: 6px; display: inline-block; background: #eef2ff; border: 1px solid #667eea; color: #667eea; padding: 3px 10px; border-radius: 10px; font-size: 9px; font-weight: bold; }
+        .stamp-circle { width: 90px; height: 90px; border: 2.5px solid #667eea; border-radius: 45px; display: inline-block; text-align: center; padding-top: 18px; background: #f8f9ff; }
+        .stamp-inner { font-size: 9px; font-weight: bold; color: #667eea; line-height: 1.5; text-transform: uppercase; }
+        .legal-notice { margin-top: 20px; background: #f8f9fa; border-left: 3px solid #667eea; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 9px; color: #666; line-height: 1.6; }
+        .footer { margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0; text-align: center; font-size: 10px; color: #666; }
+        .footer p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>FACTURE</h1>
+    <p class="subtitle">${numero}</p>
+</div>
+
+<div class="company-info">
+    <h2>TrackPack</h2>
+    <p>Service de livraison professionnel</p>
+    <p>Adresse : 123 Rue de la Livraison, Tunis</p>
+    <p>Tel : +216 XX XXX XXX</p>
+    <p>Email : contact@trackpack.com</p>
+</div>
+
+<div class="invoice-details">
+    <table>
+        <tr>
+            <td class="label">N&#176; Facture :</td>
+            <td>${numero}</td>
+            <td class="label">Date d'emission :</td>
+            <td>${date}</td>
+        </tr>
+        <tr>
+            <td class="label">Statut :</td>
+            <td><span class="status-badge status-${statut}">${statut}</span></td>
+            <td class="label">ID Livraison :</td>
+            <td>${livraison}</td>
+        </tr>
+    </table>
+</div>
+
+<table class="items-table">
+    <thead>
+    <tr>
+        <th style="width: 60%;">Description</th>
+        <th style="width: 20%; text-align: right;">Qte</th>
+        <th style="width: 20%; text-align: right;">Montant</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <strong>Service de livraison - Livraison #${livraison}</strong><br/>
+            <small style="color: #666;">Livraison standard</small>
+        </td>
+        <td class="text-right">1</td>
+        <td class="text-right">${ht} DT</td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="totals">
+    <tr>
+        <td class="label">Sous-total HT :</td>
+        <td class="amount">${ht} DT</td>
+    </tr>
+    <tr>
+        <td class="label">TVA (${tva}%) :</td>
+        <td class="amount">${tva_montant} DT</td>
+    </tr>
+    <tr class="total-row">
+        <td class="label">TOTAL TTC :</td>
+        <td class="amount">${ttc} DT</td>
+    </tr>
+</table>
+
+<div class="qr-section">
+    <div class="qr-left">
+        <img src="${qr_code_path}" alt="QR Verification"/>
+    </div>
+    <div class="qr-right">
+        <h3>Verification d'authenticite</h3>
+        <p>Scannez ce QR code pour confirmer que cette facture est officielle.</p>
+        <span class="verified-badge">Document Certifie TrackPack</span>
+        <p class="url">${verification_url}</p>
+    </div>
+</div>
+
+<!-- SIGNATURE ELECTRONIQUE -->
+<div class="signature-section">
+    <div class="sig-block-left">
+        <p class="sig-label">Signature Electronique du Client</p>
+        <div class="sig-image-box">
+            <img src="${signature_path}" alt="Signature electronique"/>
+        </div>
+        <p class="sig-name-line">Client / Destinataire — Livraison #${livraison}</p>
+        <span class="sig-certified">Signature electronique validee</span>
+    </div>
+    <div class="sig-spacer"></div>
+    <div class="sig-block-right">
+        <p class="sig-label">Cachet TrackPack</p>
+        <div class="stamp-circle">
+            <div class="stamp-inner">Track<br/>Pack<br/>2026</div>
+        </div>
+        <p style="font-size:10px; color:#555; margin-top:8px;">Direction Generale</p>
+        <p style="font-size:10px; color:#888; font-style:italic;">TrackPack — Service Livraison</p>
+        <p style="font-size:10px; color:#555; margin-top:6px;">Date d'emission : <strong>${date}</strong></p>
+    </div>
+</div>
+
+<div class="legal-notice">
+    <strong>Mentions legales :</strong> La signature electronique apposee ci-dessus a valeur contractuelle.
+    Tout paiement doit etre effectue dans un delai de 30 jours. En cas de litige, le tribunal de Tunis sera saisi.
+</div>
+
+<div class="footer">
+    <p><strong>TrackPack</strong> - Service de livraison professionnel</p>
+    <p>Merci de votre confiance !</p>
+    <p style="margin-top: 10px; font-size: 9px; color: #aaa;">
+        Facture N&#176; ${numero} — generee le ${date} — contact@trackpack.com
+    </p>
+</div>
+
+</body>
+</html>

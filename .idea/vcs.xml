@@ -2,5 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Esprit-PIDEV-3A42-2526-PackTrack" vcs="Git" />
   </component>
 </project>

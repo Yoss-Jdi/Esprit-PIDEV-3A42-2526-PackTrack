@@ -1,136 +1,157 @@
 package com.gestioncolis.services;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.InputStream;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.util.Properties;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 public class AiService {
 
-    private final String apiKey;
-    private final HttpClient httpClient;
-    private static final String GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+    private static final String API_KEY =
+            System.getProperty(
+                    "gemini.api.key",
+                    "AIzaSyC4F69CBVOPuSfESqnIuJx7B1f_P45uwZM"
+            );
 
-    public AiService() {
-        this.apiKey = loadApiKey();
-        this.httpClient = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(15))
-                .build();
-        System.out.println("[AiService-GEMINI] Initialisé avec Gemini (gemini-2.5-flash)");
-    }
+    // Liste de modèles en fallback automatique
+    private static final String[] MODELES = {
+            "gemini-2.5-flash",       // Modèle actuel recommandé 2026
+            "gemini-2.5-flash-lite",  // Fallback léger
+            "gemini-2.0-flash"        // Fallback stable
+    };
 
-    private String loadApiKey() {
-        Properties props = new Properties();
-        try (InputStream is = getClass().getClassLoader()
-                .getResourceAsStream("forum.properties")) {
-            if (is != null) {
-                props.load(is);
+    public String genererDescriptionRecompense(String nom, int points) {
+
+        String prompt =
+                "Tu es un assistant pour une application de livraison TrackPack. "
+                        + "Génère une description courte, professionnelle et attractive (2-3 phrases maximum) "
+                        + "pour cette récompense : '" + nom + "' "
+                        + "qui coûte " + points + " points de fidélité. "
+                        + "Réponds uniquement avec la description, sans introduction ni guillemets.";
+
+        // Essaie chaque modèle jusqu'à ce qu'un fonctionne
+        for (String modele : MODELES) {
+            String result = appelerAPI(modele, prompt);
+
+            if (result != null) {
+                return result;
             }
-        } catch (Exception e) {
-            System.out.println("[AiService-GEMINI] Erreur chargement clé: " + e.getMessage());
         }
-        return props.getProperty("gemini.api.key", "");
+
+        return "Quota API dépassé. Réessayez dans quelques minutes.";
     }
 
-    public String summarizePost(String content) {
+    private String appelerAPI(String modele, String prompt) {
+
         try {
-            if (content == null || content.isBlank()) {
-                return "Contenu vide.";
-            }
-            if (content.length() < 150) {
-                return "Le post est deja court.";
+
+            // Correct — v1beta supporte les nouveaux modèles
+            String apiUrl =
+                    "https://generativelanguage.googleapis.com/v1beta/models/"
+                            + modele
+                            + ":generateContent?key="
+                            + API_KEY;
+
+            String requestBody =
+                    "{"
+                            + "\"contents\": [{"
+                            + "\"parts\": [{\"text\": \""
+                            + prompt.replace("\\", "\\\\")
+                            .replace("\"", "\\\"")
+                            .replace("\n", "\\n")
+                            .replace("\r", "\\r")
+                            + "\"}]"
+                            + "}]"
+                            + "}";
+
+            URL url = new URL(apiUrl);
+
+            HttpURLConnection conn =
+                    (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty(
+                    "Content-Type",
+                    "application/json; charset=UTF-8"
+            );
+
+            conn.setDoOutput(true);
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(15000);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(requestBody.getBytes(StandardCharsets.UTF_8));
             }
 
-            String systemPrompt = "Tu es un assistant qui resume des posts de forum en 2-3 phrases maximum en francais.";
-            String prompt = systemPrompt + "\n\nTexte à résumer :\n" + content;
+            int status = conn.getResponseCode();
 
-            String response = callGeminiApi(prompt);
-            System.out.println("[AiService-GEMINI] Résumé généré");
-            return response;
+            InputStream is =
+                    (status == 200)
+                            ? conn.getInputStream()
+                            : conn.getErrorStream();
+
+            Scanner scanner =
+                    new Scanner(is, StandardCharsets.UTF_8);
+
+            StringBuilder response = new StringBuilder();
+
+            while (scanner.hasNextLine()) {
+                response.append(scanner.nextLine());
+            }
+
+            scanner.close();
+
+            // Si quota dépassé (429) → essaie le modèle suivant
+            if (status == 429) {
+
+                System.out.println(
+                        "Quota dépassé pour : "
+                                + modele
+                                + " → essai suivant..."
+                );
+
+                return null;
+            }
+
+            if (status != 200) {
+
+                System.err.println(
+                        "Erreur API ("
+                                + status
+                                + ") modèle "
+                                + modele
+                                + " : "
+                                + response
+                );
+
+                return null;
+            }
+
+            // Extraction du texte
+            String json = response.toString();
+
+            int start = json.indexOf("\"text\": \"") + 9;
+            int end = json.indexOf("\"", start);
+
+            if (start < 9 || end < 0) {
+
+                System.err.println("Réponse inattendue : " + json);
+
+                return null;
+            }
+
+            return json.substring(start, end)
+                    .replace("\\n", "\n")
+                    .replace("\\\"", "\"")
+                    .replace("\\\\", "\\");
+
         } catch (Exception e) {
-            System.out.println("[AiService-GEMINI] Erreur résumé: " + e.getMessage());
-            return "Erreur lors du résumé : " + e.getMessage();
-        }
-    }
 
-    public String generateAdminResponse(String content) {
-        try {
-            if (content == null || content.isBlank()) {
-                return "Contenu vide.";
-            }
+            e.printStackTrace();
 
-            String systemPrompt = "Tu es un administrateur professionnel d un forum de livraison de colis en Tunisie. Reponds de facon professionnelle et bienveillante en francais avec parfois une touche de dialecte tunisien.";
-            String prompt = systemPrompt + "\n\nPost de l'utilisateur :\n" + content;
-
-            String response = callGeminiApi(prompt);
-            System.out.println("[AiService-GEMINI] Réponse générée");
-            return response;
-        } catch (Exception e) {
-            System.out.println("[AiService-GEMINI] Erreur génération réponse: " + e.getMessage());
-            return "Erreur lors de la génération de réponse : " + e.getMessage();
-        }
-    }
-
-    private String callGeminiApi(String prompt) throws Exception {
-        if (apiKey == null || apiKey.isBlank()) {
-            throw new RuntimeException("Gemini API key non configurée dans forum.properties");
-        }
-
-        JSONObject partsObj = new JSONObject();
-        partsObj.put("text", prompt);
-
-        JSONArray partsArray = new JSONArray();
-        partsArray.put(partsObj);
-
-        JSONObject contentObj = new JSONObject();
-        contentObj.put("parts", partsArray);
-
-        JSONArray contentsArray = new JSONArray();
-        contentsArray.put(contentObj);
-
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("contents", contentsArray);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(GEMINI_ENDPOINT + "?key=" + apiKey))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
-                .timeout(Duration.ofSeconds(15))
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        System.out.println("[AiService-GEMINI] Status HTTP: " + response.statusCode());
-
-        if (response.statusCode() != 200) {
-            throw new RuntimeException("Gemini API error " + response.statusCode() + " : " + response.body());
-        }
-
-        return parseGeminiResponse(response.body());
-    }
-
-    private String parseGeminiResponse(String jsonResponse) {
-        try {
-            JSONObject root = new JSONObject(jsonResponse);
-            JSONArray candidates = root.getJSONArray("candidates");
-            if (candidates.length() > 0) {
-                JSONObject firstCandidate = candidates.getJSONObject(0);
-                JSONObject content = firstCandidate.getJSONObject("content");
-                JSONArray parts = content.getJSONArray("parts");
-                if (parts.length() > 0) {
-                    return parts.getJSONObject(0).getString("text").trim();
-                }
-            }
-            return "Pas de réponse pertinente trouvée.";
-        } catch (Exception e) {
-            System.out.println("[AiService-GEMINI] Erreur parsing JSON: " + e.getMessage());
-            return "Erreur lors de la lecture de la réponse de l'IA.";
+            return null;
         }
     }
 }

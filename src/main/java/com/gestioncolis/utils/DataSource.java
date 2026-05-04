@@ -1,87 +1,175 @@
 package com.gestioncolis.utils;
 
-import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Properties;
+import java.io.InputStream;
 
-public class DataSource {
+public final class DataSource {
 
-    private final String URL;
-    private final String USER;
-    private final String PWD;
+    // ================= CONFIG =================
+    private final String url;
+    private final String user;
+    private final String password;
 
     private Connection cnx;
-
     private static DataSource instance;
 
+    // ================= CONSTRUCTOR =================
     private DataSource() {
+
+        // priorité : system env > properties > default
         Properties props = new Properties();
 
         try (InputStream is = getClass().getClassLoader()
                 .getResourceAsStream("forum.properties")) {
-
-            if (is != null) {
-                props.load(is);
-            }
-
+            if (is != null) props.load(is);
         } catch (Exception e) {
             System.out.println("Impossible de charger forum.properties: " + e.getMessage());
         }
 
-        // ✅ UNIFICATION BASE DE DONNÉES
-        URL = props.getProperty("db.url",
-                "jdbc:mysql://localhost:3306/packtrackdb");
+        this.url = getValue("DB_URL",
+                props.getProperty("db.url", "jdbc:mysql://localhost:3306/trackpackdb"));
 
-        USER = props.getProperty("db.user", "root");
-        PWD = props.getProperty("db.password", "");
+        this.user = getValue("DB_USER",
+                props.getProperty("db.user", "root"));
 
-        try {
-            cnx = DriverManager.getConnection(URL, USER, PWD);
-            System.out.println("Connected successfully !");
-        } catch (SQLException e) {
-            System.out.println("Erreur connexion DB: " + e.getMessage());
-        }
+        this.password = getValue("DB_PASSWORD",
+                props.getProperty("db.password", ""));
+
+        ensureDatabaseExists();
+        connect();
+        ensureTables();
     }
 
-    public static DataSource getInstance() {
+    // ================= SINGLETON =================
+    public static synchronized DataSource getInstance() {
         if (instance == null) {
             instance = new DataSource();
         }
         return instance;
     }
 
+    // ================= CONNECTION =================
     public Connection getCnx() {
-        return this.cnx;
+        try {
+            if (cnx == null || cnx.isClosed()) {
+                connect();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Connexion DB invalide", e);
+        }
+        return cnx;
     }
 
-    // ================= UTILITIES =================
-
-    public LocalDateTime toLocalDateTime(ResultSet rs, String column) throws SQLException {
-        Timestamp ts = rs.getTimestamp(column);
-        return ts == null ? null : ts.toLocalDateTime();
-    }
-
-    public long extractGeneratedId(PreparedStatement stmt) throws SQLException {
-        try (ResultSet keys = stmt.getGeneratedKeys()) {
-            if (keys.next()) return keys.getLong(1);
-            throw new RuntimeException("Impossible de récupérer la clé générée.");
+    public void closeConnection() {
+        try {
+            if (cnx != null && !cnx.isClosed()) {
+                cnx.close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur fermeture DB", e);
         }
     }
 
-    public long countBySql(String sql, Object... params) {
-        try (PreparedStatement stmt = cnx.prepareStatement(sql)) {
+    // ================= CORE DB =================
+    private void connect() {
+        try {
+            cnx = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected successfully !");
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur connexion DB: " + e.getMessage(), e);
+        }
+    }
+
+    private void ensureDatabaseExists() {
+        String dbName = extractDbName(url);
+        String serverUrl = extractServerUrl(url);
+
+        try (Connection conn = DriverManager.getConnection(serverUrl, user, password);
+             Statement st = conn.createStatement()) {
+
+            st.executeUpdate(
+                    "CREATE DATABASE IF NOT EXISTS `" + dbName + "`"
+            );
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Impossible de creer la base", e);
+        }
+    }
+
+    private void ensureTables() {
+        try (Statement st = getCnx().createStatement()) {
+
+            st.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS technicien (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    nom VARCHAR(120),
+                    prenom VARCHAR(120),
+                    specialite VARCHAR(120),
+                    telephone VARCHAR(50),
+                    email VARCHAR(150)
+                )
+            """);
+
+            st.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS vehicule (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    matricule VARCHAR(120),
+                    marque VARCHAR(120),
+                    modele VARCHAR(120),
+                    couleur VARCHAR(80),
+                    prix_location DOUBLE,
+                    disponible BOOLEAN,
+                    technicien_id INT NULL
+                )
+            """);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur creation tables", e);
+        }
+    }
+
+    // ================= UTILITIES =================
+    public LocalDateTime toLocalDateTime(ResultSet rs, String column) throws SQLException {
+        Timestamp ts = rs.getTimestamp(column);
+        return ts != null ? ts.toLocalDateTime() : null;
+    }
+
+    public long extractGeneratedId(PreparedStatement ps) throws SQLException {
+        try (ResultSet rs = ps.getGeneratedKeys()) {
+            if (rs.next()) return rs.getLong(1);
+        }
+        throw new RuntimeException("No generated key");
+    }
+
+    public long count(String sql, Object... params) {
+        try (PreparedStatement ps = getCnx().prepareStatement(sql)) {
 
             for (int i = 0; i < params.length; i++) {
-                stmt.setObject(i + 1, params[i]);
+                ps.setObject(i + 1, params[i]);
             }
 
-            try (ResultSet rs = stmt.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? rs.getLong(1) : 0;
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur SQL lors du comptage.", e);
+            throw new RuntimeException("SQL error count", e);
         }
+    }
+
+    // ================= HELPERS =================
+    private String getValue(String key, String def) {
+        String v = System.getenv(key);
+        return (v == null || v.isBlank()) ? def : v;
+    }
+
+    private String extractDbName(String url) {
+        return url.substring(url.lastIndexOf('/') + 1).split("\\?")[0];
+    }
+
+    private String extractServerUrl(String url) {
+        return url.substring(0, url.lastIndexOf('/') + 1);
     }
 }

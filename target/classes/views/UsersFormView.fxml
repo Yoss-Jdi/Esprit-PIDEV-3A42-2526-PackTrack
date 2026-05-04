@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+
+<!--
+    UsersFormView.fxml - Version Premium moderne avec animations
+    Formulaire d'ajout / modification avec design épuré
+    Controller : UsersFormController
+-->
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gestioncolis.controllers.UsersFormController"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            styleClass="content-scroll">
+
+    <VBox styleClass="form-view-root-modern" spacing="0" alignment="CENTER">
+
+        <!-- Carte principale du formulaire -->
+        <VBox styleClass="form-card-premium" maxWidth="700" minWidth="600">
+
+            <!-- Header avec icône -->
+            <HBox styleClass="form-header-premium" alignment="CENTER_LEFT" spacing="16">
+                <StackPane>
+                    <Circle radius="28" styleClass="form-icon-circle" />
+                    <Text text="✏️" styleClass="form-icon-symbol" />
+                </StackPane>
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <Label fx:id="formTitle" text="Ajouter un utilisateur"
+                           styleClass="form-title-modern" />
+                    <Label fx:id="formSubtitle" text="Remplissez les informations du nouveau compte"
+                           styleClass="form-subtitle-modern" />
+                </VBox>
+            </HBox>
+
+            <!-- Formulaire -->
+            <GridPane styleClass="form-grid-modern" hgap="24" vgap="20">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                </columnConstraints>
+
+                <!-- Prénom -->
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Prénom" styleClass="form-field-label">
+                        <graphic>
+                            <Text text="👤" style="-fx-font-size: 12px;" />
+                        </graphic>
+                    </Label>
+                    <TextField fx:id="fPrenom" promptText="Jean" styleClass="form-field-input" />
+                    <Label fx:id="errPrenom" styleClass="form-error-modern" visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Nom -->
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Nom" styleClass="form-field-label">
+                        <graphic>
+                            <Text text="👤" style="-fx-font-size: 12px;" />
+                        </graphic>
+                    </Label>
+                    <TextField fx:id="fNom" promptText="Dupont" styleClass="form-field-input" />
+                    <Label fx:id="errNom" styleClass="form-error-modern" visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Email -->
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Adresse e-mail" styleClass="form-field-label">
+                        <graphic>
+                            <Text text="📧" style="-fx-font-size: 12px;" />
+                        </graphic>
+                    </Label>
+                    <TextField fx:id="fEmail" promptText="jean.dupont@mail.com" styleClass="form-field-input" />
+                    <Label fx:id="errEmail" styleClass="form-error-modern" visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Téléphone -->
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Téléphone" styleClass="form-field-label">
+                        <graphic>
+                            <Text text="📱" style="-fx-font-size: 12px;" />
+                        </graphic>
+                    </Label>
+                    <TextField fx:id="fTel" promptText="+216 XX XXX XXX" styleClass="form-field-input" />
+                    <Label fx:id="errTel" styleClass="form-error-modern" visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Rôle -->
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label text="Rôle" styleClass="form-field-label">
+                        <graphic>
+                            <Text text="🎭" style="-fx-font-size: 12px;" />
+                        </graphic>
+                    </Label>
+                    <ComboBox fx:id="fRole" promptText="Sélectionner un rôle"
+                              styleClass="form-field-combo" maxWidth="Infinity"/>
+                    <Label fx:id="errRole" styleClass="form-error-modern" visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Photo de profil -->
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label text="Photo de profil" styleClass="form-field-label">
+                        <graphic>
+                            <Text text="📸" style="-fx-font-size: 12px;" />
+                        </graphic>
+                    </Label>
+                    <VBox spacing="12" styleClass="photo-section-premium">
+                        <HBox spacing="16" alignment="CENTER_LEFT">
+                            <!-- Aperçu circulaire -->
+                            <StackPane fx:id="photoPreviewCircle"
+                                       prefWidth="64" prefHeight="64"
+                                       styleClass="photo-preview-circle-modern">
+                                <Label fx:id="photoPlaceholderIcon" text="📷"
+                                       styleClass="photo-placeholder-icon-modern"/>
+                                <ImageView fx:id="photoPreviewImg"
+                                           fitWidth="64" fitHeight="64"
+                                           preserveRatio="false"
+                                           visible="false" managed="false"/>
+                            </StackPane>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Button fx:id="photoBtn"
+                                        text="Choisir une photo"
+                                        styleClass="btn-cancel-modern"
+                                        maxWidth="Infinity"
+                                        onAction="#handlePhotoPick"/>
+                                <Label fx:id="photoLabel"
+                                       text="Aucun fichier sélectionné"
+                                       styleClass="photo-label-modern"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Mot de passe -->
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <Label fx:id="passLabel" text="Mot de passe" styleClass="form-field-label">
+                        <graphic>
+                            <Text text="🔒" style="-fx-font-size: 12px;" />
+                        </graphic>
+                    </Label>
+                    <PasswordField fx:id="fPassword" promptText="Minimum 6 caractères"
+                                   styleClass="form-field-input"/>
+                    <Label fx:id="errPass" styleClass="form-error-modern" visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Confirmer -->
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <Label fx:id="confirmLabel" text="Confirmer le mot de passe" styleClass="form-field-label">
+                        <graphic>
+                            <Text text="✓" style="-fx-font-size: 12px;" />
+                        </graphic>
+                    </Label>
+                    <PasswordField fx:id="fConfirm" promptText="Répéter le mot de passe"
+                                   styleClass="form-field-input"/>
+                    <Label fx:id="errConfirm" styleClass="form-error-modern" visible="false" managed="false"/>
+                </VBox>
+
+            </GridPane>
+
+            <!-- Global error -->
+            <Label fx:id="globalError" styleClass="form-global-error-modern"
+                   wrapText="true" visible="false" managed="false"
+                   style="-fx-padding: 16 14; -fx-margin-top: 16;"/>
+
+            <!-- Actions -->
+            <HBox spacing="16" alignment="CENTER_RIGHT" styleClass="form-actions-premium">
+                <Button fx:id="btnBack" text="Annuler" styleClass="btn-cancel-modern" onAction="#handleBack"/>
+                <Button fx:id="btnSave" text="Enregistrer" styleClass="btn-save-modern" onAction="#handleSave"/>
+            </HBox>
+
+        </VBox>
+
+    </VBox>
+</ScrollPane>
