@@ -13,7 +13,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.rayen.controllers.modifyContoller"
+            fx:controller="com.gestioncolis.controllers.modifyContoller"
             styleClass="page">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="top-navbar">

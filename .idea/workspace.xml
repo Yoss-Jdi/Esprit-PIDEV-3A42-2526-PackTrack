@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6e716f64-baff-42e3-b347-d450f87da705" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/HelloApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/HelloController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/RayenFxApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/RayenFxApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/SceneNavigator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/SceneNavigator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/addContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/addContoller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/addtechnicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/addtechnicien.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/chatbot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/chatbot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/displayContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/displayContoller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/displaytechnicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/displaytechnicien.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/modifyContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/modifyContoller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/modifytechnicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/modifytechnicien.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/controllers/stat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/controllers/stat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/entities/technicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/entities/technicien.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/entities/vehicule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/entities/vehicule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/OllamaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/OllamaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/PdfGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/PdfGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/Servicetechnicien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/Servicetechnicien.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/services/Servicevehicule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/services/Servicevehicule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/utils/DataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/utils/DataSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/rayen/utils/ValidationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestioncolis/utils/ValidationUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/add.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/add.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/addtechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/addtechnicien.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/chatbot.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/chatbot.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/display.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/display.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/displaytechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/displaytechnicien.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modify.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modify.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modifytechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/modifytechnicien.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/rayen/stat.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/rayen/stat.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/HelloApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/HelloController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/SceneNavigator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/add.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/add.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/addtechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/addtechnicien.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/chatbot.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/chatbot.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/addContoller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/addtechnicien$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/addtechnicien.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/displayContoller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/displaytechnicien.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/modifyContoller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/modifytechnicien$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/controllers/modifytechnicien.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/display.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/display.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/displaytechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/displaytechnicien.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/entities/technicien.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/entities/vehicule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/modify.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/modify.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/modifytechnicien.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/modifytechnicien.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/services/PdfGenerator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/services/Servicetechnicien.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/services/Servicevehicule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/stat.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/rayen/stat.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/rayen/utils/DataSource.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Mydocs/Java_esp/Pidev_packtrack" value="3C07KjoWjfHgqfBio9uADNpM9Cq" />
+    </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Exception" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/23/javafx-graphics-23-win.jar!/javafx/geometry/Pos.class" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="3C07KjoWjfHgqfBio9uADNpM9Cq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ColisServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ColisServiceTest.testAjouterColis.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LivraisonServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Pidev_packtrack [dependency:resolve].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Pidev_packtrack [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.TrackPack [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.final_prjct [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.rayen [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/module-vehicule&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Mydocs/Java_esp/Pidev_packtrack/src/test/java/com/gestioncolis/services&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\test\java\com\gestioncolis\services" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\resources\fxml" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\java\com\gestioncolis\utils" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\java\com\gestioncolis\services" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\java\com\gestioncolis\models" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\main\java\com\gestioncolis\controllers" />
+      <recent name="C:\Mydocs\Java_esp\Pidev_packtrack\src\test\java\com\gestioncolis\services" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn dependency:resolve" />
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.LivraisonServiceTest">
+    <configuration name="MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.gestioncolis.MainApp" />
+      <module name="Pidev_packtrack" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestioncolis.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ColisServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Pidev_packtrack" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestioncolis.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestioncolis.services" />
+      <option name="MAIN_CLASS_NAME" value="com.gestioncolis.services.ColisServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ColisServiceTest.testAjouterColis" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Pidev_packtrack" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestioncolis.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestioncolis.services" />
+      <option name="MAIN_CLASS_NAME" value="com.gestioncolis.services.ColisServiceTest" />
+      <option name="METHOD_NAME" value="testAjouterColis" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LivraisonServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Pidev_packtrack" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestioncolis.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestioncolis.services" />
+      <option name="MAIN_CLASS_NAME" value="com.gestioncolis.services.LivraisonServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.LivraisonServiceTest" />
+        <item itemvalue="JUnit.ColisServiceTest" />
+        <item itemvalue="JUnit.ColisServiceTest.testAjouterColis" />
+        <item itemvalue="Application.MainApp" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6e716f64-baff-42e3-b347-d450f87da705" name="Changes" comment="" />
+      <created>1775510574876</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1775510574876</updated>
+      <workItem from="1775510576137" duration="5012000" />
+      <workItem from="1775662213066" duration="11086000" />
+      <workItem from="1775733920962" duration="4920000" />
+      <workItem from="1775836705302" duration="8713000" />
+      <workItem from="1775899943816" duration="7289000" />
+      <workItem from="1775938860189" duration="5295000" />
+      <workItem from="1775992452242" duration="9798000" />
+      <workItem from="1776008968613" duration="4991000" />
+      <workItem from="1776154821955" duration="2085000" />
+      <workItem from="1776345513624" duration="5216000" />
+      <workItem from="1776362302754" duration="95000" />
+      <workItem from="1776362406622" duration="299000" />
+      <workItem from="1776362721841" duration="977000" />
+      <workItem from="1776363724251" duration="4823000" />
+      <workItem from="1776511985806" duration="3783000" />
+      <workItem from="1776605456262" duration="7275000" />
+      <workItem from="1776614463756" duration="1344000" />
+      <workItem from="1776702212636" duration="3460000" />
+      <workItem from="1776760072783" duration="1599000" />
+      <workItem from="1776876758694" duration="4521000" />
+      <workItem from="1776938798912" duration="3399000" />
+      <workItem from="1776951367619" duration="973000" />
+      <workItem from="1777025164046" duration="1292000" />
+      <workItem from="1777026656872" duration="467000" />
+      <workItem from="1777027158378" duration="3064000" />
+      <workItem from="1777052848060" duration="3521000" />
+      <workItem from="1777112462312" duration="5220000" />
+      <workItem from="1777194938233" duration="11750000" />
+      <workItem from="1777304704185" duration="12602000" />
+      <workItem from="1777364656702" duration="3938000" />
+      <workItem from="1777373823491" duration="1171000" />
+      <workItem from="1777713347379" duration="7581000" />
+      <workItem from="1777722588534" duration="39338000" />
+      <workItem from="1777852638398" duration="1777000" />
+      <workItem from="1777887112808" duration="5303000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
