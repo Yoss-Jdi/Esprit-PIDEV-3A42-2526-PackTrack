@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.example.forumapp.controllers.UserDashboardController"
+           fx:controller="com.gestioncolis.controllers.UserDashboardController"
            styleClass="dashboard-root">
     
     <BorderPane fx:id="mainLayout">

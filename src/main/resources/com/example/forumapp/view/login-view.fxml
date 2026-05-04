@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.example.forumapp.controllers.LoginController"
+           fx:controller="com.gestioncolis.controllers.LoginController"
            styleClass="login-root">
     <children>
         <HBox alignment="CENTER" maxWidth="920" spacing="0" styleClass="login-shell">
