@@ -20,10 +20,10 @@
 <?import javafx.scene.text.TextFlow?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<StackPane prefHeight="700" prefWidth="1100" stylesheets="@../css/auth.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestioncolis.controllers.AuthController">
+<StackPane prefHeight="700" prefWidth="1100" minHeight="600" minWidth="900" stylesheets="@../css/auth.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestioncolis.controllers.AuthController">
 
     <!-- Background avec effet glassmorphism -->
-    <Pane prefHeight="700" prefWidth="1100" styleClass="root-bg">
+    <Pane prefHeight="700" prefWidth="1100" minHeight="600" minWidth="900" styleClass="root-bg">
         <Pane styleClass="bg-gradient-overlay" />
     </Pane>
 

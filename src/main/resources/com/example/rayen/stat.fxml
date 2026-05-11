@@ -8,105 +8,324 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.gestioncolis.controllers.stat"
-            styleClass="page">
-    <top>
-        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="top-navbar">
-            <padding>
-                <Insets bottom="18.0" left="24.0" right="24.0" top="18.0" />
-            </padding>
-            <VBox spacing="6.0">
-                <Label text="Rayen Fleet Manager" styleClass="nav-brand" />
-                <Label text="Vue statistique de la charge des techniciens par vehicule." styleClass="nav-caption" />
-            </VBox>
-            <Region HBox.hgrow="ALWAYS" />
-            <Button onAction="#handleOpenChatbot" styleClass="chat-launch-button" text="Assistant IA" />
-            <Label text="Analyse rapide" styleClass="nav-chip" />
-        </HBox>
-    </top>
-    <left>
-        <VBox spacing="14.0" styleClass="sidebar">
-            <padding>
-                <Insets bottom="24.0" left="18.0" right="18.0" top="24.0" />
-            </padding>
-            <Label text="Modules" styleClass="sidebar-title" />
-            <Button maxWidth="Infinity" onAction="#handleGoVehicules" styleClass="sidebar-button" text="Vehicule" />
-            <Button maxWidth="Infinity" onAction="#handleGoTechniciens" styleClass="sidebar-button" text="Technicien" />
-            <Button maxWidth="Infinity" onAction="#handleGoStats" styleClass="sidebar-button-active" text="Statistiques" />
-        </VBox>
-    </left>
+
+            style="
+                -fx-background-color:
+                    linear-gradient(to bottom right, #f8fafc, #eef2ff);
+
+                -fx-font-family: 'Segoe UI';
+            ">
+
     <center>
-        <BorderPane>
-            <top>
-                <VBox spacing="16.0" styleClass="page-header">
-                    <padding>
-                        <Insets bottom="18.0" left="24.0" right="24.0" top="24.0" />
-                    </padding>
-                    <VBox spacing="6.0">
-                        <Label text="Statistiques des techniciens" styleClass="title-label" />
-                        <Label text="Le graphique compare chaque technicien avec le nombre de vehicules qu'il a en charge." styleClass="subtitle-label" />
-                    </VBox>
-                    <HBox spacing="12.0">
-                        <Button text="Actualiser" onAction="#handleRefresh" styleClass="secondary-button" />
-                        <Button text="Retour techniciens" onAction="#handleGoTechniciens" styleClass="primary-button" />
-                    </HBox>
-                </VBox>
-            </top>
-            <center>
-                <VBox spacing="18.0">
-                    <padding>
-                        <Insets bottom="18.0" left="24.0" right="24.0" top="0.0" />
-                    </padding>
-                    <HBox spacing="16.0">
-                        <VBox HBox.hgrow="ALWAYS" maxWidth="Infinity" spacing="6.0" styleClass="stats-card">
-                            <Label fx:id="technicienCountLabel" styleClass="stats-value" text="0" />
-                            <Label styleClass="stats-caption" text="Nombre de techniciens" />
-                        </VBox>
-                        <VBox HBox.hgrow="ALWAYS" maxWidth="Infinity" spacing="6.0" styleClass="stats-card">
-                            <Label fx:id="assignedVehiculeCountLabel" styleClass="stats-value" text="0" />
-                            <Label styleClass="stats-caption" text="Vehicules assignes" />
-                        </VBox>
-                        <VBox HBox.hgrow="ALWAYS" maxWidth="Infinity" spacing="6.0" styleClass="stats-card">
-                            <Label fx:id="averageLabel" styleClass="stats-value" text="0.0" />
-                            <Label styleClass="stats-caption" text="Moyenne par technicien" />
-                        </VBox>
-                    </HBox>
-                    <VBox spacing="10.0" styleClass="chart-panel" VBox.vgrow="ALWAYS">
-                        <Label styleClass="section-title" text="Vehicules par technicien" />
-                        <Label fx:id="chartStatusLabel" styleClass="muted-label" text="Chargement du graphique..." />
-                        <BarChart fx:id="vehiculesChart"
-                                  alternativeColumnFillVisible="false"
-                                  alternativeRowFillVisible="false"
-                                  animated="false"
-                                  categoryGap="10.0"
-                                  horizontalZeroLineVisible="false"
-                                  legendVisible="false"
-                                  styleClass="chart bar-chart light-bar-chart"
-                                  verticalGridLinesVisible="true"
-                                  VBox.vgrow="ALWAYS">
-                            <xAxis>
-                                <CategoryAxis fx:id="technicienAxis" gapStartAndEnd="false" />
-                            </xAxis>
-                            <yAxis>
-                                <NumberAxis fx:id="vehiculesAxis" forceZeroInRange="true" minorTickVisible="false" />
-                            </yAxis>
-                        </BarChart>
-                    </VBox>
-                </VBox>
-            </center>
-            <bottom>
-                <HBox styleClass="footer-bar">
-                    <padding>
-                        <Insets bottom="18.0" left="24.0" right="24.0" top="0.0" />
-                    </padding>
-                    <Label fx:id="infoLabel" styleClass="info-label" />
+
+        <VBox spacing="16">
+
+            <padding>
+                <Insets top="18"
+                        right="20"
+                        bottom="18"
+                        left="20"/>
+            </padding>
+
+            <!-- HEADER COMPACT -->
+            <VBox spacing="10"
+
+                  style="
+                    -fx-background-color:
+                        linear-gradient(to right, #4f46e5, #7c3aed);
+
+                    -fx-background-radius: 18;
+
+                    -fx-padding: 16;
+
+                    -fx-effect:
+                        dropshadow(
+                            gaussian,
+                            rgba(79,70,229,0.20),
+                            16,
+                            0.2,
+                            0,
+                            4
+                        );
+                  ">
+
+                <Label text="Statistiques des techniciens"
+
+                       style="
+                            -fx-font-size: 24px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: white;
+                       "/>
+
+                <Label text="Analyse de la charge des techniciens et affectations"
+
+                       style="
+                            -fx-font-size: 13px;
+                            -fx-text-fill: rgba(255,255,255,0.85);
+                       "/>
+
+                <HBox spacing="10">
+
+                    <Button text="Actualiser"
+                            onAction="#handleRefresh"
+
+                            style="
+                                -fx-background-color:
+                                    rgba(255,255,255,0.15);
+
+                                -fx-text-fill: white;
+
+                                -fx-border-color:
+                                    rgba(255,255,255,0.25);
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 8 16;
+
+                                -fx-font-weight: bold;
+
+                                -fx-cursor: hand;
+                            "/>
+
+                    <Button text="Techniciens"
+                            onAction="#handleGoTechniciens"
+
+                            style="
+                                -fx-background-color: white;
+
+                                -fx-text-fill: #4f46e5;
+
+                                -fx-font-weight: bold;
+
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 8 16;
+
+                                -fx-cursor: hand;
+                            "/>
+
                 </HBox>
-            </bottom>
-        </BorderPane>
+
+            </VBox>
+
+            <!-- KPI CARDS -->
+            <HBox spacing="12">
+
+                <VBox spacing="6"
+                      HBox.hgrow="ALWAYS"
+
+                      style="
+                            -fx-background-color: white;
+
+                            -fx-background-radius: 16;
+
+                            -fx-padding: 16;
+
+                            -fx-effect:
+                                dropshadow(
+                                    gaussian,
+                                    rgba(15,23,42,0.08),
+                                    14,
+                                    0.12,
+                                    0,
+                                    4
+                                );
+                      ">
+
+                    <Label fx:id="technicienCountLabel"
+                           text="0"
+
+                           style="
+                                -fx-font-size: 24px;
+                                -fx-font-weight: bold;
+                                -fx-text-fill: #4f46e5;
+                           "/>
+
+                    <Label text="Techniciens"
+                           style="
+                                -fx-font-size: 12px;
+                                -fx-text-fill: #64748b;
+                           "/>
+
+                </VBox>
+
+                <VBox spacing="6"
+                      HBox.hgrow="ALWAYS"
+
+                      style="
+                            -fx-background-color: white;
+
+                            -fx-background-radius: 16;
+
+                            -fx-padding: 16;
+
+                            -fx-effect:
+                                dropshadow(
+                                    gaussian,
+                                    rgba(15,23,42,0.08),
+                                    14,
+                                    0.12,
+                                    0,
+                                    4
+                                );
+                      ">
+
+                    <Label fx:id="assignedVehiculeCountLabel"
+                           text="0"
+
+                           style="
+                                -fx-font-size: 24px;
+                                -fx-font-weight: bold;
+                                -fx-text-fill: #7c3aed;
+                           "/>
+
+                    <Label text="Véhicules assignés"
+                           style="
+                                -fx-font-size: 12px;
+                                -fx-text-fill: #64748b;
+                           "/>
+
+                </VBox>
+
+                <VBox spacing="6"
+                      HBox.hgrow="ALWAYS"
+
+                      style="
+                            -fx-background-color: white;
+
+                            -fx-background-radius: 16;
+
+                            -fx-padding: 16;
+
+                            -fx-effect:
+                                dropshadow(
+                                    gaussian,
+                                    rgba(15,23,42,0.08),
+                                    14,
+                                    0.12,
+                                    0,
+                                    4
+                                );
+                      ">
+
+                    <Label fx:id="averageLabel"
+                           text="0.0"
+
+                           style="
+                                -fx-font-size: 24px;
+                                -fx-font-weight: bold;
+                                -fx-text-fill: #0ea5e9;
+                           "/>
+
+                    <Label text="Moyenne / technicien"
+                           style="
+                                -fx-font-size: 12px;
+                                -fx-text-fill: #64748b;
+                           "/>
+
+                </VBox>
+
+            </HBox>
+
+            <!-- CHART CARD -->
+            <VBox spacing="10"
+                  VBox.vgrow="ALWAYS"
+
+                  style="
+                        -fx-background-color: white;
+
+                        -fx-background-radius: 20;
+
+                        -fx-padding: 16;
+
+                        -fx-effect:
+                            dropshadow(
+                                gaussian,
+                                rgba(15,23,42,0.08),
+                                18,
+                                0.12,
+                                0,
+                                4
+                            );
+                  ">
+
+                <Label text="Répartition des véhicules"
+
+                       style="
+                            -fx-font-size: 16px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: #334155;
+                       "/>
+
+                <Label fx:id="chartStatusLabel"
+                       text="Chargement du graphique..."
+
+                       style="
+                            -fx-font-size: 12px;
+                            -fx-text-fill: #94a3b8;
+                       "/>
+
+                <BarChart fx:id="vehiculesChart"
+                          VBox.vgrow="ALWAYS"
+
+                          animated="false"
+                          legendVisible="false"
+                          categoryGap="10"
+
+                          style="
+                                -fx-background-color: transparent;
+                          ">
+
+                    <xAxis>
+                        <CategoryAxis fx:id="technicienAxis"/>
+                    </xAxis>
+
+                    <yAxis>
+                        <NumberAxis fx:id="vehiculesAxis"/>
+                    </yAxis>
+
+                </BarChart>
+
+            </VBox>
+
+            <!-- FOOTER -->
+            <HBox alignment="CENTER_LEFT"
+
+                  style="
+                        -fx-background-color: white;
+
+                        -fx-background-radius: 14;
+
+                        -fx-padding: 10 14;
+
+                        -fx-effect:
+                            dropshadow(
+                                gaussian,
+                                rgba(15,23,42,0.05),
+                                10,
+                                0.1,
+                                0,
+                                2
+                            );
+                  ">
+
+                <Label fx:id="infoLabel"
+
+                       style="
+                            -fx-font-size: 13px;
+                            -fx-text-fill: #475569;
+                       "/>
+
+            </HBox>
+
+        </VBox>
+
     </center>
+
 </BorderPane>

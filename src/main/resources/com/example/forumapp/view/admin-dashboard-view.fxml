@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gestioncolis.controllers.AdminDashboarForumController"
+            styleClass="dashboard-root"
+            style="-fx-background-color: #f8fafc;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16" styleClass="topbar"
+              style="-fx-background-color: white; -fx-border-color: #e2e8f0; -fx-border-width: 0 0 1 0; -fx-padding: 16 24;">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10" HBox.hgrow="ALWAYS">
+                    <FontIcon iconColor="#667eea" iconSize="24" iconLiteral="fas-comments"/>
+                    <VBox spacing="2">
+                        <Label text="Gestion du Forum" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                        <Label text="Administration et modération" style="-fx-font-size: 12px; -fx-text-fill: #64748b;"/>
+                    </VBox>
+                </HBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button mnemonicParsing="false" onAction="#handleOpenChatbot"
+                        style="-fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                               -fx-text-fill: white; -fx-background-radius: 10; -fx-font-size: 13px;
+                               -fx-font-weight: 600; -fx-padding: 10 20; -fx-cursor: hand;
+                               -fx-effect: dropshadow(gaussian, rgba(102, 126, 234, 0.3), 8, 0, 0, 2);">
+                    <graphic>
+                        <HBox spacing="8" alignment="CENTER">
+                            <FontIcon iconColor="white" iconSize="16" iconLiteral="fas-robot"/>
+                            <Label text="Assistant IA" style="-fx-text-fill: white; -fx-font-weight: 600;"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Label fx:id="currentUserLabel" styleClass="user-pill"
+                       style="-fx-background-color: #f1f5f9; -fx-background-radius: 20;
+                              -fx-padding: 8 16; -fx-text-fill: #475569; -fx-font-weight: 600;"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="admin-tabs"
+                 style="-fx-background-color: #f8fafc; -fx-border-color: transparent;">
+            <tabs>
+                <!-- Dashboard tab -->
+                <Tab text="📊 Tableau de bord">
+                    <content>
+                        <ScrollPane fitToWidth="true" style="-fx-background: #f8fafc; -fx-background-color: #f8fafc;">
+                            <VBox spacing="24" style="-fx-background-color: #f8fafc;">
+                                <padding><Insets bottom="32" left="32" right="32" top="32"/></padding>
+                                <children>
+                                    <!-- Stats Cards -->
+                                    <VBox spacing="16">
+                                        <Label text="Vue d'ensemble" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                        <HBox spacing="20">
+                                            <children>
+                                                <VBox spacing="8" styleClass="stat-card" HBox.hgrow="ALWAYS"
+                                                      style="-fx-background-color: white; -fx-background-radius: 16;
+                                                             -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+                                                             -fx-border-color: #e0e7ff; -fx-border-width: 1; -fx-border-radius: 16;">
+                                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                                        <StackPane style="-fx-background-color: #eef2ff; -fx-background-radius: 12; -fx-pref-width: 48; -fx-pref-height: 48;">
+                                                            <FontIcon iconColor="#667eea" iconSize="24" iconLiteral="fas-users"/>
+                                                        </StackPane>
+                                                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                                            <Label text="Utilisateurs" style="-fx-font-size: 13px; -fx-text-fill: #64748b; -fx-font-weight: 500;"/>
+                                                            <Label fx:id="statsUsersValue" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                                        </VBox>
+                                                    </HBox>
+                                                </VBox>
+
+                                                <VBox spacing="8" styleClass="stat-card" HBox.hgrow="ALWAYS"
+                                                      style="-fx-background-color: white; -fx-background-radius: 16;
+                                                             -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+                                                             -fx-border-color: #dbeafe; -fx-border-width: 1; -fx-border-radius: 16;">
+                                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                                        <StackPane style="-fx-background-color: #dbeafe; -fx-background-radius: 12; -fx-pref-width: 48; -fx-pref-height: 48;">
+                                                            <FontIcon iconColor="#3b82f6" iconSize="24" iconLiteral="fas-layer-group"/>
+                                                        </StackPane>
+                                                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                                            <Label text="Forums" style="-fx-font-size: 13px; -fx-text-fill: #64748b; -fx-font-weight: 500;"/>
+                                                            <Label fx:id="statsForumsValue" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                                        </VBox>
+                                                    </HBox>
+                                                </VBox>
+
+                                                <VBox spacing="8" styleClass="stat-card" HBox.hgrow="ALWAYS"
+                                                      style="-fx-background-color: white; -fx-background-radius: 16;
+                                                             -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+                                                             -fx-border-color: #d1fae5; -fx-border-width: 1; -fx-border-radius: 16;">
+                                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                                        <StackPane style="-fx-background-color: #d1fae5; -fx-background-radius: 12; -fx-pref-width: 48; -fx-pref-height: 48;">
+                                                            <FontIcon iconColor="#10b981" iconSize="24" iconLiteral="fas-file-alt"/>
+                                                        </StackPane>
+                                                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                                            <Label text="Posts" style="-fx-font-size: 13px; -fx-text-fill: #64748b; -fx-font-weight: 500;"/>
+                                                            <Label fx:id="statsPostsValue" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                                        </VBox>
+                                                    </HBox>
+                                                </VBox>
+
+                                                <VBox spacing="8" styleClass="stat-card" HBox.hgrow="ALWAYS"
+                                                      style="-fx-background-color: white; -fx-background-radius: 16;
+                                                             -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+                                                             -fx-border-color: #fef3c7; -fx-border-width: 1; -fx-border-radius: 16;">
+                                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                                        <StackPane style="-fx-background-color: #fef3c7; -fx-background-radius: 12; -fx-pref-width: 48; -fx-pref-height: 48;">
+                                                            <FontIcon iconColor="#f59e0b" iconSize="24" iconLiteral="fas-comments"/>
+                                                        </StackPane>
+                                                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                                            <Label text="Commentaires" style="-fx-font-size: 13px; -fx-text-fill: #64748b; -fx-font-weight: 500;"/>
+                                                            <Label fx:id="statsCommentsValue" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                                        </VBox>
+                                                    </HBox>
+                                                </VBox>
+
+                                                <VBox spacing="8" styleClass="stat-card" HBox.hgrow="ALWAYS"
+                                                      style="-fx-background-color: white; -fx-background-radius: 16;
+                                                             -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);
+                                                             -fx-border-color: #fecdd3; -fx-border-width: 1; -fx-border-radius: 16;">
+                                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                                        <StackPane style="-fx-background-color: #fecdd3; -fx-background-radius: 12; -fx-pref-width: 48; -fx-pref-height: 48;">
+                                                            <FontIcon iconColor="#ef4444" iconSize="24" iconLiteral="fas-heart"/>
+                                                        </StackPane>
+                                                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                                            <Label text="Likes" style="-fx-font-size: 13px; -fx-text-fill: #64748b; -fx-font-weight: 500;"/>
+                                                            <Label fx:id="statsLikesValue" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                                        </VBox>
+                                                    </HBox>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                    </VBox>
+
+                                    <!-- Activity Table -->
+                                    <VBox spacing="16" style="-fx-background-color: white; -fx-background-radius: 16;
+                                                               -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 2);">
+                                        <HBox alignment="CENTER_LEFT" spacing="12">
+                                            <StackPane style="-fx-background-color: #f1f5f9; -fx-background-radius: 10; -fx-pref-width: 40; -fx-pref-height: 40;">
+                                                <FontIcon iconColor="#64748b" iconSize="18" iconLiteral="fas-bolt"/>
+                                            </StackPane>
+                                            <Label text="Dernières Activités" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                        </HBox>
+                                        <TableView fx:id="activityTable" prefHeight="350"
+                                                   style="-fx-background-color: transparent; -fx-background-radius: 8;">
+                                            <placeholder>
+                                                <VBox alignment="CENTER" spacing="12" style="-fx-padding: 40;">
+                                                    <FontIcon iconColor="#cbd5e1" iconSize="48" iconLiteral="fas-inbox"/>
+                                                    <Label text="Aucune activité récente" style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                                                </VBox>
+                                            </placeholder>
+                                            <columns>
+                                                <TableColumn fx:id="activityTypeColumn" prefWidth="140" text="Type"/>
+                                                <TableColumn fx:id="activityContentColumn" prefWidth="450" text="Contenu"/>
+                                                <TableColumn fx:id="activityAuthorColumn" prefWidth="180" text="Auteur"/>
+                                                <TableColumn fx:id="activityDateColumn" prefWidth="160" text="Date"/>
+                                            </columns>
+                                        </TableView>
+                                    </VBox>
+                                </children>
+                            </VBox>
+                        </ScrollPane>
+                    </content>
+                </Tab>
+
+                <!-- Forums tab -->
+                <Tab text="🌐 Forums">
+                    <content>
+                        <SplitPane dividerPositions="0.6" styleClass="admin-split"
+                                   style="-fx-background-color: #f8fafc;">
+                            <items>
+                                <!-- Left Panel: Forum List -->
+                                <VBox spacing="16" style="-fx-background-color: white; -fx-padding: 24;
+                                                          -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);">
+                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                        <StackPane style="-fx-background-color: #dbeafe; -fx-background-radius: 10; -fx-pref-width: 40; -fx-pref-height: 40;">
+                                            <FontIcon iconColor="#3b82f6" iconSize="18" iconLiteral="fas-layer-group"/>
+                                        </StackPane>
+                                        <Label text="Liste des Forums" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <TextField fx:id="forumSearchField" promptText="🔍 Rechercher..."
+                                                   style="-fx-background-color: #f8fafc; -fx-background-radius: 10;
+                                                          -fx-padding: 8 16; -fx-border-color: #e2e8f0; -fx-border-radius: 10;"
+                                                   prefWidth="240"/>
+                                    </HBox>
+                                    <TableView fx:id="forumTable" VBox.vgrow="ALWAYS"
+                                               style="-fx-background-color: transparent; -fx-background-radius: 8;">
+                                        <columns>
+                                            <TableColumn fx:id="forumTitleColumn" prefWidth="220" text="Titre"/>
+                                            <TableColumn fx:id="forumDescriptionColumn" prefWidth="380" text="Description"/>
+                                            <TableColumn fx:id="forumPostCountColumn" prefWidth="100" text="Posts"/>
+                                        </columns>
+                                    </TableView>
+                                </VBox>
+
+                                <!-- Right Panel: Forum Editor -->
+                                <VBox spacing="16" style="-fx-background-color: white; -fx-padding: 24;">
+                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                        <StackPane style="-fx-background-color: #d1fae5; -fx-background-radius: 10; -fx-pref-width: 40; -fx-pref-height: 40;">
+                                            <FontIcon iconColor="#10b981" iconSize="18" iconLiteral="fas-edit"/>
+                                        </StackPane>
+                                        <Label fx:id="forumEditorTitleLabel" text="Créer un forum"
+                                               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                    </HBox>
+
+                                    <VBox spacing="12">
+                                        <VBox spacing="6">
+                                            <Label text="Titre du forum" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                            <TextField fx:id="forumTitleField" promptText="Ex: Support technique"
+                                                       style="-fx-background-color: #f8fafc; -fx-background-radius: 10;
+                                                              -fx-padding: 12 16; -fx-border-color: #e2e8f0; -fx-border-radius: 10;
+                                                              -fx-font-size: 14px;"/>
+                                        </VBox>
+
+                                        <VBox spacing="6">
+                                            <Label text="Description" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                            <TextArea fx:id="forumDescriptionArea" prefRowCount="6" wrapText="true"
+                                                      promptText="Décrivez le sujet et l'objectif de ce forum..."
+                                                      style="-fx-background-color: #f8fafc; -fx-background-radius: 10;
+                                                             -fx-padding: 12 16; -fx-border-color: #e2e8f0; -fx-border-radius: 10;
+                                                             -fx-font-size: 14px;"/>
+                                        </VBox>
+                                    </VBox>
+
+                                    <Region VBox.vgrow="ALWAYS"/>
+
+                                    <HBox spacing="12" alignment="CENTER_LEFT">
+                                        <Button mnemonicParsing="false" onAction="#handleSaveForum"
+                                                style="-fx-background-color: #10b981; -fx-text-fill: white;
+                                                       -fx-background-radius: 10; -fx-padding: 12 24; -fx-font-weight: 600;
+                                                       -fx-cursor: hand; -fx-font-size: 13px;">
+                                            <graphic>
+                                                <HBox spacing="8" alignment="CENTER">
+                                                    <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-save"/>
+                                                    <Label text="Enregistrer" style="-fx-text-fill: white; -fx-font-weight: 600;"/>
+                                                </HBox>
+                                            </graphic>
+                                        </Button>
+                                        <Button mnemonicParsing="false" onAction="#handleResetForum"
+                                                style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569;
+                                                       -fx-background-radius: 10; -fx-padding: 12 24; -fx-font-weight: 600;
+                                                       -fx-cursor: hand; -fx-font-size: 13px;">
+                                            <graphic>
+                                                <HBox spacing="8" alignment="CENTER">
+                                                    <FontIcon iconColor="#64748b" iconSize="14" iconLiteral="fas-redo"/>
+                                                    <Label text="Réinitialiser" style="-fx-text-fill: #475569; -fx-font-weight: 600;"/>
+                                                </HBox>
+                                            </graphic>
+                                        </Button>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Button mnemonicParsing="false" onAction="#handleDeleteForum"
+                                                style="-fx-background-color: #fee2e2; -fx-text-fill: #dc2626;
+                                                       -fx-background-radius: 10; -fx-padding: 12 24; -fx-font-weight: 600;
+                                                       -fx-cursor: hand; -fx-font-size: 13px;">
+                                            <graphic>
+                                                <HBox spacing="8" alignment="CENTER">
+                                                    <FontIcon iconColor="#dc2626" iconSize="14" iconLiteral="fas-trash"/>
+                                                    <Label text="Supprimer" style="-fx-text-fill: #dc2626; -fx-font-weight: 600;"/>
+                                                </HBox>
+                                            </graphic>
+                                        </Button>
+                                    </HBox>
+                                </VBox>
+                            </items>
+                        </SplitPane>
+                    </content>
+                </Tab>
+
+                <!-- Posts tab -->
+                <Tab text="📝 Posts">
+                    <content>
+                        <SplitPane dividerPositions="0.6" styleClass="admin-split"
+                                   style="-fx-background-color: #f8fafc;">
+                            <items>
+                                <!-- Left Panel: Posts List -->
+                                <VBox spacing="16" style="-fx-background-color: white; -fx-padding: 24;
+                                                          -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 1);">
+                                    <HBox alignment="CENTER_LEFT" spacing="12">
+                                        <StackPane style="-fx-background-color: #d1fae5; -fx-background-radius: 10; -fx-pref-width: 40; -fx-pref-height: 40;">
+                                            <FontIcon iconColor="#10b981" iconSize="18" iconLiteral="fas-file-alt"/>
+                                        </StackPane>
+                                        <Label text="Liste des Posts" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <TextField fx:id="postSearchField" promptText="🔍 Rechercher..."
+                                                   style="-fx-background-color: #f8fafc; -fx-background-radius: 10;
+                                                          -fx-padding: 8 16; -fx-border-color: #e2e8f0; -fx-border-radius: 10;"
+                                                   prefWidth="240"/>
+                                    </HBox>
+                                    <TableView fx:id="postTable" VBox.vgrow="ALWAYS"
+                                               style="-fx-background-color: transparent; -fx-background-radius: 8;">
+                                        <columns>
+                                            <TableColumn fx:id="postTitleColumn" prefWidth="240" text="Titre"/>
+                                            <TableColumn fx:id="postForumColumn" prefWidth="180" text="Forum"/>
+                                            <TableColumn fx:id="postAuthorColumn" prefWidth="150" text="Auteur"/>
+                                            <TableColumn fx:id="postCommentCountColumn" prefWidth="90" text="Comms"/>
+                                            <TableColumn fx:id="postLikeColumn" prefWidth="80" text="Likes"/>
+                                        </columns>
+                                    </TableView>
+                                </VBox>
+
+                                <!-- Right Panel: Post Editor -->
+                                <ScrollPane fitToWidth="true" style="-fx-background: white; -fx-background-color: white;">
+                                    <VBox spacing="16" style="-fx-background-color: white; -fx-padding: 24;">
+                                        <HBox alignment="CENTER_LEFT" spacing="12">
+                                            <StackPane style="-fx-background-color: #fef3c7; -fx-background-radius: 10; -fx-pref-width: 40; -fx-pref-height: 40;">
+                                                <FontIcon iconColor="#f59e0b" iconSize="18" iconLiteral="fas-pen"/>
+                                            </StackPane>
+                                            <Label fx:id="postEditorTitleLabel" text="Créer un post"
+                                                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                                        </HBox>
+
+                                        <VBox spacing="12">
+                                            <VBox spacing="6">
+                                                <Label text="Forum" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                                <ComboBox fx:id="postForumComboBox" maxWidth="Infinity" promptText="Sélectionner un forum"
+                                                          style="-fx-background-color: #f8fafc; -fx-background-radius: 10;
+                                                                 -fx-padding: 10 16; -fx-border-color: #e2e8f0; -fx-border-radius: 10;"/>
+                                            </VBox>
+
+                                            <VBox spacing="6">
+                                                <Label text="Titre du post" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                                <TextField fx:id="adminPostTitleField" promptText="Un titre accrocheur..."
+                                                           style="-fx-background-color: #f8fafc; -fx-background-radius: 10;
+                                                                  -fx-padding: 12 16; -fx-border-color: #e2e8f0; -fx-border-radius: 10;
+                                                                  -fx-font-size: 14px;"/>
+                                            </VBox>
+
+                                            <VBox spacing="6">
+                                                <Label text="Contenu" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                                <TextArea fx:id="adminPostContentArea" prefRowCount="6" wrapText="true"
+                                                          promptText="Rédigez votre contenu ici..."
+                                                          style="-fx-background-color: #f8fafc; -fx-background-radius: 10;
+                                                                 -fx-padding: 12 16; -fx-border-color: #e2e8f0; -fx-border-radius: 10;
+                                                                 -fx-font-size: 14px;"/>
+                                            </VBox>
+
+                                            <VBox spacing="6">
+                                                <Label text="Image" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                                    <Button fx:id="chooseAdminPostImageButton" mnemonicParsing="false"
+                                                            onAction="#handleChooseAdminPostImage"
+                                                            style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569;
+                                                                   -fx-background-radius: 10; -fx-padding: 10 16; -fx-font-weight: 600;
+                                                                   -fx-cursor: hand; -fx-font-size: 12px;">
+                                                        <graphic>
+                                                            <HBox spacing="6" alignment="CENTER">
+                                                                <FontIcon iconColor="#64748b" iconSize="13" iconLiteral="fas-image"/>
+                                                                <Label text="Choisir" style="-fx-text-fill: #475569; -fx-font-weight: 600;"/>
+                                                            </HBox>
+                                                        </graphic>
+                                                    </Button>
+                                                    <Button fx:id="clearAdminPostImageButton" mnemonicParsing="false"
+                                                            onAction="#handleClearAdminPostImage"
+                                                            style="-fx-background-color: #fee2e2; -fx-text-fill: #dc2626;
+                                                                   -fx-background-radius: 10; -fx-padding: 10 16; -fx-font-weight: 600;
+                                                                   -fx-cursor: hand; -fx-font-size: 12px;">
+                                                        <graphic>
+                                                            <HBox spacing="6" alignment="CENTER">
+                                                                <FontIcon iconColor="#dc2626" iconSize="13" iconLiteral="fas-times"/>
+                                                                <Label text="Retirer" style="-fx-text-fill: #dc2626; -fx-font-weight: 600;"/>
+                                                            </HBox>
+                                                        </graphic>
+                                                    </Button>
+                                                    <Label fx:id="adminPostImageNameLabel" text="Aucune image"
+                                                           style="-fx-text-fill: #94a3b8; -fx-font-size: 12px; -fx-font-style: italic;"/>
+                                                </HBox>
+                                                <ImageView fx:id="adminPostImagePreview" fitHeight="180" fitWidth="320" managed="false"
+                                                           preserveRatio="true" smooth="true" visible="false"
+                                                           style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);"/>
+                                            </VBox>
+
+                                            <VBox fx:id="aiAssistantContainer" spacing="12"/>
+                                        </VBox>
+
+                                        <Separator style="-fx-background-color: #e2e8f0;"/>
+
+                                        <HBox spacing="10" alignment="CENTER_LEFT">
+                                            <Button mnemonicParsing="false" onAction="#handleSavePost"
+                                                    style="-fx-background-color: #10b981; -fx-text-fill: white;
+                                                           -fx-background-radius: 10; -fx-padding: 12 20; -fx-font-weight: 600;
+                                                           -fx-cursor: hand; -fx-font-size: 13px;">
+                                                <graphic>
+                                                    <HBox spacing="8" alignment="CENTER">
+                                                        <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-save"/>
+                                                        <Label text="Enregistrer" style="-fx-text-fill: white; -fx-font-weight: 600;"/>
+                                                    </HBox>
+                                                </graphic>
+                                            </Button>
+
+                                            <Button mnemonicParsing="false" onAction="#handlePublishAiComment"
+                                                    style="-fx-background-color: #3b82f6; -fx-text-fill: white;
+                                                           -fx-background-radius: 10; -fx-padding: 12 20; -fx-font-weight: 600;
+                                                           -fx-cursor: hand; -fx-font-size: 13px;">
+                                                <graphic>
+                                                    <HBox spacing="8" alignment="CENTER">
+                                                        <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-comment"/>
+                                                        <Label text="Publier commentaire" style="-fx-text-fill: white; -fx-font-weight: 600;"/>
+                                                    </HBox>
+                                                </graphic>
+                                            </Button>
+
+                                            <Button mnemonicParsing="false" onAction="#handleAnalyzePostComments"
+                                                    style="-fx-background-color: #8b5cf6; -fx-text-fill: white;
+                                                           -fx-background-radius: 10; -fx-padding: 12 20; -fx-font-weight: 600;
+                                                           -fx-cursor: hand; -fx-font-size: 13px;">
+                                                <graphic>
+                                                    <HBox spacing="8" alignment="CENTER">
+                                                        <FontIcon iconColor="white" iconSize="14" iconLiteral="fas-chart-bar"/>
+                                                        <Label text="Analyser" style="-fx-text-fill: white; -fx-font-weight: 600;"/>
+                                                    </HBox>
+                                                </graphic>
+                                            </Button>
+
+                                            <Button mnemonicParsing="false" onAction="#handleResetPost"
+                                                    style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569;
+                                                           -fx-background-radius: 10; -fx-padding: 12 20; -fx-font-weight: 600;
+                                                           -fx-cursor: hand; -fx-font-size: 13px;">
+                                                <graphic>
+                                                    <HBox spacing="8" alignment="CENTER">
+                                                        <FontIcon iconColor="#64748b" iconSize="14" iconLiteral="fas-redo"/>
+                                                        <Label text="Réinitialiser" style="-fx-text-fill: #475569; -fx-font-weight: 600;"/>
+                                                    </HBox>
+                                                </graphic>
+                                            </Button>
+
+                                            <Region HBox.hgrow="ALWAYS"/>
+
+                                            <Button mnemonicParsing="false" onAction="#handleDeletePost"
+                                                    style="-fx-background-color: #fee2e2; -fx-text-fill: #dc2626;
+                                                           -fx-background-radius: 10; -fx-padding: 12 20; -fx-font-weight: 600;
+                                                           -fx-cursor: hand; -fx-font-size: 13px;">
+                                                <graphic>
+                                                    <HBox spacing="8" alignment="CENTER">
+                                                        <FontIcon iconColor="#dc2626" iconSize="14" iconLiteral="fas-trash"/>
+                                                        <Label text="Supprimer" style="-fx-text-fill: #dc2626; -fx-font-weight: 600;"/>
+                                                    </HBox>
+                                                </graphic>
+                                            </Button>
+                                        </HBox>
+                                    </VBox>
+                                </ScrollPane>
+                            </items>
+                        </SplitPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+</BorderPane>

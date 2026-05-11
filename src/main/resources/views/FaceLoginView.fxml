@@ -16,16 +16,18 @@
 <StackPane
         prefHeight="700"
         prefWidth="1100"
+        minHeight="600"
+        minWidth="900"
         stylesheets="@../css/auth.css"
         xmlns="http://javafx.com/javafx/21"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="com.gestioncolis.controllers.FaceLoginController">
 
     <!-- ═══ Animated Background ═══ -->
-    <Pane prefHeight="700" prefWidth="1100" styleClass="root-bg" />
+    <Pane prefHeight="700" prefWidth="1100" minHeight="600" minWidth="900" styleClass="root-bg" />
 
     <!-- Background blobs -->
-    <Pane mouseTransparent="true" prefHeight="700" prefWidth="1100">
+    <Pane mouseTransparent="true" prefHeight="700" prefWidth="1100" minHeight="600" minWidth="900">
         <Circle fx:id="blob1" centerX="150" centerY="120" radius="300" styleClass="bg-blob,blob-1" />
         <Circle fx:id="blob2" centerX="980" centerY="600" radius="240" styleClass="bg-blob,blob-2" />
         <Circle fx:id="blob3" centerX="920" centerY="100" radius="150" styleClass="bg-blob,blob-3" />

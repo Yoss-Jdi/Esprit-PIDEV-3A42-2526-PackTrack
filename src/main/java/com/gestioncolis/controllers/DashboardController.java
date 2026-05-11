@@ -14,8 +14,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.utils.SessionManager;
+import com.gestioncolis.services.Servicevehicule;
+import com.gestioncolis.services.Servicetechnicien;
+import com.gestioncolis.SceneNavigator;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -36,6 +40,10 @@ public class DashboardController implements Initializable {
     @FXML private Button btnStatsRecompenses;
     @FXML private Button btnParametres;
 
+    // ─── Flotte ───────────────────────────────────────────────────────────────
+    @FXML private Button btnVehicules;
+    @FXML private Button btnTechniciens;
+
     // ─── Sidebar user info ─────────────────────────────────────────────────────
     @FXML private Label  sidebarUserName;
     @FXML private Label  avatarInitials;
@@ -52,11 +60,49 @@ public class DashboardController implements Initializable {
     private Utilisateurs currentUser;
     private Button       activeBtn;
 
+    // ─── Services pour la flotte ──────────────────────────────────────────────
+    private Servicevehicule servicevehicule;
+    private Servicetechnicien servicetechnicien;
+    private SceneNavigator sceneNavigator;
+
+    // ─── Services pour le module Forum ────────────────────────────────────────
+    private com.gestioncolis.services.AuthService forumAuth;
+    private com.gestioncolis.services.ModerationService forumModeration;
+    private com.gestioncolis.services.NotificationService forumNotification;
+    private com.gestioncolis.services.PostService forumPost;
+    private com.gestioncolis.services.CommentService forumComment;
+    private com.gestioncolis.services.ForumService forumForum;
+    private com.gestioncolis.services.UserService forumUser;
+    private com.gestioncolis.services.CommentsAnalysisService forumAnalysis;
+
     // ═════════════════════════════════════════════════════════════════════════
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         activeBtn = btnDashboard;
+
+        // Initialiser les services pour la flotte
+        try {
+            servicevehicule = new Servicevehicule();
+            servicetechnicien = new Servicetechnicien(servicevehicule);
+        } catch (Exception e) {
+            System.err.println("Erreur d'initialisation des services flotte: " + e.getMessage());
+        }
+
         loadDefaultContent();
+
+        // Initialiser les services du module Forum
+        try {
+            forumAuth       = new com.gestioncolis.services.AuthService();
+            forumModeration = new com.gestioncolis.services.ModerationService(new com.gestioncolis.services.ConfigService());
+            forumNotification = new com.gestioncolis.services.NotificationService();
+            forumPost       = new com.gestioncolis.services.PostService(forumAuth, forumModeration);
+            forumComment    = new com.gestioncolis.services.CommentService(forumAuth, forumModeration, forumNotification);
+            forumForum      = new com.gestioncolis.services.ForumService(forumAuth);
+            forumUser       = new com.gestioncolis.services.UserService(forumAuth, forumPost, forumComment);
+            forumAnalysis   = new com.gestioncolis.services.CommentsAnalysisService();
+        } catch (Exception e) {
+            System.err.println("Erreur d'initialisation des services Forum: " + e.getMessage());
+        }
     }
 
     /**
@@ -75,10 +121,8 @@ public class DashboardController implements Initializable {
             initials += user.getNom().charAt(0);
         avatarInitials.setText(initials.toUpperCase());
 
-        // Inject user into home view if already loaded
         if (!contentArea.getChildren().isEmpty()) {
             Node node = contentArea.getChildren().get(0);
-            // The controller is stored as user data
             if (node.getUserData() instanceof UserAware ua) {
                 ua.setCurrentUser(user);
             }
@@ -92,40 +136,54 @@ public class DashboardController implements Initializable {
     @FXML private void handleNavUtilisateurs() { navigate(btnUtilisateurs, "Utilisateurs",    "Admin › Utilisateurs",  "/views/UsersView.fxml"); }
     @FXML private void handleNavLivraisons()   { navigate(btnLivraisons,   "Livraisons",      "Admin › Livraisons",    "/fxml/listeLivraisons.fxml"); }
     @FXML private void handleNavColis()        { navigate(btnColis,        "Colis",           "Admin › Colis",         "/fxml/listeColis.fxml"); }
-    @FXML private void handleNavReclamations()    { navigate(btnReclamations,    "Réclamations",        "Admin › Réclamations",          null); }
-    @FXML private void handleNavEntreprises()     { navigate(btnEntreprises,     "Entreprises",         "Admin › Entreprises",           null); }
+    @FXML private void handleNavReclamations() { navigate(btnReclamations, "Forum",            "Admin › Forum",          "/com/example/forumapp/view/admin-dashboard-view.fxml"); }
+    @FXML private void handleNavEntreprises()  { navigate(btnEntreprises,  "Entreprises",     "Admin › Entreprises",   null); }
+
+    // ── Flotte ────────────────────────────────────────────────────────────────
+    @FXML private void handleNavVehicules() {
+        navigate(btnVehicules, "Véhicules", "Admin › Flotte › Véhicules", "/com/example/rayen/display.fxml");
+    }
+
+    @FXML private void handleNavTechniciens() {
+        navigate(btnTechniciens, "Techniciens", "Admin › Flotte › Techniciens", "/com/example/rayen/displaytechnicien.fxml");
+    }
+
+    // ── Chatbot (depuis la topbar) ─────────────────────────────────────────────
+    @FXML private void handleOpenChatbot() {
+        try {
+            loadView("/com/example/rayen/chatbot.fxml");
+        } catch (Exception e) {
+            System.err.println("Chatbot indisponible : " + e.getMessage());
+        }
+    }
 
     // ── Factures ──────────────────────────────────────────────────────────────
-    @FXML private void handleNavAjoutFacture()    { navigate(btnAjoutFacture,    "Ajouter Facture",     "Admin › Factures › Ajouter",    "/com/gestioncolis/facture-view.fxml"); }
-    @FXML private void handleNavFactures()        { navigate(btnFactures,        "Liste Factures",      "Admin › Factures › Liste",      "/com/gestioncolis/facture-table-view.fxml"); }
+    @FXML private void handleNavAjoutFacture()    { navigate(btnAjoutFacture,    "Ajouter Facture",    "Admin › Factures › Ajouter",    "/com/gestioncolis/facture-view.fxml"); }
+    @FXML private void handleNavFactures()        { navigate(btnFactures,        "Liste Factures",     "Admin › Factures › Liste",      "/com/gestioncolis/facture-table-view.fxml"); }
 
     // ── Récompenses ───────────────────────────────────────────────────────────
-    @FXML private void handleNavAjoutRecompense() { navigate(btnAjoutRecompense, "Ajouter Récompense",  "Admin › Récompenses › Ajouter", "/com/gestioncolis/recompense-view.fxml"); }
-    @FXML private void handleNavRecompenses()     { navigate(btnRecompenses,     "Liste Récompenses",   "Admin › Récompenses › Liste",   "/com/gestioncolis/recompense-table-view.fxml"); }
+    @FXML private void handleNavAjoutRecompense() { navigate(btnAjoutRecompense, "Ajouter Récompense", "Admin › Récompenses › Ajouter", "/com/gestioncolis/recompense-view.fxml"); }
+    @FXML private void handleNavRecompenses()     { navigate(btnRecompenses,     "Liste Récompenses",  "Admin › Récompenses › Liste",   "/com/gestioncolis/recompense-table-view.fxml"); }
 
     // ── Statistiques ──────────────────────────────────────────────────────────
-    @FXML private void handleNavStatsFactures()   { navigate(btnStatsFactures,   "Stats Factures",      "Admin › Stats › Factures",      "/com/gestioncolis/facture-stats.fxml"); }
-    @FXML private void handleNavStatsRecompenses(){ navigate(btnStatsRecompenses,"Stats Récompenses",   "Admin › Stats › Récompenses",   "/com/gestioncolis/recompense-stats.fxml"); }
+    @FXML private void handleNavStatsFactures()    { navigate(btnStatsFactures,    "Stats Factures",     "Admin › Stats › Factures",      "/com/gestioncolis/facture-stats.fxml"); }
+    @FXML private void handleNavStatsRecompenses() { navigate(btnStatsRecompenses, "Stats Récompenses",  "Admin › Stats › Récompenses",   "/com/gestioncolis/recompense-stats.fxml"); }
 
-    @FXML private void handleNavParametres()      { navigate(btnParametres,      "Paramètres",          "Admin › Paramètres",            null); }
+    @FXML private void handleNavParametres()       { navigate(btnParametres,       "Paramètres",         "Admin › Paramètres",            null); }
 
     @FXML
     private void handleLogout() {
         try {
-            // ✅ DÉCONNECTION DE LA SESSION
             SessionManager.getInstance().deconnecter();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthView.fxml"));
-            Scene scene = new Scene(loader.load(), 1100, 700);
+            Scene scene = new Scene(loader.load());
             Stage stage = (Stage) contentArea.getScene().getWindow();
 
-            // Réinitialiser complètement la fenêtre comme dans MainFX
             stage.setTitle("TrackPack — Authentification");
             stage.setScene(scene);
-            stage.setResizable(true);      // Permettre le redimensionnement
-            stage.setWidth(1100);
-            stage.setHeight(700);
-            stage.setMinWidth(900);        // Taille minimale comme dans MainFX
+            stage.setResizable(true);
+            stage.setMinWidth(900);
             stage.setMinHeight(600);
             stage.centerOnScreen();
 
@@ -152,16 +210,118 @@ public class DashboardController implements Initializable {
     private void loadView(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+
+            // ===== MODIFICATION IMPORTANTE: Utiliser une ControllerFactory =====
+            loader.setControllerFactory(this::createController);
+
             Node view = loader.load();
             Object ctrl = loader.getController();
             if (ctrl instanceof UserAware ua) ua.setCurrentUser(currentUser);
-            // Store controller as user data so setCurrentUser can reach it later
             view.setUserData(ctrl instanceof UserAware ? ctrl : null);
             fadeSwap(view);
         } catch (IOException e) {
             e.printStackTrace();
-            loadPlaceholder("Erreur de chargement");
+            loadPlaceholder("Erreur de chargement: " + e.getMessage());
         }
+    }
+
+    /**
+     * Factory pour créer les contrôleurs avec leurs dépendances
+     */
+    private Object createController(Class<?> type) {
+        try {
+            // Contrôleurs du module Forum (admin)
+            if (type == AdminDashboarForumController.class) {
+                javafx.stage.Stage currentStage = (javafx.stage.Stage) contentArea.getScene().getWindow();
+                com.gestioncolis.utils.SceneManager sm = new com.gestioncolis.utils.SceneManager(
+                        currentStage, this::createController);
+                return new AdminDashboarForumController(
+                        forumAuth, forumForum, forumPost, forumComment, forumUser, sm, forumAnalysis);
+            }
+
+            // Contrôleurs de la flotte (vehicules/techniciens)
+            if (type == displayContoller.class) {
+                return new displayContoller(servicevehicule, createDummySceneNavigator());
+            }
+            if (type == displaytechnicien.class) {
+                return new displaytechnicien(servicetechnicien, createDummySceneNavigator());
+            }
+            if (type == addContoller.class) {
+                return new addContoller(servicevehicule, createDummySceneNavigator());
+            }
+            if (type == addtechnicien.class) {
+                return new addtechnicien(servicetechnicien, createDummySceneNavigator());
+            }
+            if (type == modifyContoller.class) {
+                return new modifyContoller(servicevehicule, createDummySceneNavigator());
+            }
+            if (type == modifytechnicien.class) {
+                return new modifytechnicien(servicetechnicien, createDummySceneNavigator());
+            }
+            if (type == stat.class) {
+                return new stat(servicetechnicien, createDummySceneNavigator());
+            }
+
+            // ✅ Contrôleur chatbot avec initialisation lazy
+            if (type == chatbot.class) {
+                return new chatbot();
+            }
+
+            // Constructeur par défaut pour les autres contrôleurs
+            return type.getDeclaredConstructor().newInstance();
+
+        } catch (InstantiationException | IllegalAccessException |
+                 InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException("Impossible d'instancier le contrôleur " + type.getName(), e);
+        }
+    }
+
+    /**
+     * Créer un SceneNavigator simplifié pour les vues de flotte intégrées au dashboard
+     */
+    private SceneNavigator createDummySceneNavigator() {
+        // Retourner un SceneNavigator qui redirige vers le dashboard au lieu de changer de scène
+        return new SceneNavigator(null, servicevehicule, servicetechnicien, null) {
+            @Override
+            public void showDisplayView(String message) {
+                navigate(btnVehicules, "Véhicules", "Admin › Flotte › Véhicules", "/com/example/rayen/display.fxml");
+            }
+
+            @Override
+            public void showDisplayTechnicienView(String message) {
+                navigate(btnTechniciens, "Techniciens", "Admin › Flotte › Techniciens", "/com/example/rayen/displaytechnicien.fxml");
+            }
+
+            @Override
+            public void showAddView() {
+                loadView("/com/example/rayen/add.fxml");
+            }
+
+            @Override
+            public void showAddTechnicienView() {
+                loadView("/com/example/rayen/addtechnicien.fxml");
+            }
+
+            @Override
+            public void showModifyView(com.gestioncolis.entities.vehicule v) {
+                loadView("/com/example/rayen/modify.fxml");
+            }
+
+            @Override
+            public void showModifyTechnicienView(com.gestioncolis.entities.technicien t) {
+                loadView("/com/example/rayen/modifytechnicien.fxml");
+            }
+
+            @Override
+            public void showStatView() {
+                loadView("/com/example/rayen/stat.fxml");
+            }
+
+            @Override
+            public void showChatbotWindow() {
+                loadView("/com/example/rayen/chatbot.fxml");
+            }
+        };
     }
 
     private void loadDefaultContent() {
@@ -208,3 +368,4 @@ public class DashboardController implements Initializable {
         void setCurrentUser(Utilisateurs user);
     }
 }
+

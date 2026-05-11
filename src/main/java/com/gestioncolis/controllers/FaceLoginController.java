@@ -480,7 +480,7 @@ public class FaceLoginController implements Initializable {
                 // Admin → Dashboard back-office
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/views/DashboardLayout.fxml"));
-                Scene scene = new Scene(loader.load(), 1200, 720);
+                Scene scene = new Scene(loader.load());
                 DashboardController dc = loader.getController();
                 dc.setCurrentUser(loggedInUser);
                 stage.setTitle("TrackPack — Dashboard Admin");
@@ -489,13 +489,13 @@ public class FaceLoginController implements Initializable {
                 // CLIENT, LIVREUR, TECHNICIEN, ENTREPRISE → UserHome front-office
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/views/UserHomeView.fxml"));
-                Scene scene = new Scene(loader.load(), 1280, 760);
+                Scene scene = new Scene(loader.load());
                 UserHomeController uhc = loader.getController();
                 uhc.setCurrentUser(loggedInUser);
                 stage.setTitle("TrackPack — Espace " + loggedInUser.getRole().name());
                 stage.setScene(scene);
-                stage.setWidth(1280);
-                stage.setHeight(760);
+                stage.setMinWidth(1024);
+                stage.setMinHeight(700);
             }
 
             stage.centerOnScreen();
@@ -525,7 +525,7 @@ public class FaceLoginController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/AuthView.fxml"));
-            Scene scene = new Scene(loader.load(), 1100, 700);
+            Scene scene = new Scene(loader.load());
             Stage stage = (Stage) emailField.getScene().getWindow();
 
             // Réinitialiser avec les mêmes propriétés que AuthView
@@ -534,7 +534,6 @@ public class FaceLoginController implements Initializable {
             stage.setResizable(true);
             stage.setMinWidth(900);
             stage.setMinHeight(600);
-            stage.setWidth(1100);
             stage.setHeight(700);
             stage.centerOnScreen();
 

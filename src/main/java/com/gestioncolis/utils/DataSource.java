@@ -1,31 +1,48 @@
 package com.gestioncolis.utils;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.Properties;
+import java.io.InputStream;
 
 public final class DataSource {
-    private static final String DEFAULT_URL =
-            "jdbc:mysql://localhost:3306/trackpackdb";
-    private static final String DEFAULT_USER = "root";
-    private static final String DEFAULT_PASSWORD = "";
-    private static DataSource instance;
 
+    // ================= CONFIG =================
     private final String url;
     private final String user;
     private final String password;
-    private Connection cnx;
 
+    private Connection cnx;
+    private static DataSource instance;
+
+    // ================= CONSTRUCTOR =================
     private DataSource() {
-        this.url = lireConfiguration("DB_URL", DEFAULT_URL);
-        this.user = lireConfiguration("DB_USER", DEFAULT_USER);
-        this.password = lireConfiguration("DB_PASSWORD", DEFAULT_PASSWORD);
-        initialiserBaseDeDonnees();
-        connecter();
-        initialiserTables();
+
+        // priorité : system env > properties > default
+        Properties props = new Properties();
+
+        try (InputStream is = getClass().getClassLoader()
+                .getResourceAsStream("forum.properties")) {
+            if (is != null) props.load(is);
+        } catch (Exception e) {
+            System.out.println("Impossible de charger forum.properties: " + e.getMessage());
+        }
+
+        this.url = getValue("DB_URL",
+                props.getProperty("db.url", "jdbc:mysql://localhost:3306/trackpackdb"));
+
+        this.user = getValue("DB_USER",
+                props.getProperty("db.user", "root"));
+
+        this.password = getValue("DB_PASSWORD",
+                props.getProperty("db.password", ""));
+
+        ensureDatabaseExists();
+        connect();
+        ensureTables();
     }
 
+    // ================= SINGLETON =================
     public static synchronized DataSource getInstance() {
         if (instance == null) {
             instance = new DataSource();
@@ -33,124 +50,145 @@ public final class DataSource {
         return instance;
     }
 
+    // ================= CONNECTION =================
     public Connection getCnx() {
         try {
             if (cnx == null || cnx.isClosed()) {
-                connecter();
+                connect();
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("Impossible de verifier la connexion a la base de donnees.", e);
+            throw new RuntimeException("Connexion DB invalide", e);
         }
-
         return cnx;
     }
 
     public void closeConnection() {
-        if (cnx == null) {
-            return;
-        }
-
         try {
-            if (!cnx.isClosed()) {
+            if (cnx != null && !cnx.isClosed()) {
                 cnx.close();
             }
-            cnx = null;
         } catch (SQLException e) {
-            throw new IllegalStateException("Impossible de fermer la connexion a la base de donnees.", e);
+            throw new RuntimeException("Erreur fermeture DB", e);
         }
     }
 
-    private void initialiserBaseDeDonnees() {
-        String nomBase = extraireNomBase(url);
-        String urlServeur = construireUrlServeur(url);
-
-        try (Connection connexionServeur = DriverManager.getConnection(urlServeur, user, password);
-             Statement statement = connexionServeur.createStatement()) {
-            statement.executeUpdate(
-                    "CREATE DATABASE IF NOT EXISTS `" + nomBase + "` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
-            );
-        } catch (SQLException e) {
-            throw new IllegalStateException(
-                    "Impossible de creer ou de verifier la base de donnees espritfx.",
-                    e
-            );
-        }
-    }
-
-    private void initialiserTables() {
-        try (Statement statement = getCnx().createStatement()) {
-            statement.executeUpdate("""
-                    CREATE TABLE IF NOT EXISTS technicien (
-                        id INT AUTO_INCREMENT PRIMARY KEY,
-                        nom VARCHAR(120) NOT NULL,
-                        prenom VARCHAR(120) NOT NULL,
-                        specialite VARCHAR(150) NOT NULL,
-                        telephone VARCHAR(50) NOT NULL,
-                        email VARCHAR(190) NOT NULL UNIQUE
-                    )
-                    """);
-
-            statement.executeUpdate("""
-                    CREATE TABLE IF NOT EXISTS vehicule (
-                        id INT AUTO_INCREMENT PRIMARY KEY,
-                        matricule VARCHAR(120) NOT NULL UNIQUE,
-                        marque VARCHAR(120) NOT NULL,
-                        modele VARCHAR(120) NOT NULL,
-                        couleur VARCHAR(80) NOT NULL,
-                        prix_location DOUBLE NOT NULL,
-                        disponible BOOLEAN NOT NULL,
-                        technicien_id INT NULL,
-                        CONSTRAINT fk_vehicule_technicien
-                            FOREIGN KEY (technicien_id)
-                            REFERENCES technicien(id)
-                            ON DELETE SET NULL
-                            ON UPDATE CASCADE
-                    )
-                    """);
-        } catch (SQLException e) {
-            throw new IllegalStateException("Impossible de creer les tables de l'application.", e);
-        }
-    }
-
-    private void connecter() {
+    // ================= CORE DB =================
+    private void connect() {
         try {
             cnx = DriverManager.getConnection(url, user, password);
-            System.out.println("Connexion SQL etablie avec succes.");
+            System.out.println("Connected successfully !");
         } catch (SQLException e) {
-            throw new IllegalStateException(
-                    "Echec de connexion a la base de donnees. Verifiez l'URL, l'utilisateur, le mot de passe et l'etat du serveur MySQL.",
-                    e
+            throw new RuntimeException("Erreur connexion DB: " + e.getMessage(), e);
+        }
+    }
+
+    private void ensureDatabaseExists() {
+        String dbName = extractDbName(url);
+        String serverUrl = extractServerUrl(url);
+
+        try (Connection conn = DriverManager.getConnection(serverUrl, user, password);
+             Statement st = conn.createStatement()) {
+
+            st.executeUpdate(
+                    "CREATE DATABASE IF NOT EXISTS `" + dbName + "`"
             );
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Impossible de creer la base", e);
         }
     }
 
-    private String construireUrlServeur(String jdbcUrl) {
-        int indexQuery = jdbcUrl.indexOf('?');
-        String suffixe = indexQuery >= 0 ? jdbcUrl.substring(indexQuery) : "";
-        String baseSansParametres = indexQuery >= 0 ? jdbcUrl.substring(0, indexQuery) : jdbcUrl;
-        int dernierSlash = baseSansParametres.lastIndexOf('/');
+    private void ensureTables() {
+        try (Statement st = getCnx().createStatement()) {
 
-        if (dernierSlash <= "jdbc:mysql://".length()) {
-            throw new IllegalStateException("L'URL JDBC doit contenir le nom de la base de donnees cible.");
+            st.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS technicien (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    nom VARCHAR(120),
+                    prenom VARCHAR(120),
+                    specialite VARCHAR(120),
+                    telephone VARCHAR(50),
+                    email VARCHAR(150)
+                )
+            """);
+
+            st.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS vehicule (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    matricule VARCHAR(120),
+                    marque VARCHAR(120),
+                    modele VARCHAR(120),
+                    couleur VARCHAR(80),
+                    prix_location DOUBLE,
+                    disponible BOOLEAN,
+                    technicien_id INT NULL
+                )
+            """);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur creation tables", e);
         }
-
-        return baseSansParametres.substring(0, dernierSlash + 1) + suffixe;
     }
 
-    private String extraireNomBase(String jdbcUrl) {
-        int indexQuery = jdbcUrl.indexOf('?');
-        String baseSansParametres = indexQuery >= 0 ? jdbcUrl.substring(0, indexQuery) : jdbcUrl;
-        int dernierSlash = baseSansParametres.lastIndexOf('/');
+    // ================= UTILITIES =================
+    public LocalDateTime toLocalDateTime(ResultSet rs, String column) throws SQLException {
+        Timestamp ts = rs.getTimestamp(column);
+        return ts != null ? ts.toLocalDateTime() : null;
+    }
 
-        if (dernierSlash < 0 || dernierSlash == baseSansParametres.length() - 1) {
-            throw new IllegalStateException("Impossible d'extraire le nom de la base de donnees depuis l'URL JDBC.");
+    public long extractGeneratedId(PreparedStatement ps) throws SQLException {
+        try (ResultSet rs = ps.getGeneratedKeys()) {
+            if (rs.next()) return rs.getLong(1);
         }
-
-        return baseSansParametres.substring(dernierSlash + 1).replace("`", "");
+        throw new RuntimeException("No generated key");
     }
 
-    private String lireConfiguration(String cle, String valeurParDefaut) {
-        String valeur = System.getenv(cle);
-        return valeur == null || valeur.isBlank() ? valeurParDefaut : valeur.trim();
+    public long count(String sql, Object... params) {
+        try (PreparedStatement ps = getCnx().prepareStatement(sql)) {
+
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getLong(1) : 0;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("SQL error count", e);
+        }
     }
+
+    // ================= HELPERS =================
+    private String getValue(String key, String def) {
+        String v = System.getenv(key);
+        return (v == null || v.isBlank()) ? def : v;
+    }
+
+    private String extractDbName(String url) {
+        return url.substring(url.lastIndexOf('/') + 1).split("\\?")[0];
+    }
+
+    private String extractServerUrl(String url) {
+        return url.substring(0, url.lastIndexOf('/') + 1);
+    }
+    public long countBySql(String sql, Object... params) {
+        try (PreparedStatement ps = getCnx().prepareStatement(sql)) {
+
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+                return 0;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur SQL countBySql: " + sql, e);
+        }
+    }
+
 }
