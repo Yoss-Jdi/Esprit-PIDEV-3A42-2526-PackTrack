@@ -30,8 +30,8 @@ public class NotificationService {
                     message VARCHAR(500) NOT NULL,
                     is_read BOOLEAN DEFAULT FALSE,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (recipient_id) REFERENCES users(id),
-                    FOREIGN KEY (actor_id) REFERENCES users(id),
+                    FOREIGN KEY (recipient_id) REFERENCES utilisateurs(id_utilisateur),
+                    FOREIGN KEY (actor_id) REFERENCES utilisateurs(id_utilisateur),
                     FOREIGN KEY (post_id) REFERENCES posts(id),
                     FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
                 )
@@ -64,71 +64,80 @@ public class NotificationService {
         }
     }
 
-    /**
-     * Gets all notifications for a user, ordered by newest first.
-     */
-    public List<Notification> getNotifications(long userId, int limit) {
-        String sql = """
-                SELECT n.id, n.recipient_id, n.actor_id, n.post_id, n.comment_id,
-                       n.message, n.is_read, n.created_at,
-                       u.nom AS actor_name, p.title AS post_title
-                FROM notifications n
-                JOIN users u ON u.id = n.actor_id
-                JOIN posts p ON p.id = n.post_id
-                WHERE n.recipient_id = ?
-                ORDER BY n.created_at DESC
-                LIMIT ?
-                """;
-        List<Notification> list = new ArrayList<>();
-        try (PreparedStatement stmt = DataSource.getInstance().getCnx().prepareStatement(sql)) {
-            stmt.setLong(1, userId);
-            stmt.setInt(2, limit);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapNotification(rs));
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Warning: Could not load notifications: " + e.getMessage());
-        }
-        return list;
-    }
+     /**
+      * Gets all notifications for a user, ordered by newest first.
+      */
+     public List<Notification> getNotifications(long userId, int limit) {
+         String sql = """
+                 SELECT n.id, n.recipient_id, n.actor_id, n.post_id, n.comment_id,
+                        n.message, n.is_read, n.created_at,
+                        u.nom AS actor_name, p.title AS post_title
+                 FROM notifications n
+                 JOIN utilisateurs u ON u.id_utilisateur = n.actor_id
+                 JOIN posts p ON p.id = n.post_id
+                 WHERE n.recipient_id = ?
+                 ORDER BY n.created_at DESC
+                 LIMIT ?
+                 """;
+         List<Notification> list = new ArrayList<>();
+         try (PreparedStatement stmt = DataSource.getInstance().getCnx().prepareStatement(sql)) {
+             stmt.setLong(1, userId);
+             stmt.setInt(2, limit);
+             try (ResultSet rs = stmt.executeQuery()) {
+                 while (rs.next()) {
+                     list.add(mapNotification(rs));
+                 }
+             }
+         } catch (SQLException e) {
+             // La table notifications n'existe pas ou les colonnes ne correspondent pas
+             System.out.println("Warning: Could not load notifications (table may not exist): " + e.getMessage());
+         }
+         return list;
+     }
 
-    /**
-     * Gets only unread notifications for a user.
-     */
-    public List<Notification> getUnreadNotifications(long userId) {
-        String sql = """
-                SELECT n.id, n.recipient_id, n.actor_id, n.post_id, n.comment_id,
-                       n.message, n.is_read, n.created_at,
-                       u.nom AS actor_name, p.title AS post_title
-                FROM notifications n
-                JOIN users u ON u.id = n.actor_id
-                JOIN posts p ON p.id = n.post_id
-                WHERE n.recipient_id = ? AND n.is_read = FALSE
-                ORDER BY n.created_at DESC
-                """;
-        List<Notification> list = new ArrayList<>();
-        try (PreparedStatement stmt = DataSource.getInstance().getCnx().prepareStatement(sql)) {
-            stmt.setLong(1, userId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapNotification(rs));
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Warning: Could not load unread notifications: " + e.getMessage());
-        }
-        return list;
-    }
+     /**
+      * Gets only unread notifications for a user.
+      */
+     public List<Notification> getUnreadNotifications(long userId) {
+         String sql = """
+                 SELECT n.id, n.recipient_id, n.actor_id, n.post_id, n.comment_id,
+                        n.message, n.is_read, n.created_at,
+                        u.nom AS actor_name, p.title AS post_title
+                 FROM notifications n
+                 JOIN utilisateurs u ON u.id_utilisateur = n.actor_id
+                 JOIN posts p ON p.id = n.post_id
+                 WHERE n.recipient_id = ? AND n.is_read = FALSE
+                 ORDER BY n.created_at DESC
+                 """;
+         List<Notification> list = new ArrayList<>();
+         try (PreparedStatement stmt = DataSource.getInstance().getCnx().prepareStatement(sql)) {
+             stmt.setLong(1, userId);
+             try (ResultSet rs = stmt.executeQuery()) {
+                 while (rs.next()) {
+                     list.add(mapNotification(rs));
+                 }
+             }
+         } catch (SQLException e) {
+             // La table notifications n'existe pas ou les colonnes ne correspondent pas
+             System.out.println("Warning: Could not load unread notifications (table may not exist): " + e.getMessage());
+         }
+         return list;
+     }
 
-    /**
-     * Counts unread notifications for a user (for the badge).
-     */
-    public long countUnread(long userId) {
-        return DataSource.getInstance().countBySql(
-                "SELECT COUNT(*) FROM notifications WHERE recipient_id = ? AND is_read = FALSE", userId);
-    }
+     /**
+      * Counts unread notifications for a user (for the badge).
+      */
+     public long countUnread(long userId) {
+         try {
+             return DataSource.getInstance().countBySql(
+                     "SELECT COUNT(*) FROM notifications WHERE recipient_id = ? AND is_read = FALSE", userId);
+         } catch (RuntimeException e) {
+             // La table notifications n'existe pas ou les colonnes ne correspondent pas.
+             // Retourner 0 au lieu de lever une exception pour éviter de casser l'UI.
+             System.out.println("Warning: Could not count unread notifications (table may not exist): " + e.getMessage());
+             return 0;
+         }
+     }
 
     /**
      * Marks a single notification as read.
@@ -143,18 +152,18 @@ public class NotificationService {
         }
     }
 
-    /**
-     * Marks all notifications as read for a user.
-     */
-    public void markAllAsRead(long userId) {
-        String sql = "UPDATE notifications SET is_read = TRUE WHERE recipient_id = ? AND is_read = FALSE";
-        try (PreparedStatement stmt = DataSource.getInstance().getCnx().prepareStatement(sql)) {
-            stmt.setLong(1, userId);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Warning: Could not mark all notifications as read: " + e.getMessage());
-        }
-    }
+     /**
+      * Marks all notifications as read for a user.
+      */
+     public void markAllAsRead(long userId) {
+         String sql = "UPDATE notifications SET is_read = TRUE WHERE recipient_id = ? AND is_read = FALSE";
+         try (PreparedStatement stmt = DataSource.getInstance().getCnx().prepareStatement(sql)) {
+             stmt.setLong(1, userId);
+             stmt.executeUpdate();
+         } catch (SQLException e) {
+             System.out.println("Warning: Could not mark all notifications as read (table may not exist): " + e.getMessage());
+         }
+     }
 
     /**
      * Gets the single most recent notification for a user.

@@ -1,6 +1,7 @@
 package com.gestioncolis;
 
-import com.gestioncolis.controllers.AdminDashboardController;
+import com.gestioncolis.controllers.AdminDashboarForumController;
+import com.gestioncolis.controllers.AuthController;
 import com.gestioncolis.controllers.LoginController;
 import com.gestioncolis.controllers.UserDashboardController;
 import com.gestioncolis.services.AiService;
@@ -15,6 +16,7 @@ import com.gestioncolis.services.PdfExportService;
 import com.gestioncolis.services.PostService;
 import com.gestioncolis.services.UserService;
 import com.gestioncolis.utils.SceneManager;
+import com.gestioncolis.utils.SessionManager;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -63,15 +65,28 @@ public class ForumApplication extends Application {
     }
 
     private Object createController(Class<?> type) {
+        if (type == AuthController.class) {
+            return new AuthController();
+        }
         if (type == LoginController.class) {
             return new LoginController(authService, sceneManager);
         }
         if (type == UserDashboardController.class) {
+            syncForumAuthFromMainSession();
             return new UserDashboardController(authService, forumService, postService, commentService, pdfExportService, aiService, notificationService, sceneManager);
         }
-        if (type == AdminDashboardController.class) {
-            return new AdminDashboardController(authService, forumService, postService, commentService, userService, sceneManager, commentsAnalysisService);
+        if (type == AdminDashboarForumController.class) {
+            syncForumAuthFromMainSession();
+            return new AdminDashboarForumController(authService, forumService, postService, commentService, userService, sceneManager, commentsAnalysisService);
         }
         throw new IllegalArgumentException("Controleur inconnu: " + type.getName());
+    }
+
+    private void syncForumAuthFromMainSession() {
+        if (SessionManager.getInstance().isConnecte()) {
+            authService.syncFromMainSession();
+        } else {
+            authService.logout();
+        }
     }
 }

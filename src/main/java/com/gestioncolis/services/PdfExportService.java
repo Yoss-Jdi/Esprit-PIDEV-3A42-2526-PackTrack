@@ -12,7 +12,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 import com.gestioncolis.entities.Post;
 import com.gestioncolis.utils.DateTimeUtils;
@@ -26,14 +25,14 @@ public class PdfExportService {
     private static final float MARGIN_BOTTOM = 60;
     private static final float CONTENT_WIDTH = PAGE_WIDTH - MARGIN_LEFT - 40;
 
-    // PDF: Polices PDFBox 3
+    // PDF: Polices PDFBox 2.0.29
     private final PDType1Font fontBold;
     private final PDType1Font fontRegular;
 
     public PdfExportService() {
-        // PDF: Initialisation des polices version 3
-        this.fontBold = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
-        this.fontRegular = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
+        // PDF: Initialisation des polices version 2.0.29
+        this.fontBold = PDType1Font.HELVETICA_BOLD;
+        this.fontRegular = PDType1Font.HELVETICA;
     }
 
     /**

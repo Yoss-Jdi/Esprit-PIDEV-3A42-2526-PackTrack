@@ -23,30 +23,31 @@
     
     <BorderPane fx:id="mainLayout">
         <!-- TOP: Navigation Bar -->
-        <top>
-            <HBox alignment="CENTER_LEFT" spacing="14" styleClass="topbar">
-                <padding><Insets bottom="10" left="24" right="24" top="10"/></padding>
-                <children>
-                    <Label text="💬" styleClass="topbar-emoji"/>
-                    <Label text="ForumFX" styleClass="brand-mark"/>
-                    <Region prefWidth="1" styleClass="topbar-divider"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <TextField fx:id="searchField" promptText="🔍  Rechercher un forum ou post..." styleClass="search-field" prefWidth="280"/>
-                    
-                    <Button mnemonicParsing="false" onAction="#toggleNotifications" styleClass="topbar-button" text="🔔">
-                        <graphic>
-                            <Label fx:id="bellBadge" styleClass="notification-badge" text="0" visible="false" 
-                                   style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-size: 9px; -fx-padding: 2 5; -fx-background-radius: 10;"/>
-                        </graphic>
-                    </Button>
+         <top>
+             <HBox alignment="CENTER_LEFT" spacing="14" styleClass="topbar">
+                 <padding><Insets bottom="10" left="24" right="24" top="10"/></padding>
+                 <children>
+                     <Label text="💬" styleClass="topbar-emoji"/>
+                     <Label text="ForumFX" styleClass="brand-mark"/>
+                     <Region prefWidth="1" styleClass="topbar-divider"/>
+                     <Region HBox.hgrow="ALWAYS"/>
+                     <TextField fx:id="searchField" promptText="🔍  Rechercher un forum ou post..." styleClass="search-field" prefWidth="280"/>
 
-                    <Button mnemonicParsing="false" onAction="#toggleChatbot" styleClass="primary-button-sm" text="🤖 Assistant IA"/>
-                    <Label fx:id="currentUserLabel" styleClass="user-pill"/>
-                    <Button fx:id="adminButton" mnemonicParsing="false" onAction="#handleGoToAdmin" styleClass="primary-button-sm" text="🛠️ Administration" visible="false" managed="false"/>
-                    <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="topbar-button" text="Deconnexion"/>
-                </children>
-            </HBox>
-        </top>
+                     <Button mnemonicParsing="false" onAction="#toggleNotifications" styleClass="topbar-button" text="🔔">
+                         <graphic>
+                             <Label fx:id="bellBadge" styleClass="notification-badge" text="0" visible="false"
+                                    style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-size: 9px; -fx-padding: 2 5; -fx-background-radius: 10;"/>
+                         </graphic>
+                     </Button>
+
+                     <Button mnemonicParsing="false" onAction="#toggleChatbot" styleClass="primary-button-sm" text="🤖 Assistant IA"/>
+                     <Label fx:id="currentUserLabel" styleClass="user-pill"/>
+                     <Button fx:id="adminButton" mnemonicParsing="false" onAction="#handleGoToAdmin" styleClass="primary-button-sm" text="🛠️ Administration" visible="false" managed="false"/>
+                     <Button mnemonicParsing="false" onAction="#handleRetourAccueil" styleClass="ghost-button-sm" text="← Accueil"/>
+                     <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="topbar-button" text="Deconnexion"/>
+                 </children>
+             </HBox>
+         </top>
 
         <!-- CENTER: Layout (Content | Details) -->
         <center>

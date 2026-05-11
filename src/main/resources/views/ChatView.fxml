@@ -13,8 +13,7 @@
       fx:controller="com.gestioncolis.controllers.ChatController"
       styleClass="chat-container"
       spacing="0"
-      prefWidth="1280"
-      prefHeight="760">
+      prefWidth="1280" prefHeight="760" minWidth="1024" minHeight="700">
 
     <!-- HEADER CHAT -->
     <HBox styleClass="chat-header" alignment="CENTER_LEFT" spacing="16" prefHeight="70">

@@ -2,6 +2,7 @@ package com.gestioncolis.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.gestioncolis.enums.Role;
 
 public class User {
 
@@ -9,7 +10,7 @@ public class User {
     private String nom;
     private String email;
     private String passwordHash;
-    private UserRole role;
+    private Role role;
 
     private List<Post> posts = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
@@ -26,16 +27,13 @@ public class User {
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
 
-    public UserRole getRole() { return role; }
-    public void setRole(UserRole role) { this.role = role; }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
+    
+    // ...existing code...
+    
+    public boolean isAdmin() { return role == Role.ADMIN; }
 
-    public List<Post> getPosts() { return posts; }
-    public void setPosts(List<Post> posts) { this.posts = posts; }
-
-    public List<Comment> getComments() { return comments; }
-    public void setComments(List<Comment> comments) { this.comments = comments; }
-
-    public boolean isAdmin() { return role == UserRole.ADMIN; }
 
     @Override
     public String toString() { return nom + " (" + role + ")"; }

@@ -14,8 +14,10 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -148,8 +150,10 @@ public class ListeLivraisonsController implements DashboardController.UserAware 
     @Override
     public void setCurrentUser(Utilisateurs user) {
         this.currentUser = user;
-        // Reconfigurer et recharger selon l'utilisateur défini
-        if (currentUser != null) {
+        // ✅ Sauvegarder en session
+        if (user != null) {
+            SessionManager.getInstance().setUtilisateurConnecte(user);
+            // Reconfigurer et recharger selon l'utilisateur défini
             chargerDonnees();
         }
     }
@@ -309,19 +313,41 @@ public class ListeLivraisonsController implements DashboardController.UserAware 
     @FXML public void retourDashboard() {
         try {
             Utilisateurs u = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
-            String target = (u != null && u.getRole() == Role.ADMIN)
+            if (u == null) {
+                afficherErreur("Erreur : Utilisateur non trouvé");
+                return;
+            }
+            
+            // ✅ Sauvegarder l'utilisateur en session
+            SessionManager.getInstance().setUtilisateurConnecte(u);
+            
+            String target = (u.getRole() == Role.ADMIN)
                     ? "/views/DashboardLayout.fxml"
                     : "/views/UserHomeView.fxml";
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource(target));
             Parent root = loader.load();
-            if (u != null) {
-                Object ctrl = loader.getController();
-                if (ctrl instanceof DashboardController.UserAware ua) {
-                    ua.setCurrentUser(u);
-                }
+            
+            // ✅ Passer l'utilisateur au nouveau contrôleur
+            Object ctrl = loader.getController();
+            if (ctrl instanceof DashboardController.UserAware ua) {
+                ua.setCurrentUser(u);
+            } else if (ctrl instanceof UserHomeController uh) {
+                uh.setCurrentUser(u);
             }
-            tableLivraisons.getScene().setRoot(root);
-        } catch (IOException e) { afficherErreur("Erreur navigation : " + e.getMessage()); }
+            
+            // ✅ Obtenir le Stage et changer la scène
+            Scene currentScene = tableLivraisons.getScene();
+            Stage stage = (Stage) currentScene.getWindow();
+            Scene newScene = new Scene(root, 1280, 760);
+            
+            stage.setScene(newScene);
+            stage.setMinWidth(1024);
+            stage.setMinHeight(700);
+        } catch (IOException e) { 
+            afficherErreur("Erreur navigation : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     // ── Helpers ───────────────────────────────────────────────────────

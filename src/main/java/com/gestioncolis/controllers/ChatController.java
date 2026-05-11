@@ -19,6 +19,7 @@ import com.gestioncolis.entities.Message;
 import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.services.ChatService;
 import com.gestioncolis.utils.EmojiPicker;
+import com.gestioncolis.utils.SessionManager;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
@@ -517,8 +518,8 @@ public class ChatController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UserHomeView.fxml"));
             Scene scene = new Scene(loader.load(), 1280, 760);
-            String cssUrl = getClass().getResource("/css/user-home.css").toExternalForm();
-            if (cssUrl != null) scene.getStylesheets().add(cssUrl);
+            URL cssUrl = getClass().getResource("/css/user-home.css");
+            if (cssUrl != null) scene.getStylesheets().add(cssUrl.toExternalForm());
             UserHomeController userCtrl = loader.getController();
             userCtrl.setCurrentUser(currentUser);
             Stage stage = (Stage) sidebarUserName.getScene().getWindow();
@@ -527,6 +528,8 @@ public class ChatController implements Initializable {
             ft.setOnFinished(e -> {
                 stage.setScene(scene);
                 stage.setTitle("TrackPack — Espace " + currentUser.getRole().name());
+                stage.setMinWidth(1024);
+                stage.setMinHeight(700);
                 FadeTransition ftIn = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
                 ftIn.setFromValue(0);
                 ftIn.setToValue(1);
@@ -656,6 +659,7 @@ public class ChatController implements Initializable {
     @FXML
     private void handleLogout() {
         if (messagePoller != null) messagePoller.shutdown();
+        SessionManager.getInstance().deconnecter();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthView.fxml"));
             Scene scene = new Scene(loader.load(), 1100, 700);
@@ -665,8 +669,6 @@ public class ChatController implements Initializable {
             stage.setResizable(true);
             stage.setMinWidth(900);
             stage.setMinHeight(600);
-            stage.setWidth(1100);
-            stage.setHeight(700);
             stage.centerOnScreen();
         } catch (IOException e) { System.err.println("Erreur logout: " + e.getMessage()); }
     }

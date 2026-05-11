@@ -36,7 +36,7 @@ public class CommentService {
                        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
                 FROM comments c
                 JOIN posts p ON p.id = c.post_id
-                JOIN users u ON u.id = c.author_id
+                JOIN utilisateurs u ON u.id_utilisateur = c.author_id
                 LEFT JOIN likes l ON l.target_type = 'COMMENT' AND l.target_id = c.id
                 WHERE c.post_id = ?
                 GROUP BY c.id, c.post_id, p.title, c.author_id, u.nom, c.content, c.created_at, c.updated_at
@@ -67,7 +67,7 @@ public class CommentService {
                        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
                 FROM comments c
                 JOIN posts p ON p.id = c.post_id
-                JOIN users u ON u.id = c.author_id
+                JOIN utilisateurs u ON u.id_utilisateur = c.author_id
                 LEFT JOIN likes l ON l.target_type = 'COMMENT' AND l.target_id = c.id
                 GROUP BY c.id, c.post_id, p.title, c.author_id, u.nom, c.content, c.created_at, c.updated_at
                 ORDER BY c.updated_at DESC
@@ -95,7 +95,7 @@ public class CommentService {
                        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
                 FROM comments c
                 JOIN posts p ON p.id = c.post_id
-                JOIN users u ON u.id = c.author_id
+                JOIN utilisateurs u ON u.id_utilisateur = c.author_id
                 LEFT JOIN likes l ON l.target_type = 'COMMENT' AND l.target_id = c.id
                 WHERE c.id = ?
                 GROUP BY c.id, c.post_id, p.title, c.author_id, u.nom, c.content, c.created_at, c.updated_at

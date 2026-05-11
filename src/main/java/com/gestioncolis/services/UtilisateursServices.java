@@ -161,4 +161,27 @@ public class UtilisateursServices implements ICrud<Utilisateurs> {
         }
         return null;
     }
+
+    public Utilisateurs findByEmail(String email) throws SQLException {
+        String query = "SELECT * FROM utilisateurs WHERE email = ?";
+        PreparedStatement ps = cnx.prepareStatement(query);
+        ps.setString(1, email);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Utilisateurs u = new Utilisateurs();
+            u.setIdUtilisateur(rs.getInt("id_utilisateur"));
+            u.setEmail(rs.getString("email"));
+            u.setMotDePasse(rs.getString("mot_de_passe"));
+            u.setNom(rs.getString("nom"));
+            u.setPrenom(rs.getString("prenom"));
+            u.setTelephone(rs.getString("telephone"));
+            u.setRole(Role.valueOf(rs.getString("role")));
+            u.setPhoto(rs.getString("photo"));
+            Timestamp ts = rs.getTimestamp("created_at");
+            u.setCreatedAt(ts != null ? ts.toLocalDateTime() : null);
+            return u;
+        }
+        return null;
+    }
 }

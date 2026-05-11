@@ -8,63 +8,336 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.gestioncolis.controllers.addtechnicien"
-            styleClass="page">
 
+            style="
+                -fx-background-color:
+                    linear-gradient(to bottom right, #f8fafc, #eef2ff);
+
+                -fx-font-family: 'Segoe UI';
+            ">
 
     <center>
-        <BorderPane>
-            <top>
-                <VBox spacing="6.0" styleClass="page-header">
-                    <padding>
-                        <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
-                    </padding>
-                    <Label text="Ajouter un technicien" styleClass="title-label" />
-                    <Label text="Un technicien peut gerer plusieurs vehicules. Selectionner un vehicule deja assigne le reaffecte." styleClass="subtitle-label" />
-                </VBox>
-            </top>
-            <center>
-                <VBox spacing="18.0">
-                    <padding>
-                        <Insets bottom="24.0" left="24.0" right="24.0" top="0.0" />
-                    </padding>
-                    <GridPane hgap="16.0" vgap="14.0" styleClass="form-card">
-                        <padding>
-                            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
-                        </padding>
 
-                        <Label text="Nom" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="nomField" promptText="Ex: Ben Salem" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <VBox spacing="16">
 
-                        <Label text="Prenom" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="prenomField" promptText="Ex: Youssef" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <padding>
+                <Insets top="18"
+                        right="20"
+                        bottom="18"
+                        left="20"/>
+            </padding>
 
-                        <Label text="Specialite" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <TextField fx:id="specialiteField" promptText="Ex: Mecanique" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <!-- HEADER COMPACT -->
+            <VBox spacing="6"
 
-                        <Label text="Telephone" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <TextField fx:id="telephoneField" promptText="Ex: 20 123 456" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  style="
+                    -fx-background-color:
+                        linear-gradient(to right, #4f46e5, #7c3aed);
 
-                        <Label text="Email" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <TextField fx:id="emailField" promptText="Ex: technicien@rayen.tn" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    -fx-background-radius: 18;
 
-                        <Label text="Vehicules" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <ListView fx:id="vehiculesListView" prefHeight="180.0" styleClass="data-table" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                    </GridPane>
+                    -fx-padding: 18;
 
-                    <Label fx:id="feedbackLabel" styleClass="info-label feedback-info" wrapText="true" />
+                    -fx-effect:
+                        dropshadow(
+                            gaussian,
+                            rgba(79,70,229,0.20),
+                            16,
+                            0.2,
+                            0,
+                            4
+                        );
+                  ">
 
-                    <HBox spacing="12.0">
-                        <Button text="Enregistrer" onAction="#handleSave" styleClass="primary-button" />
-                        <Button text="Retour" onAction="#handleBack" styleClass="secondary-button" />
-                    </HBox>
-                </VBox>
-            </center>
-        </BorderPane>
+                <Label text="Ajouter un technicien"
+
+                       style="
+                            -fx-font-size: 24px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: white;
+                       "/>
+
+                <Label text="Gestion des techniciens et affectation des véhicules"
+
+                       wrapText="true"
+
+                       style="
+                            -fx-font-size: 13px;
+                            -fx-text-fill:
+                                rgba(255,255,255,0.85);
+                       "/>
+
+            </VBox>
+
+            <!-- FORM CARD -->
+            <GridPane hgap="18"
+                      vgap="16"
+
+                      style="
+                        -fx-background-color: white;
+
+                        -fx-background-radius: 20;
+
+                        -fx-padding: 24;
+
+                        -fx-effect:
+                            dropshadow(
+                                gaussian,
+                                rgba(15,23,42,0.10),
+                                18,
+                                0.12,
+                                0,
+                                4
+                            );
+                      ">
+
+                <!-- NOM -->
+                <Label text="Nom"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="0"
+
+                       style="
+                            -fx-font-size: 14px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: #334155;
+                       "/>
+
+                <TextField fx:id="nomField"
+                           promptText="Ex: Ben Salem"
+
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="0"
+
+                           style="
+                                -fx-background-color: #f8fafc;
+
+                                -fx-border-color: #dbe4f0;
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 10 14;
+
+                                -fx-font-size: 14px;
+                           "/>
+
+                <!-- PRENOM -->
+                <Label text="Prénom"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="1"
+
+                       style="
+                            -fx-font-size: 14px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: #334155;
+                       "/>
+
+                <TextField fx:id="prenomField"
+                           promptText="Ex: Youssef"
+
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="1"
+
+                           style="
+                                -fx-background-color: #f8fafc;
+
+                                -fx-border-color: #dbe4f0;
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 10 14;
+
+                                -fx-font-size: 14px;
+                           "/>
+
+                <!-- SPECIALITE -->
+                <Label text="Spécialité"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="2"
+
+                       style="
+                            -fx-font-size: 14px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: #334155;
+                       "/>
+
+                <TextField fx:id="specialiteField"
+                           promptText="Ex: Mécanique"
+
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="2"
+
+                           style="
+                                -fx-background-color: #f8fafc;
+
+                                -fx-border-color: #dbe4f0;
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 10 14;
+
+                                -fx-font-size: 14px;
+                           "/>
+
+                <!-- TELEPHONE -->
+                <Label text="Téléphone"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="3"
+
+                       style="
+                            -fx-font-size: 14px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: #334155;
+                       "/>
+
+                <TextField fx:id="telephoneField"
+                           promptText="Ex: 20 123 456"
+
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="3"
+
+                           style="
+                                -fx-background-color: #f8fafc;
+
+                                -fx-border-color: #dbe4f0;
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 10 14;
+
+                                -fx-font-size: 14px;
+                           "/>
+
+                <!-- EMAIL -->
+                <Label text="Email"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="4"
+
+                       style="
+                            -fx-font-size: 14px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: #334155;
+                       "/>
+
+                <TextField fx:id="emailField"
+                           promptText="technicien@rayen.tn"
+
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="4"
+
+                           style="
+                                -fx-background-color: #f8fafc;
+
+                                -fx-border-color: #dbe4f0;
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 10 14;
+
+                                -fx-font-size: 14px;
+                           "/>
+
+                <!-- VEHICULES -->
+                <Label text="Véhicules"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="5"
+
+                       style="
+                            -fx-font-size: 14px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: #334155;
+                       "/>
+
+                <ListView fx:id="vehiculesListView"
+                          prefHeight="160"
+
+                          GridPane.columnIndex="1"
+                          GridPane.rowIndex="5"
+
+                          style="
+                                -fx-background-color: #f8fafc;
+
+                                -fx-border-color: #dbe4f0;
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+                          "/>
+
+            </GridPane>
+
+            <!-- FEEDBACK -->
+            <Label fx:id="feedbackLabel"
+                   wrapText="true"
+
+                   style="
+                        -fx-background-color: #ecfeff;
+
+                        -fx-text-fill: #0f766e;
+
+                        -fx-padding: 10 14;
+
+                        -fx-background-radius: 12;
+
+                        -fx-border-color: #99f6e4;
+                        -fx-border-radius: 12;
+
+                        -fx-font-size: 13px;
+                   "/>
+
+            <!-- BUTTONS -->
+            <HBox spacing="12">
+
+                <Button text="Enregistrer"
+                        onAction="#handleSave"
+
+                        style="
+                            -fx-background-color:
+                                linear-gradient(to right, #4f46e5, #7c3aed);
+
+                            -fx-text-fill: white;
+
+                            -fx-font-weight: bold;
+
+                            -fx-background-radius: 12;
+
+                            -fx-padding: 10 22;
+
+                            -fx-cursor: hand;
+                        "/>
+
+                <Button text="Retour"
+                        onAction="#handleBack"
+
+                        style="
+                            -fx-background-color: white;
+
+                            -fx-border-color: #cbd5e1;
+
+                            -fx-border-radius: 12;
+                            -fx-background-radius: 12;
+
+                            -fx-text-fill: #334155;
+
+                            -fx-font-weight: bold;
+
+                            -fx-padding: 10 20;
+
+                            -fx-cursor: hand;
+                        "/>
+
+            </HBox>
+
+        </VBox>
+
     </center>
+
 </BorderPane>

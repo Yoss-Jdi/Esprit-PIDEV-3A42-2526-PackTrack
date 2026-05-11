@@ -30,7 +30,7 @@ public class chatbot {
             Reply in the same language as the user's latest message when possible.
             """;
 
-    private final OllamaService ollamaService;
+    private OllamaService ollamaService;
     private final List<ConversationTurn> historiqueConversation = new ArrayList<>();
     private boolean requeteEnCours;
 
@@ -47,12 +47,28 @@ public class chatbot {
     @FXML
     private Button sendButton;
 
+    // ✅ Constructeur par défaut (obligation JavaFX FXML)
+    public chatbot() {
+        this(null);
+    }
+
     public chatbot(OllamaService ollamaService) {
         this.ollamaService = ollamaService;
     }
 
     @FXML
     private void initialize() {
+        // ✅ Initialiser OllamaService en lazy si nécessaire
+        if (ollamaService == null) {
+            try {
+                ollamaService = new OllamaService();
+            } catch (Exception e) {
+                System.err.println("❌ Erreur lors de l'initialisation d'OllamaService: " + e.getMessage());
+                assistantStatusLabel.setText("Ollama indisponible");
+                return;
+            }
+        }
+        
         assistantStatusLabel.setText("Assistant local pret - Ollama / " + ollamaService.getModel());
         ajouterMessageAssistant("Bonjour, je suis Rayen Assistant.\nJe peux vous aider pour les vehicules, les techniciens, les statistiques, les PDF et les emails.");
         Platform.runLater(messageField::requestFocus);

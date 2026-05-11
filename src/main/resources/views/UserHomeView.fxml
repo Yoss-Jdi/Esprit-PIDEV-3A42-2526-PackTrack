@@ -14,7 +14,7 @@
            stylesheets="@../css/user-home.css"
            fx:id="rootContainer">
 
-    <VBox styleClass="modern-home" spacing="0" prefWidth="1280" prefHeight="760">
+    <VBox styleClass="modern-home" spacing="0" prefWidth="1280" prefHeight="760" minWidth="1024" minHeight="700">
 
         <!-- NAVBAR -->
         <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="30" prefHeight="70">
@@ -118,12 +118,12 @@
                         <!-- Service 2 -->
                         <VBox spacing="16" alignment="CENTER" styleClass="service-card-modern" GridPane.columnIndex="1" GridPane.rowIndex="0">
                             <StackPane styleClass="service-icon-modern">
-                                <FontIcon iconColor="#10b981" iconSize="32" iconLiteral="fas-map-marker-alt" />
+                                <FontIcon iconColor="#10b981" iconSize="32" iconLiteral="fas-comments" />
                             </StackPane>
-                            <Label text="Suivi en temps réel" styleClass="service-title-modern" />
-                            <Label text="Localisez vos colis en temps réel avec géolocalisation"
+                            <Label text="Forum communautaire" styleClass="service-title-modern" />
+                            <Label text="Échangez avec la communauté, posez vos questions et partagez vos expériences"
                                    styleClass="service-desc-modern" wrapText="true" textAlignment="CENTER" />
-                            <Button styleClass="service-btn" onAction="#handleSuiviColis">En savoir plus</Button>
+                            <Button styleClass="service-btn" onAction="#handleForumClick">En savoir plus</Button>
                         </VBox>
                         <!-- Service 3 -->
                         <VBox spacing="16" alignment="CENTER" styleClass="service-card-modern" GridPane.columnIndex="2" GridPane.rowIndex="0">

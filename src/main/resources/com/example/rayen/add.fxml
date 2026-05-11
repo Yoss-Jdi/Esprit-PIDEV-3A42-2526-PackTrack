@@ -14,60 +14,301 @@
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.gestioncolis.controllers.addContoller"
-            styleClass="page">
-
+            style="
+                -fx-background-color:
+                    linear-gradient(to bottom right, #eef2ff, #f8fafc);
+                -fx-font-family: 'Segoe UI';
+            ">
 
     <center>
         <BorderPane>
-            <top>
-                <VBox spacing="6.0" styleClass="page-header">
-                    <padding>
-                        <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
-                    </padding>
-                    <Label text="Ajouter un vehicule" styleClass="title-label" />
-                    <Label text="Creation d'un vehicule dans la couche service puis affichage dans la liste." styleClass="subtitle-label" />
-                </VBox>
-            </top>
+
+            <!-- HEADER -->
+
+
+            <!-- CONTENT -->
             <center>
-                <VBox spacing="18.0" BorderPane.alignment="CENTER">
+
+                <VBox spacing="20.0"
+                      alignment="TOP_CENTER">
+
                     <padding>
-                        <Insets bottom="24.0" left="24.0" right="24.0" top="0.0" />
+                        <Insets bottom="30.0"
+                                left="30.0"
+                                right="30.0"
+                                top="30.0"/>
                     </padding>
-                    <GridPane hgap="16.0" vgap="14.0" styleClass="form-card">
+
+                    <!-- CARD -->
+                    <GridPane hgap="18.0"
+                              vgap="16.0"
+                              maxWidth="760"
+                              style="
+                                -fx-background-color: white;
+
+                                -fx-background-radius: 22;
+                                -fx-border-radius: 22;
+
+                                -fx-effect:
+                                    dropshadow(
+                                        gaussian,
+                                        rgba(15,23,42,0.12),
+                                        25,
+                                        0.15,
+                                        0,
+                                        8
+                                    );
+                              ">
+
                         <padding>
-                            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+                            <Insets bottom="28.0"
+                                    left="28.0"
+                                    right="28.0"
+                                    top="28.0"/>
                         </padding>
 
-                        <Label text="Matricule" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="matriculeField" promptText="Ex: 123TN4567" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <!-- MATRICULE -->
+                        <Label text="Matricule"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="0"
+                               style="
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+                                    -fx-text-fill: #334155;
+                               "/>
 
-                        <Label text="Marque" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="marqueField" promptText="Ex: Renault" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="matriculeField"
+                                   promptText="Ex: 123TN4567"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="0"
+                                   style="
+                                        -fx-background-color: #f8fafc;
+                                        -fx-border-color: #dbe4f0;
 
-                        <Label text="Modele" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <TextField fx:id="modeleField" promptText="Ex: Clio 5" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        -fx-border-radius: 14;
+                                        -fx-background-radius: 14;
 
-                        <Label text="Couleur" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <TextField fx:id="couleurField" promptText="Ex: Noir" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        -fx-padding: 12 14;
 
-                        <Label text="Prix location" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <TextField fx:id="prixLocationField" promptText="Ex: 120.5" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        -fx-font-size: 14px;
 
-                        <Label text="Email notification" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <TextField fx:id="notificationEmailField" promptText="Ex: client@rayen.tn" styleClass="field-input" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                        -fx-pref-height: 42;
+                                   "/>
 
-                        <Label text="Disponibilite" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                        <CheckBox fx:id="disponibleCheckBox" text="Vehicule disponible" styleClass="field-check" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <!-- MARQUE -->
+                        <Label text="Marque"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="1"
+                               style="
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+                                    -fx-text-fill: #334155;
+                               "/>
+
+                        <TextField fx:id="marqueField"
+                                   promptText="Ex: Renault"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="1"
+                                   style="
+                                        -fx-background-color: #f8fafc;
+                                        -fx-border-color: #dbe4f0;
+
+                                        -fx-border-radius: 14;
+                                        -fx-background-radius: 14;
+
+                                        -fx-padding: 12 14;
+
+                                        -fx-font-size: 14px;
+                                   "/>
+
+                        <!-- MODELE -->
+                        <Label text="Modèle"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="2"
+                               style="
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+                                    -fx-text-fill: #334155;
+                               "/>
+
+                        <TextField fx:id="modeleField"
+                                   promptText="Ex: Clio 5"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="2"
+                                   style="
+                                        -fx-background-color: #f8fafc;
+                                        -fx-border-color: #dbe4f0;
+
+                                        -fx-border-radius: 14;
+                                        -fx-background-radius: 14;
+
+                                        -fx-padding: 12 14;
+
+                                        -fx-font-size: 14px;
+                                   "/>
+
+                        <!-- COULEUR -->
+                        <Label text="Couleur"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="3"
+                               style="
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+                                    -fx-text-fill: #334155;
+                               "/>
+
+                        <TextField fx:id="couleurField"
+                                   promptText="Ex: Noir"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="3"
+                                   style="
+                                        -fx-background-color: #f8fafc;
+                                        -fx-border-color: #dbe4f0;
+
+                                        -fx-border-radius: 14;
+                                        -fx-background-radius: 14;
+
+                                        -fx-padding: 12 14;
+
+                                        -fx-font-size: 14px;
+                                   "/>
+
+                        <!-- PRIX -->
+                        <Label text="Prix location"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="4"
+                               style="
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+                                    -fx-text-fill: #334155;
+                               "/>
+
+                        <TextField fx:id="prixLocationField"
+                                   promptText="Ex: 120.5"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="4"
+                                   style="
+                                        -fx-background-color: #f8fafc;
+                                        -fx-border-color: #dbe4f0;
+
+                                        -fx-border-radius: 14;
+                                        -fx-background-radius: 14;
+
+                                        -fx-padding: 12 14;
+
+                                        -fx-font-size: 14px;
+                                   "/>
+
+                        <!-- EMAIL -->
+                        <Label text="Email notification"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="5"
+                               style="
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+                                    -fx-text-fill: #334155;
+                               "/>
+
+                        <TextField fx:id="notificationEmailField"
+                                   promptText="Ex: client@rayen.tn"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="5"
+                                   style="
+                                        -fx-background-color: #f8fafc;
+                                        -fx-border-color: #dbe4f0;
+
+                                        -fx-border-radius: 14;
+                                        -fx-background-radius: 14;
+
+                                        -fx-padding: 12 14;
+
+                                        -fx-font-size: 14px;
+                                   "/>
+
+                        <!-- CHECKBOX -->
+                        <Label text="Disponibilité"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="6"
+                               style="
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+                                    -fx-text-fill: #334155;
+                               "/>
+
+                        <CheckBox fx:id="disponibleCheckBox"
+                                  text="Véhicule disponible"
+                                  GridPane.columnIndex="1"
+                                  GridPane.rowIndex="6"
+                                  style="
+                                        -fx-font-size: 14px;
+                                        -fx-text-fill: #475569;
+                                  "/>
+
                     </GridPane>
 
-                    <Label fx:id="feedbackLabel" styleClass="info-label feedback-info" wrapText="true" />
+                    <!-- FEEDBACK -->
+                    <Label fx:id="feedbackLabel"
+                           wrapText="true"
+                           style="
+                                -fx-background-color: #ecfeff;
+                                -fx-text-fill: #0f766e;
 
-                    <HBox spacing="12.0">
-                        <Button text="Enregistrer" onAction="#handleSave" styleClass="primary-button" />
-                        <Button text="Retour" onAction="#handleBack" styleClass="secondary-button" />
+                                -fx-padding: 12;
+
+                                -fx-background-radius: 12;
+
+                                -fx-border-color: #99f6e4;
+                                -fx-border-radius: 12;
+                           "/>
+
+                    <!-- BUTTONS -->
+                    <HBox spacing="14">
+
+                        <Button text="Enregistrer"
+                                onAction="#handleSave"
+                                style="
+                                    -fx-background-color:
+                                        linear-gradient(to right, #4f46e5, #7c3aed);
+
+                                    -fx-text-fill: white;
+
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+
+                                    -fx-background-radius: 14;
+
+                                    -fx-padding: 12 28;
+
+                                    -fx-cursor: hand;
+                                "/>
+
+                        <Button text="Retour"
+                                onAction="#handleBack"
+                                style="
+                                    -fx-background-color: white;
+
+                                    -fx-border-color: #cbd5e1;
+
+                                    -fx-border-radius: 14;
+                                    -fx-background-radius: 14;
+
+                                    -fx-text-fill: #334155;
+
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+
+                                    -fx-padding: 12 24;
+
+                                    -fx-cursor: hand;
+                                "/>
+
                     </HBox>
+
                 </VBox>
+
             </center>
+
         </BorderPane>
     </center>
+
 </BorderPane>

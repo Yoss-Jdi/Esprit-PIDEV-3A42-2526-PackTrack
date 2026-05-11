@@ -8,7 +8,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.gestioncolis.controllers.ListeColisController"
       spacing="0"
-      maxWidth="Infinity" maxHeight="Infinity"
+      prefWidth="1280" prefHeight="760" minWidth="1024" minHeight="700"
       style="-fx-background-color: #f4f4f4;">
 
     <!-- NAVBAR SIMPLIFIÉ -->
@@ -18,7 +18,7 @@
                 style="-fx-background-color: #f0f0f0; -fx-border-color: #ccc;
                        -fx-border-radius: 6; -fx-background-radius: 6;
                        -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 16; -fx-font-weight: bold;"/>
-        <Label text="📦 Mes Colis"
+        <Label text="📦 Colis"
                style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Button fx:id="btnAjouter" text="➕ Ajouter un colis" onAction="#ouvrirAjouter"

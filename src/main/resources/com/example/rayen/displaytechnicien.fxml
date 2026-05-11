@@ -13,62 +13,335 @@
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.gestioncolis.controllers.displaytechnicien"
-            styleClass="page">
+
+            style="
+                -fx-background-color:
+                    linear-gradient(to bottom right, #f8fafc, #eef2ff);
+
+                -fx-font-family: 'Segoe UI';
+            ">
+
     <center>
-        <BorderPane>
-            <top>
-                <VBox spacing="16.0" styleClass="page-header">
-                    <padding>
-                        <Insets bottom="18.0" left="24.0" right="24.0" top="24.0" />
-                    </padding>
-                    <VBox spacing="6.0">
-                        <Label text="Gestion des techniciens" styleClass="title-label" />
-                        <Label text="CRUD des techniciens avec affectation de plusieurs véhicules par technicien." styleClass="subtitle-label" />
-                    </VBox>
-                    <HBox spacing="12.0">
-                        <Button text="Ajouter"      onAction="#handleAdd"         styleClass="primary-button" />
-                        <Button text="Modifier"     onAction="#handleModify"      styleClass="secondary-button" />
-                        <Button text="Supprimer"    onAction="#handleDelete"      styleClass="danger-button" />
-                        <Button text="Générer PDF"  onAction="#handleGeneratePdf" styleClass="secondary-button" />
-                        <Button text="Actualiser"   onAction="#handleRefresh"     styleClass="secondary-button" />
-                        <Button text="Statistiques" onAction="#handleStats"       styleClass="secondary-button" />
-                    </HBox>
-                </VBox>
-            </top>
-            <center>
-                <VBox spacing="16.0">
-                    <padding>
-                        <Insets bottom="18.0" left="24.0" right="24.0" top="0.0" />
-                    </padding>
-                    <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="search-bar-container">
-                        <Label text="Recherche" styleClass="search-caption" />
-                        <TextField fx:id="searchField"
-                                   promptText="Rechercher par nom, spécialité, téléphone, email ou véhicule..."
-                                   styleClass="search-input"
-                                   HBox.hgrow="ALWAYS" />
-                        <Button text="Effacer" onAction="#handleClearSearch" styleClass="secondary-button" />
-                    </HBox>
-                    <TableView fx:id="technicienTable" VBox.vgrow="ALWAYS" styleClass="data-table">
-                        <columns>
-                            <TableColumn fx:id="idColumn"             prefWidth="70.0"  text="ID" />
-                            <TableColumn fx:id="nomCompletColumn"     prefWidth="170.0" text="Nom complet" />
-                            <TableColumn fx:id="specialiteColumn"     prefWidth="140.0" text="Spécialité" />
-                            <TableColumn fx:id="telephoneColumn"      prefWidth="130.0" text="Téléphone" />
-                            <TableColumn fx:id="emailColumn"          prefWidth="210.0" text="Email" />
-                            <TableColumn fx:id="nombreVehiculesColumn" prefWidth="120.0" text="Nb véhicules" />
-                            <TableColumn fx:id="vehiculesColumn"      prefWidth="250.0" text="Véhicules assignés" />
-                        </columns>
-                    </TableView>
-                </VBox>
-            </center>
-            <bottom>
-                <HBox styleClass="footer-bar">
-                    <padding>
-                        <Insets bottom="18.0" left="24.0" right="24.0" top="0.0" />
-                    </padding>
-                    <Label fx:id="infoLabel" styleClass="info-label" />
+
+        <VBox spacing="14">
+
+            <padding>
+                <Insets top="18"
+                        right="20"
+                        bottom="18"
+                        left="20"/>
+            </padding>
+
+            <!-- HEADER COMPACT -->
+            <VBox spacing="10"
+
+                  style="
+                    -fx-background-color:
+                        linear-gradient(to right, #4f46e5, #7c3aed);
+
+                    -fx-background-radius: 18;
+
+                    -fx-padding: 16;
+
+                    -fx-effect:
+                        dropshadow(
+                            gaussian,
+                            rgba(79,70,229,0.20),
+                            16,
+                            0.2,
+                            0,
+                            4
+                        );
+                  ">
+
+                <Label text="Gestion des techniciens"
+
+                       style="
+                            -fx-font-size: 24px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: white;
+                       "/>
+
+                <Label text="Affectation et gestion des techniciens et véhicules"
+
+                       wrapText="true"
+
+                       style="
+                            -fx-font-size: 13px;
+                            -fx-text-fill:
+                                rgba(255,255,255,0.85);
+                       "/>
+
+                <!-- ACTIONS -->
+                <HBox spacing="10">
+
+                    <Button text="Ajouter"
+                            onAction="#handleAdd"
+
+                            style="
+                                -fx-background-color: white;
+                                -fx-text-fill: #4f46e5;
+
+                                -fx-font-weight: bold;
+
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 8 16;
+
+                                -fx-cursor: hand;
+                            "/>
+
+                    <Button text="Modifier"
+                            onAction="#handleModify"
+
+                            style="
+                                -fx-background-color:
+                                    rgba(255,255,255,0.15);
+
+                                -fx-text-fill: white;
+
+                                -fx-border-color:
+                                    rgba(255,255,255,0.25);
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 8 16;
+
+                                -fx-font-weight: bold;
+
+                                -fx-cursor: hand;
+                            "/>
+
+                    <Button text="Supprimer"
+                            onAction="#handleDelete"
+
+                            style="
+                                -fx-background-color: #ef4444;
+
+                                -fx-text-fill: white;
+
+                                -fx-font-weight: bold;
+
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 8 16;
+
+                                -fx-cursor: hand;
+                            "/>
+
+                    <Button text="PDF"
+                            onAction="#handleGeneratePdf"
+
+                            style="
+                                -fx-background-color:
+                                    rgba(255,255,255,0.15);
+
+                                -fx-text-fill: white;
+
+                                -fx-border-color:
+                                    rgba(255,255,255,0.25);
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 8 16;
+
+                                -fx-font-weight: bold;
+
+                                -fx-cursor: hand;
+                            "/>
+
+                    <Button text="Stats"
+                            onAction="#handleStats"
+
+                            style="
+                                -fx-background-color:
+                                    rgba(255,255,255,0.15);
+
+                                -fx-text-fill: white;
+
+                                -fx-border-color:
+                                    rgba(255,255,255,0.25);
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 8 16;
+
+                                -fx-font-weight: bold;
+
+                                -fx-cursor: hand;
+                            "/>
+
                 </HBox>
-            </bottom>
-        </BorderPane>
+
+            </VBox>
+
+            <!-- SEARCH BAR -->
+            <HBox alignment="CENTER_LEFT"
+                  spacing="10"
+
+                  style="
+                        -fx-background-color: white;
+
+                        -fx-background-radius: 16;
+
+                        -fx-padding: 12;
+
+                        -fx-effect:
+                            dropshadow(
+                                gaussian,
+                                rgba(15,23,42,0.08),
+                                14,
+                                0.12,
+                                0,
+                                4
+                            );
+                  ">
+
+                <Label text="Recherche"
+
+                       style="
+                            -fx-font-size: 14px;
+                            -fx-font-weight: bold;
+                            -fx-text-fill: #334155;
+                       "/>
+
+                <TextField fx:id="searchField"
+                           promptText="Nom, spécialité, email..."
+
+                           HBox.hgrow="ALWAYS"
+
+                           style="
+                                -fx-background-color: #f8fafc;
+
+                                -fx-border-color: #dbe4f0;
+
+                                -fx-border-radius: 12;
+                                -fx-background-radius: 12;
+
+                                -fx-padding: 10 14;
+
+                                -fx-font-size: 14px;
+                           "/>
+
+                <Button text="Effacer"
+                        onAction="#handleClearSearch"
+
+                        style="
+                            -fx-background-color: #f1f5f9;
+
+                            -fx-text-fill: #334155;
+
+                            -fx-font-weight: bold;
+
+                            -fx-background-radius: 12;
+
+                            -fx-padding: 10 16;
+
+                            -fx-cursor: hand;
+                        "/>
+
+            </HBox>
+
+            <!-- TABLE CARD -->
+            <VBox VBox.vgrow="ALWAYS"
+
+                  style="
+                        -fx-background-color: white;
+
+                        -fx-background-radius: 20;
+
+                        -fx-padding: 12;
+
+                        -fx-effect:
+                            dropshadow(
+                                gaussian,
+                                rgba(15,23,42,0.08),
+                                18,
+                                0.12,
+                                0,
+                                4
+                            );
+                  ">
+
+                <TableView fx:id="technicienTable"
+                           VBox.vgrow="ALWAYS"
+
+                           style="
+                                -fx-background-color: transparent;
+                                -fx-border-color: transparent;
+                           ">
+
+                    <columns>
+
+                        <TableColumn fx:id="idColumn"
+                                     prefWidth="70"
+                                     text="ID"/>
+
+                        <TableColumn fx:id="nomCompletColumn"
+                                     prefWidth="170"
+                                     text="Nom"/>
+
+                        <TableColumn fx:id="specialiteColumn"
+                                     prefWidth="140"
+                                     text="Spécialité"/>
+
+                        <TableColumn fx:id="telephoneColumn"
+                                     prefWidth="130"
+                                     text="Téléphone"/>
+
+                        <TableColumn fx:id="emailColumn"
+                                     prefWidth="210"
+                                     text="Email"/>
+
+                        <TableColumn fx:id="nombreVehiculesColumn"
+                                     prefWidth="120"
+                                     text="Véhicules"/>
+
+                        <TableColumn fx:id="vehiculesColumn"
+                                     prefWidth="250"
+                                     text="Assignés"/>
+
+                    </columns>
+
+                </TableView>
+
+            </VBox>
+
+            <!-- FOOTER -->
+            <HBox alignment="CENTER_LEFT"
+
+                  style="
+                        -fx-background-color: white;
+
+                        -fx-background-radius: 14;
+
+                        -fx-padding: 10 14;
+
+                        -fx-effect:
+                            dropshadow(
+                                gaussian,
+                                rgba(15,23,42,0.05),
+                                10,
+                                0.1,
+                                0,
+                                2
+                            );
+                  ">
+
+                <Label fx:id="infoLabel"
+
+                       style="
+                            -fx-font-size: 13px;
+                            -fx-text-fill: #475569;
+                       "/>
+
+            </HBox>
+
+        </VBox>
+
     </center>
+
 </BorderPane>

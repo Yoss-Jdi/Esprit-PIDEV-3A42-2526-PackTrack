@@ -53,17 +53,6 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>8.4.0</version>
         </dependency>
-      <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>kernel</artifactId>
-            <version>8.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>layout</artifactId>
-            <version>8.0.2</version>
-        </dependency>
-        
 
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -98,10 +87,11 @@
             <scope>test</scope>
         </dependency>
         <!-- PDF Export: Dépendance Apache PDFBox pour générer les PDFs -->
+        <!-- Version 2.0.29 (dernière stable) pour compatibilité avec openhtmltopdf -->
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
-            <version>3.0.1</version>
+            <version>2.0.29</version>
         </dependency>
         <!-- JSON parser pour l'API Gemini -->
         <dependency>
@@ -110,13 +100,6 @@
             <version>20240303</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
@@ -153,14 +136,7 @@
             <type>pom</type>
         </dependency>
 
-        <!-- Ancien iText (si encore utilisé dans certaines classes) -->
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itextpdf</artifactId>
-            <version>5.5.13.3</version>
-        </dependency>
-
-        <!-- HTML -> PDF -->
+        <!-- HTML -> PDF avec openhtmltopdf (génération factures) -->
         <dependency>
             <groupId>com.openhtmltopdf</groupId>
             <artifactId>openhtmltopdf-pdfbox</artifactId>
@@ -226,6 +202,12 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20240303</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
         </dependency>
 
         <dependency>

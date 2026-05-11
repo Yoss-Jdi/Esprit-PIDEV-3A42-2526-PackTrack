@@ -172,4 +172,23 @@ public final class DataSource {
     private String extractServerUrl(String url) {
         return url.substring(0, url.lastIndexOf('/') + 1);
     }
+    public long countBySql(String sql, Object... params) {
+        try (PreparedStatement ps = getCnx().prepareStatement(sql)) {
+
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+                return 0;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur SQL countBySql: " + sql, e);
+        }
+    }
+
 }

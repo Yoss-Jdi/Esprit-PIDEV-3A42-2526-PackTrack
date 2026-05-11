@@ -20,7 +20,7 @@ public class SceneManager {
     }
 
     public void showLogin() {
-        switchScene("/com/example/forumapp/view/login-view.fxml", "Forum — Connexion", 960, 600);
+        switchScene("/views/AuthView.fxml", "TrackPack — Connexion", 1100, 700);
     }
 
     public void showUserDashboard() {
@@ -38,8 +38,10 @@ public class SceneManager {
             Parent root = loader.load();
 
             Scene scene = new Scene(root, width, height);
-            String css = ForumApplication.class.getResource("/com/example/forumapp/css/forum-theme.css").toExternalForm();
-            scene.getStylesheets().add(css);
+            java.net.URL cssUrl = ForumApplication.class.getResource("/com/example/forumapp/css/forum-theme.css");
+            if (cssUrl != null) {
+                scene.getStylesheets().add(cssUrl.toExternalForm());
+            }
 
             stage.setTitle(title);
             stage.setScene(scene);

@@ -36,7 +36,7 @@ public class PostService {
                        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
                 FROM posts p
                 JOIN forums f ON f.id = p.forum_id
-                JOIN users u ON u.id = p.author_id
+                JOIN utilisateurs u ON u.id_utilisateur = p.author_id
                 LEFT JOIN likes l ON l.target_type = 'POST' AND l.target_id = p.id
                 LEFT JOIN comments c ON c.post_id = p.id
                 WHERE p.forum_id = ?
@@ -74,7 +74,7 @@ public class PostService {
                        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
                 FROM posts p
                 JOIN forums f ON f.id = p.forum_id
-                JOIN users u ON u.id = p.author_id
+                JOIN utilisateurs u ON u.id_utilisateur = p.author_id
                 LEFT JOIN likes l ON l.target_type = 'POST' AND l.target_id = p.id
                 LEFT JOIN comments c ON c.post_id = p.id
                 GROUP BY p.id, p.forum_id, f.title, p.author_id, u.nom, p.title, p.content, p.image_path, p.created_at, p.updated_at
@@ -114,7 +114,7 @@ public class PostService {
                        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
                 FROM posts p
                 JOIN forums f ON f.id = p.forum_id
-                JOIN users u ON u.id = p.author_id
+                JOIN utilisateurs u ON u.id_utilisateur = p.author_id
                 LEFT JOIN likes l ON l.target_type = 'POST' AND l.target_id = p.id
                 LEFT JOIN comments c ON c.post_id = p.id
                 WHERE LOWER(p.title) LIKE ? OR LOWER(p.content) LIKE ? OR LOWER(u.nom) LIKE ?
@@ -150,7 +150,7 @@ public class PostService {
                        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
                 FROM posts p
                 JOIN forums f ON f.id = p.forum_id
-                JOIN users u ON u.id = p.author_id
+                JOIN utilisateurs u ON u.id_utilisateur = p.author_id
                 LEFT JOIN likes l ON l.target_type = 'POST' AND l.target_id = p.id
                 LEFT JOIN comments c ON c.post_id = p.id
                 GROUP BY p.id, p.forum_id, f.title, p.author_id, u.nom, p.title, p.content, p.image_path, p.created_at, p.updated_at
@@ -182,7 +182,7 @@ public class PostService {
                        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
                 FROM posts p
                 JOIN forums f ON f.id = p.forum_id
-                JOIN users u ON u.id = p.author_id
+                JOIN utilisateurs u ON u.id_utilisateur = p.author_id
                 LEFT JOIN likes l ON l.target_type = 'POST' AND l.target_id = p.id
                 LEFT JOIN comments c ON c.post_id = p.id
                 WHERE p.id = ?

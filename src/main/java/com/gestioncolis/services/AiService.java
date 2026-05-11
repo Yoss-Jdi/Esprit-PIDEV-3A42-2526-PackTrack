@@ -1,156 +1,221 @@
 package com.gestioncolis.services;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.Properties;
 
 public class AiService {
 
-    private static final String API_KEY =
-            System.getProperty(
-                    "gemini.api.key",
-                    "AIzaSyC4F69CBVOPuSfESqnIuJx7B1f_P45uwZM"
-            );
-
-    // Liste de modèles en fallback automatique
     private static final String[] MODELES = {
-            "gemini-2.5-flash",       // Modèle actuel recommandé 2026
-            "gemini-2.5-flash-lite",  // Fallback léger
-            "gemini-2.0-flash"        // Fallback stable
+            "gemini-2.5-flash",
+            "gemini-2.5-flash-lite",
+            "gemini-2.0-flash"
     };
 
+    private final String apiKey;
+    private final HttpClient httpClient;
+
+    private static final String GEMINI_ENDPOINT =
+            "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent";
+
+    // ===================== CONSTRUCTOR =====================
+    public AiService() {
+        this.apiKey = loadApiKey();
+        this.httpClient = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(15))
+                .build();
+
+        System.out.println("[AiService] Initialisé avec Gemini");
+    }
+
+    // ===================== API KEY =====================
+    private String loadApiKey() {
+        Properties props = new Properties();
+        try (InputStream is = getClass().getClassLoader()
+                .getResourceAsStream("forum.properties")) {
+
+            if (is != null) {
+                props.load(is);
+            }
+
+        } catch (Exception e) {
+            System.out.println("[AiService] Erreur chargement clé: " + e.getMessage());
+        }
+
+        return props.getProperty("gemini.api.key", "");
+    }
+
+    // ======================================================
+    // 1. DESCRIPTION RECOMPENSE (ton ancien code)
+    // ======================================================
     public String genererDescriptionRecompense(String nom, int points) {
 
         String prompt =
-                "Tu es un assistant pour une application de livraison TrackPack. "
-                        + "Génère une description courte, professionnelle et attractive (2-3 phrases maximum) "
-                        + "pour cette récompense : '" + nom + "' "
-                        + "qui coûte " + points + " points de fidélité. "
-                        + "Réponds uniquement avec la description, sans introduction ni guillemets.";
+                "Tu es un assistant pour TrackPack. "
+                        + "Génère une description courte (2-3 phrases) pour : '"
+                        + nom + "' coûtant " + points + " points.";
 
-        // Essaie chaque modèle jusqu'à ce qu'un fonctionne
         for (String modele : MODELES) {
             String result = appelerAPI(modele, prompt);
-
-            if (result != null) {
-                return result;
-            }
+            if (result != null) return result;
         }
 
-        return "Quota API dépassé. Réessayez dans quelques minutes.";
+        return "Quota API dépassé. Réessayez plus tard.";
     }
 
-    private String appelerAPI(String modele, String prompt) {
+    // ======================================================
+    // 2. RESUME POST (ton nouveau système JSON)
+    // ======================================================
+    public String summarizePost(String content) {
+        if (content == null || content.isBlank()) {
+            return "Contenu vide.";
+        }
+
+        String prompt =
+                "Résume ce post en 2-3 phrases en français :\n" + content;
 
         try {
+            return callGemini(prompt);
+        } catch (Exception e) {
+            return "Erreur résumé: " + e.getMessage();
+        }
+    }
 
-            // Correct — v1beta supporte les nouveaux modèles
-            String apiUrl =
-                    "https://generativelanguage.googleapis.com/v1beta/models/"
-                            + modele
-                            + ":generateContent?key="
-                            + API_KEY;
+    // ======================================================
+    // 3. REPONSE ADMIN
+    // ======================================================
+    public String generateAdminResponse(String content) {
+        if (content == null || content.isBlank()) {
+            return "Contenu vide.";
+        }
 
-            String requestBody =
-                    "{"
-                            + "\"contents\": [{"
-                            + "\"parts\": [{\"text\": \""
-                            + prompt.replace("\\", "\\\\")
-                            .replace("\"", "\\\"")
-                            .replace("\n", "\\n")
-                            .replace("\r", "\\r")
-                            + "\"}]"
-                            + "}]"
-                            + "}";
+        String prompt =
+                "Tu es un admin pro d’un forum de livraison en Tunisie. "
+                        + "Réponds professionnellement :\n" + content;
 
-            URL url = new URL(apiUrl);
+        try {
+            return callGemini(prompt);
+        } catch (Exception e) {
+            return "Erreur réponse: " + e.getMessage();
+        }
+    }
 
-            HttpURLConnection conn =
-                    (HttpURLConnection) url.openConnection();
+    // ======================================================
+    // CALL GEMINI (VERSION CLEAN UNIQUE)
+    // ======================================================
+    private String callGemini(String prompt) throws Exception {
 
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty(
-                    "Content-Type",
-                    "application/json; charset=UTF-8"
-            );
+        if (apiKey == null || apiKey.isBlank()) {
+            throw new RuntimeException("Clé Gemini non configurée");
+        }
 
-            conn.setDoOutput(true);
-            conn.setConnectTimeout(10000);
-            conn.setReadTimeout(15000);
+        String url = String.format(GEMINI_ENDPOINT, "gemini-2.5-flash")
+                + "?key=" + apiKey;
 
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(requestBody.getBytes(StandardCharsets.UTF_8));
+        JSONObject body = new JSONObject();
+        JSONArray contents = new JSONArray();
+        JSONObject contentObj = new JSONObject();
+        JSONArray parts = new JSONArray();
+
+        JSONObject textObj = new JSONObject();
+        textObj.put("text", prompt);
+
+        parts.put(textObj);
+        contentObj.put("parts", parts);
+        contents.put(contentObj);
+        body.put("contents", contents);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .timeout(Duration.ofSeconds(15))
+                .build();
+
+        HttpResponse<String> response =
+                httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("API error: " + response.body());
+        }
+
+        return parse(response.body());
+    }
+
+    // ======================================================
+    // PARSER JSON
+    // ======================================================
+    private String parse(String json) {
+        try {
+            JSONObject root = new JSONObject(json);
+            JSONArray candidates = root.getJSONArray("candidates");
+
+            if (!candidates.isEmpty()) {
+                JSONObject content = candidates.getJSONObject(0)
+                        .getJSONObject("content");
+
+                JSONArray parts = content.getJSONArray("parts");
+
+                return parts.getJSONObject(0)
+                        .getString("text")
+                        .trim();
             }
 
-            int status = conn.getResponseCode();
+            return "Pas de réponse.";
+        } catch (Exception e) {
+            return "Erreur parsing JSON.";
+        }
+    }
 
-            InputStream is =
-                    (status == 200)
-                            ? conn.getInputStream()
-                            : conn.getErrorStream();
+    // ======================================================
+    // API AVEC FALLBACK MODELES (optionnel conservé)
+    // ======================================================
+    private String appelerAPI(String modele, String prompt) {
+        try {
+            String url = String.format(GEMINI_ENDPOINT, modele)
+                    + "?key=" + apiKey;
 
-            Scanner scanner =
-                    new Scanner(is, StandardCharsets.UTF_8);
+            JSONObject body = new JSONObject();
+            JSONArray contents = new JSONArray();
+            JSONObject contentObj = new JSONObject();
+            JSONArray parts = new JSONArray();
 
-            StringBuilder response = new StringBuilder();
+            JSONObject textObj = new JSONObject();
+            textObj.put("text", prompt);
 
-            while (scanner.hasNextLine()) {
-                response.append(scanner.nextLine());
+            parts.put(textObj);
+            contentObj.put("parts", parts);
+            contents.put(contentObj);
+            body.put("contents", contents);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                    .timeout(Duration.ofSeconds(15))
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 429) {
+                return null; // fallback
             }
 
-            scanner.close();
-
-            // Si quota dépassé (429) → essaie le modèle suivant
-            if (status == 429) {
-
-                System.out.println(
-                        "Quota dépassé pour : "
-                                + modele
-                                + " → essai suivant..."
-                );
-
+            if (response.statusCode() != 200) {
                 return null;
             }
 
-            if (status != 200) {
-
-                System.err.println(
-                        "Erreur API ("
-                                + status
-                                + ") modèle "
-                                + modele
-                                + " : "
-                                + response
-                );
-
-                return null;
-            }
-
-            // Extraction du texte
-            String json = response.toString();
-
-            int start = json.indexOf("\"text\": \"") + 9;
-            int end = json.indexOf("\"", start);
-
-            if (start < 9 || end < 0) {
-
-                System.err.println("Réponse inattendue : " + json);
-
-                return null;
-            }
-
-            return json.substring(start, end)
-                    .replace("\\n", "\n")
-                    .replace("\\\"", "\"")
-                    .replace("\\\\", "\\");
+            return parse(response.body());
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-
             return null;
         }
     }

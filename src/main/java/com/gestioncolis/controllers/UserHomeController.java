@@ -94,6 +94,14 @@ public class UserHomeController implements Initializable {
             navAccueil.getStyleClass().add("nav-link-active");
         }
         loadDeveloperImages();
+        
+        // ✅ Si l'utilisateur n'est pas défini, le récupérer desde la session
+        if (currentUser == null) {
+            Utilisateurs sessionUser = SessionManager.getInstance().getUtilisateurConnecte();
+            if (sessionUser != null) {
+                setCurrentUser(sessionUser);
+            }
+        }
 
         // Créer le filtre pour fermer le dropdown
         closeDropdownFilter = event -> {
@@ -285,7 +293,7 @@ public class UserHomeController implements Initializable {
         try {
             // ✅ DÉCONNECTION DE LA SESSION
             SessionManager.getInstance().deconnecter();
-            
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthView.fxml"));
             Scene scene = new Scene(loader.load(), 1100, 700);
             Stage stage = (Stage) userNameLabel.getScene().getWindow();
@@ -294,8 +302,6 @@ public class UserHomeController implements Initializable {
             stage.setResizable(true);
             stage.setMinWidth(900);
             stage.setMinHeight(600);
-            stage.setWidth(1100);
-            stage.setHeight(700);
             stage.centerOnScreen();
         } catch (IOException e) {
             System.err.println("Erreur logout: " + e.getMessage());
@@ -696,7 +702,10 @@ public class UserHomeController implements Initializable {
 
     public void setCurrentUser(Utilisateurs user) {
         this.currentUser = user;
+        // ✅ Sauvegarder en session pour maintenir sa disponibilité
         if (user != null) {
+            SessionManager.getInstance().setUtilisateurConnecte(user);
+            
             // Nom affiché
             String fullName = user.getPrenom() + " " + user.getNom();
             if (fullName.length() > 20) fullName = fullName.substring(0, 18) + "...";
@@ -789,25 +798,106 @@ public class UserHomeController implements Initializable {
         }
     }
 
-    @FXML private void handleSuiviColis() { 
+    @FXML private void handleForumClick() {
+        naviguerVersForumUtilisateur();
+    }
+
+    private void naviguerVersForumUtilisateur() {
+        try {
+            Utilisateurs forumUser = currentUser != null ? currentUser : SessionManager.getInstance().getUtilisateurConnecte();
+            if (forumUser == null) {
+                showNotification("Veuillez vous reconnecter pour accéder au forum.");
+                return;
+            }
+
+            if (!SessionManager.getInstance().isConnecte()) {
+                SessionManager.getInstance().setUtilisateurConnecte(forumUser);
+            }
+
+            boolean adminAccess = forumUser.getRole() == Role.ADMIN;
+            String forumView = adminAccess
+                    ? "/com/example/forumapp/view/admin-dashboard-view.fxml"
+                    : "/com/example/forumapp/view/user-dashboard-view.fxml";
+
+            Stage forumStage = (Stage) userNameLabel.getScene().getWindow();
+
+            // ─── Sauvegarder la scène actuelle pour le retour ───
+            com.gestioncolis.utils.NavigationManager.getInstance().setPreviousScene(forumStage.getScene());
+
+            // ─── Créer les services du forum ───
+            com.gestioncolis.services.AuthService auth = new com.gestioncolis.services.AuthService();
+            auth.syncFromMainSession(forumUser);
+            com.gestioncolis.services.ModerationService mod = new com.gestioncolis.services.ModerationService(new com.gestioncolis.services.ConfigService());
+            com.gestioncolis.services.NotificationService notif = new com.gestioncolis.services.NotificationService();
+            com.gestioncolis.services.PostService post = new com.gestioncolis.services.PostService(auth, mod);
+            com.gestioncolis.services.CommentService comment = new com.gestioncolis.services.CommentService(auth, mod, notif);
+            com.gestioncolis.services.ForumService forum = new com.gestioncolis.services.ForumService(auth);
+            com.gestioncolis.services.PdfExportService pdf = new com.gestioncolis.services.PdfExportService();
+            com.gestioncolis.services.AiService ai = new com.gestioncolis.services.AiService();
+            com.gestioncolis.services.UserService userService = new com.gestioncolis.services.UserService(auth, post, comment);
+            com.gestioncolis.services.CommentsAnalysisService commentsAnalysis = new com.gestioncolis.services.CommentsAnalysisService();
+
+            // ─── Initialiser le SceneManager et le holder ───
+            com.gestioncolis.utils.SceneManager sceneManager = new com.gestioncolis.utils.SceneManager(forumStage, type -> {
+                try {
+                    return type.getDeclaredConstructor().newInstance();
+                } catch (Exception ex) {
+                    throw new RuntimeException("Impossible d'instancier " + type.getName(), ex);
+                }
+            });
+
+            // ─── Stocker tous les services dans le holder singleton ───
+            com.gestioncolis.utils.ForumServiceHolder.getInstance().initializeServices(
+                    auth, forum, post, comment, pdf, ai, notif, userService, mod, commentsAnalysis, sceneManager);
+
+            // ─── Charger et afficher le FXML ───
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(forumView));
+            javafx.scene.Parent view = loader.load();
+            javafx.scene.Scene scene = new javafx.scene.Scene(view, 1320, 740);
+            java.net.URL forumCss = getClass().getResource("/com/example/forumapp/css/forum-theme.css");
+            if (forumCss != null) scene.getStylesheets().add(forumCss.toExternalForm());
+
+            // ─── Animation de transition ───
+            Stage stage = forumStage;
+            FadeTransition ft = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
+            ft.setToValue(0);
+            ft.setOnFinished(e -> {
+                stage.setScene(scene);
+                stage.setTitle(adminAccess ? "TrackPack — Forum Administration" : "TrackPack — Forum");
+                stage.setMinWidth(1024);
+                stage.setMinHeight(700);
+                FadeTransition ftIn = new FadeTransition(Duration.millis(300), scene.getRoot());
+                ftIn.setFromValue(0);
+                ftIn.setToValue(1);
+                ftIn.play();
+            });
+            ft.play();
+
+        } catch (IOException e) {
+            System.err.println("Erreur navigation → Forum : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML private void handleSuiviColis() {
         showNotification("Suivi des colis - Prochainement disponible");
         System.out.println("Suivi des colis");
     }
-    @FXML private void handleLivraisonExpress() { 
+    @FXML private void handleLivraisonExpress() {
         showNotification("Livraison express - Prochainement disponible");
-        System.out.println("Livraison express"); 
+        System.out.println("Livraison express");
     }
-    @FXML private void handleSupport() { 
+    @FXML private void handleSupport() {
         showNotification("Support - Prochainement disponible");
-        System.out.println("Support"); 
+        System.out.println("Support");
     }
-    @FXML private void handleAPI() { 
+    @FXML private void handleAPI() {
         showNotification("API Integration - Prochainement disponible");
-        System.out.println("API Integration"); 
+        System.out.println("API Integration");
     }
-    @FXML private void handleStatistiques() { 
+    @FXML private void handleStatistiques() {
         showNotification("Statistiques - Prochainement disponible");
-        System.out.println("Statistiques"); 
+        System.out.println("Statistiques");
     }
 
     @FXML
@@ -820,9 +910,9 @@ public class UserHomeController implements Initializable {
         }
     }
 
-    @FXML private void handleEnSavoirPlus() { 
+    @FXML private void handleEnSavoirPlus() {
         showNotification("Découvrez nos services en scrollant vers le bas");
-        System.out.println("En savoir plus"); 
+        System.out.println("En savoir plus");
     }
 
     @FXML
@@ -878,6 +968,8 @@ public class UserHomeController implements Initializable {
             ft.setOnFinished(e -> {
                 stage.setScene(scene);
                 stage.setTitle("TrackPack — Messenger");
+                stage.setMinWidth(1024);
+                stage.setMinHeight(700);
                 FadeTransition ftIn = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
                 ftIn.setFromValue(0);
                 ftIn.setToValue(1);
@@ -928,10 +1020,18 @@ public class UserHomeController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             javafx.scene.Parent view = loader.load();
 
-            // ✅ Passer l'utilisateur courant
+            // ✅ Passer l'utilisateur courant et le maintenir en session
             Object controller = loader.getController();
+            
+            // Sauvegarder dans SessionManager comme backup
+            SessionManager.getInstance().setUtilisateurConnecte(currentUser);
+            
             if (controller instanceof DashboardController.UserAware ua) {
                 ua.setCurrentUser(currentUser);
+            } else if (controller instanceof ListeColisController lc) {
+                lc.setCurrentUser(currentUser);
+            } else if (controller instanceof ListeLivraisonsController ll) {
+                ll.setCurrentUser(currentUser);
             }
 
             // ✅ FIX 3 — Créer la scène avec les bonnes dimensions

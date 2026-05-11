@@ -16,7 +16,7 @@ public class FactureService {
     }
 
     public void ajouter(Facture facture) {
-        String req = "INSERT INTO factures (numero, montantHT, montantTTC, tva, statut, livraison_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO factures (numero,dateEmission, montantHT, montantTTC, tva, statut, livraison_id) VALUES (?,NOW(), ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(req);
             ps.setString(1, facture.getNumero());

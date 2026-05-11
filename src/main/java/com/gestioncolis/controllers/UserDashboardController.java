@@ -13,6 +13,7 @@ import com.gestioncolis.entities.Forum;
 import com.gestioncolis.entities.Notification;
 import com.gestioncolis.entities.Post;
 import com.gestioncolis.entities.User;
+import com.gestioncolis.entities.Utilisateurs;
 import com.gestioncolis.services.AiService;
 import com.gestioncolis.services.AuthService;
 import com.gestioncolis.services.CommentService;
@@ -25,8 +26,10 @@ import com.gestioncolis.utils.AlertUtils;
 import com.gestioncolis.utils.DateTimeUtils;
 import com.gestioncolis.utils.PostImageStorage;
 import com.gestioncolis.utils.SceneManager;
+import com.gestioncolis.utils.SessionManager;
 
-import com.gestioncolis.entities.UserRole;
+import com.gestioncolis.enums.Role;
+import javafx.fxml.FXMLLoader;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -56,15 +59,15 @@ import javafx.util.Duration;
 
 public class UserDashboardController {
 
-    private final AuthService authService;
-    private final ForumService forumService;
-    private final PostService postService;
-    private final CommentService commentService;
-    private final PdfExportService pdfExportService;
-    private final AiService aiService;
-    private final NotificationService notificationService;
-    private final SceneManager sceneManager;
-    private final GeminiChatbotService chatbotService;
+    private AuthService authService;
+    private ForumService forumService;
+    private PostService postService;
+    private CommentService commentService;
+    private PdfExportService pdfExportService;
+    private AiService aiService;
+    private NotificationService notificationService;
+    private SceneManager sceneManager;
+    private GeminiChatbotService chatbotService;
 
     private final ObservableList<Forum> forumItems = FXCollections.observableArrayList();
     private final Map<Long, Boolean> commentsExpandedState = new HashMap<>();
@@ -147,6 +150,11 @@ public class UserDashboardController {
 
     private String pendingPostImagePath;
 
+    // Constructeur par défaut (pour JavaFX FXML)
+    public UserDashboardController() {
+        this(null, null, null, null, null, null, null, null);
+    }
+
     public UserDashboardController(AuthService authService, ForumService forumService,
             PostService postService, CommentService commentService,
             PdfExportService pdfExportService, AiService aiService,
@@ -160,15 +168,58 @@ public class UserDashboardController {
         this.aiService = aiService;
         this.notificationService = notificationService;
         this.sceneManager = sceneManager;
-        this.chatbotService = new GeminiChatbotService(postService);
+        if (postService != null) {
+            this.chatbotService = new GeminiChatbotService(postService);
+        }
+    }
+
+    // Métode pour injecter les services après construction JavaFX
+    public void setServices(AuthService authService, ForumService forumService,
+            PostService postService, CommentService commentService,
+            PdfExportService pdfExportService, AiService aiService,
+            NotificationService notificationService,
+            SceneManager sceneManager) {
+        this.authService = authService;
+        this.forumService = forumService;
+        this.postService = postService;
+        this.commentService = commentService;
+        this.pdfExportService = pdfExportService;
+        this.aiService = aiService;
+        this.notificationService = notificationService;
+        this.sceneManager = sceneManager;
+        if (postService != null) {
+            this.chatbotService = new GeminiChatbotService(postService);
+        }
     }
 
     @FXML
     private void initialize() {
+        // Si les services ne sont pas injectés via le constructeur, les obtenir du holder
+        if (authService == null) {
+            com.gestioncolis.utils.ForumServiceHolder holder = com.gestioncolis.utils.ForumServiceHolder.getInstance();
+            
+            if (!holder.isInitialized()) {
+                throw new RuntimeException("Services du forum non disponibles. Vérifiez l'initialisation du holder ou de l'injection.");
+            }
+
+            // Injecter les services depuis le holder
+            this.authService = holder.getAuthService();
+            this.forumService = holder.getForumService();
+            this.postService = holder.getPostService();
+            this.commentService = holder.getCommentService();
+            this.pdfExportService = holder.getPdfExportService();
+            this.aiService = holder.getAiService();
+            this.notificationService = holder.getNotificationService();
+            this.sceneManager = holder.getSceneManager();
+            if (this.postService != null) {
+                this.chatbotService = new GeminiChatbotService(this.postService);
+            }
+        }
+
         User user = authService.requireUser();
         currentUserLabel.setText(user.getNom() + " \u2022 " + user.getRole());
 
-        if (user.getRole() == UserRole.ADMIN) {
+        if (user.getRole() == Role.ADMIN) {
             adminButton.setVisible(true);
             adminButton.setManaged(true);
         }
@@ -369,8 +420,24 @@ public class UserDashboardController {
         if (notificationPoller != null) {
             notificationPoller.stop();
         }
+        SessionManager.getInstance().deconnecter();
         authService.logout();
-        sceneManager.showLogin();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthView.fxml"));
+            Scene scene = new Scene(loader.load(), 1100, 700);
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+
+            stage.setTitle("TrackPack — Connexion");
+            stage.setScene(scene);
+            stage.setResizable(true);
+            stage.setWidth(1100);
+            stage.setHeight(700);
+            stage.setMinWidth(900);
+            stage.setMinHeight(600);
+            stage.centerOnScreen();
+        } catch (Exception e) {
+            throw new RuntimeException("Impossible de retourner vers AuthView.", e);
+        }
     }
 
     @FXML
@@ -919,4 +986,49 @@ public class UserDashboardController {
         dialog.setScene(scene);
         dialog.show();
     }
+
+    /**
+     * Retourner à la vue précédente (UserHomeView)
+     */
+    @FXML
+    private void handleGoBack() {
+        com.gestioncolis.utils.NavigationManager.getInstance().goBack();
+    }
+
+    /**
+     * Retourner à la page d'accueil (UserHomeView) en prenant en compte la session
+     */
+    @FXML
+    private void handleRetourAccueil() {
+        try {
+            // ✅ Récupérer l'utilisateur de la session
+            User currentUser = authService.getCurrentUser();
+            if (currentUser != null) {
+                // ✅ Créer un objet Utilisateurs pour la session
+                Utilisateurs utilisateur = new Utilisateurs();
+                utilisateur.setIdUtilisateur((int) currentUser.getId());
+                utilisateur.setNom(currentUser.getNom());
+                utilisateur.setEmail(currentUser.getEmail());
+                utilisateur.setRole(currentUser.getRole());
+                
+                // ✅ Sauvegarder en session
+                SessionManager.getInstance().setUtilisateurConnecte(utilisateur);
+                
+                // ✅ Charger UserHomeView
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UserHomeView.fxml"));
+                javafx.scene.Parent root = loader.load();
+                
+                // ✅ Obtenir le Stage et changer la scène
+                Stage stage = (Stage) rootPane.getScene().getWindow();
+                Scene newScene = new Scene(root, 1280, 760);
+                stage.setScene(newScene);
+                stage.setMinWidth(1024);
+                stage.setMinHeight(700);
+            }
+        } catch (Exception e) {
+            AlertUtils.showError("Erreur", "Impossible de retourner à l'accueil : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
+

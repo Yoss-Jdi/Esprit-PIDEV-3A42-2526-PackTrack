@@ -291,25 +291,41 @@ public class AuthController implements Initializable {
         }
         if (!valid) return;
 
-        // Animation de loading sur le bouton
         Button loginBtn = (Button) loginPane.lookup("#loginBtn");
-        String originalText = loginBtn.getText();
-        loginBtn.setText("⏳ Connexion...");
-        loginBtn.setDisable(true);
+        String originalText = loginBtn != null ? loginBtn.getText() : "Se connecter";
+        if (loginBtn != null) { loginBtn.setText("⏳ Connexion..."); loginBtn.setDisable(true); }
 
+        String email = loginEmail.getText().trim();
+
+        // ✅ ÉTAPE 1 : Essayer via API Symfony
         try {
-            String email = loginEmail.getText().trim();
-            // Utiliser la nouvelle méthode d'authentification
-            Utilisateurs found = service.authenticate(email, pass);
+            String result = authenticateViaSymfonyAPI(email, pass);
 
+            if (result != null) {
+                // ✅ Succès API Symfony → chercher l'utilisateur en BDD locale
+                Utilisateurs found = service.findByEmail(email);
+                if (found != null) {
+                    if (found.getRole() == Role.ADMIN) {
+                        animateLoginSuccess(() -> redirectToAdminDashboard(found));
+                    } else {
+                        animateLoginSuccess(() -> redirectToUserDashboard(found));
+                    }
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("⚠️ API Symfony indisponible, fallback local : " + e.getMessage());
+        }
+
+        // ✅ ÉTAPE 2 : Fallback → authentification locale (BCrypt)
+        try {
+            Utilisateurs found = service.authenticate(email, pass);
             if (found == null) {
                 showGlobalError(loginGlobalErr, "Email ou mot de passe incorrect.");
                 shakeField(loginEmail);
                 shakeField(loginPassword);
-                loginBtn.setText(originalText);
-                loginBtn.setDisable(false);
+                if (loginBtn != null) { loginBtn.setText(originalText); loginBtn.setDisable(false); }
             } else {
-                // Vérifier le rôle et rediriger vers le dashboard approprié
                 if (found.getRole() == Role.ADMIN) {
                     animateLoginSuccess(() -> redirectToAdminDashboard(found));
                 } else {
@@ -318,17 +334,40 @@ public class AuthController implements Initializable {
             }
         } catch (SQLException ex) {
             showGlobalError(loginGlobalErr, "Erreur serveur : " + ex.getMessage());
-            loginBtn.setText(originalText);
-            loginBtn.setDisable(false);
+            if (loginBtn != null) { loginBtn.setText(originalText); loginBtn.setDisable(false); }
         }
     }
 
+
+
+    // ✅ Méthode qui appelle l'API Symfony
+    private String authenticateViaSymfonyAPI(String email, String password) throws Exception {
+        String jsonBody = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
+
+        java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                .uri(java.net.URI.create("http://localhost:8000/api/login"))
+                .header("Content-Type", "application/json")
+                .POST(java.net.http.HttpRequest.BodyPublishers.ofString(jsonBody))
+                .timeout(java.time.Duration.ofSeconds(5))
+                .build();
+
+        java.net.http.HttpResponse<String> response = java.net.http.HttpClient.newHttpClient()
+                .send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+        System.out.println("✅ Symfony API response : " + response.body());
+
+        org.json.JSONObject json = new org.json.JSONObject(response.body());
+        if (json.getBoolean("success")) {
+            return json.getJSONObject("user").getString("email");
+        }
+        return null;
+    }
     @FXML
     private void handleFaceLogin() {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/FaceLoginView.fxml"));
-            Scene scene = new Scene(loader.load(), 1100, 700);  // Même taille que AuthView
+            Scene scene = new Scene(loader.load());
             Stage stage = (Stage) cardContainer.getScene().getWindow();
 
             // Appliquer les mêmes propriétés que AuthView
@@ -337,7 +376,6 @@ public class AuthController implements Initializable {
             stage.setResizable(true);      // Permettre le redimensionnement
             stage.setMinWidth(900);
             stage.setMinHeight(600);
-            stage.setWidth(1100);
             stage.setHeight(700);
             stage.centerOnScreen();
 
@@ -370,7 +408,7 @@ public class AuthController implements Initializable {
                 loader = new FXMLLoader(getClass().getResource("/views/UserHomeView.fxml"));
             }
 
-            Scene scene = new Scene(loader.load(), 1280, 760);
+            Scene scene = new Scene(loader.load());
 
             if (user.getRole() == Role.ADMIN) {
                 DashboardController dashCtrl = loader.getController();
@@ -820,7 +858,7 @@ public class AuthController implements Initializable {
             
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/DashboardLayout.fxml"));
-            Scene scene = new Scene(loader.load(), 1200, 720);
+            Scene scene = new Scene(loader.load());
 
             DashboardController dashCtrl = loader.getController();
             dashCtrl.setCurrentUser(admin);
@@ -860,7 +898,7 @@ public class AuthController implements Initializable {
             
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/UserHomeView.fxml"));
-            Scene scene = new Scene(loader.load(), 1280, 760);
+            Scene scene = new Scene(loader.load());
 
             // Ajouter le CSS
             java.net.URL cssUrl = getClass().getResource("/css/user-home.css");

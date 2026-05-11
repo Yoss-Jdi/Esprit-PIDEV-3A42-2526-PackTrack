@@ -65,6 +65,16 @@ public class DashboardController implements Initializable {
     private Servicetechnicien servicetechnicien;
     private SceneNavigator sceneNavigator;
 
+    // ─── Services pour le module Forum ────────────────────────────────────────
+    private com.gestioncolis.services.AuthService forumAuth;
+    private com.gestioncolis.services.ModerationService forumModeration;
+    private com.gestioncolis.services.NotificationService forumNotification;
+    private com.gestioncolis.services.PostService forumPost;
+    private com.gestioncolis.services.CommentService forumComment;
+    private com.gestioncolis.services.ForumService forumForum;
+    private com.gestioncolis.services.UserService forumUser;
+    private com.gestioncolis.services.CommentsAnalysisService forumAnalysis;
+
     // ═════════════════════════════════════════════════════════════════════════
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -79,6 +89,20 @@ public class DashboardController implements Initializable {
         }
 
         loadDefaultContent();
+
+        // Initialiser les services du module Forum
+        try {
+            forumAuth       = new com.gestioncolis.services.AuthService();
+            forumModeration = new com.gestioncolis.services.ModerationService(new com.gestioncolis.services.ConfigService());
+            forumNotification = new com.gestioncolis.services.NotificationService();
+            forumPost       = new com.gestioncolis.services.PostService(forumAuth, forumModeration);
+            forumComment    = new com.gestioncolis.services.CommentService(forumAuth, forumModeration, forumNotification);
+            forumForum      = new com.gestioncolis.services.ForumService(forumAuth);
+            forumUser       = new com.gestioncolis.services.UserService(forumAuth, forumPost, forumComment);
+            forumAnalysis   = new com.gestioncolis.services.CommentsAnalysisService();
+        } catch (Exception e) {
+            System.err.println("Erreur d'initialisation des services Forum: " + e.getMessage());
+        }
     }
 
     /**
@@ -112,7 +136,7 @@ public class DashboardController implements Initializable {
     @FXML private void handleNavUtilisateurs() { navigate(btnUtilisateurs, "Utilisateurs",    "Admin › Utilisateurs",  "/views/UsersView.fxml"); }
     @FXML private void handleNavLivraisons()   { navigate(btnLivraisons,   "Livraisons",      "Admin › Livraisons",    "/fxml/listeLivraisons.fxml"); }
     @FXML private void handleNavColis()        { navigate(btnColis,        "Colis",           "Admin › Colis",         "/fxml/listeColis.fxml"); }
-    @FXML private void handleNavReclamations() { navigate(btnReclamations, "Réclamations",    "Admin › Réclamations",  null); }
+    @FXML private void handleNavReclamations() { navigate(btnReclamations, "Forum",            "Admin › Forum",          "/com/example/forumapp/view/admin-dashboard-view.fxml"); }
     @FXML private void handleNavEntreprises()  { navigate(btnEntreprises,  "Entreprises",     "Admin › Entreprises",   null); }
 
     // ── Flotte ────────────────────────────────────────────────────────────────
@@ -153,14 +177,12 @@ public class DashboardController implements Initializable {
             SessionManager.getInstance().deconnecter();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthView.fxml"));
-            Scene scene = new Scene(loader.load(), 1100, 700);
+            Scene scene = new Scene(loader.load());
             Stage stage = (Stage) contentArea.getScene().getWindow();
 
             stage.setTitle("TrackPack — Authentification");
             stage.setScene(scene);
             stage.setResizable(true);
-            stage.setWidth(1100);
-            stage.setHeight(700);
             stage.setMinWidth(900);
             stage.setMinHeight(600);
             stage.centerOnScreen();
@@ -208,6 +230,15 @@ public class DashboardController implements Initializable {
      */
     private Object createController(Class<?> type) {
         try {
+            // Contrôleurs du module Forum (admin)
+            if (type == AdminDashboarForumController.class) {
+                javafx.stage.Stage currentStage = (javafx.stage.Stage) contentArea.getScene().getWindow();
+                com.gestioncolis.utils.SceneManager sm = new com.gestioncolis.utils.SceneManager(
+                        currentStage, this::createController);
+                return new AdminDashboarForumController(
+                        forumAuth, forumForum, forumPost, forumComment, forumUser, sm, forumAnalysis);
+            }
+
             // Contrôleurs de la flotte (vehicules/techniciens)
             if (type == displayContoller.class) {
                 return new displayContoller(servicevehicule, createDummySceneNavigator());
@@ -229,6 +260,11 @@ public class DashboardController implements Initializable {
             }
             if (type == stat.class) {
                 return new stat(servicetechnicien, createDummySceneNavigator());
+            }
+
+            // ✅ Contrôleur chatbot avec initialisation lazy
+            if (type == chatbot.class) {
+                return new chatbot();
             }
 
             // Constructeur par défaut pour les autres contrôleurs
@@ -332,3 +368,4 @@ public class DashboardController implements Initializable {
         void setCurrentUser(Utilisateurs user);
     }
 }
+
