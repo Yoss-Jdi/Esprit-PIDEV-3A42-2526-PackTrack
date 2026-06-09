@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane
+        xmlns="http://javafx.com/javafx/17"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.esprit.controllers.AdminDashboardController"
+        stylesheets="@admin.css"
+        prefWidth="1100"
+        prefHeight="700">
+
+    <!-- NAVBAR -->
+    <top>
+        <HBox styleClass="navbar">
+            <Label text="PackTrack Admin" styleClass="logo"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <TextField promptText="Search..." prefWidth="200"/>
+            <Label text="Admin"/>
+        </HBox>
+    </top>
+
+    <!-- SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar">
+
+            <Label text="NAVIGATION" styleClass="sidebar-title"/>
+
+            <Button text="Dashboard"
+                    styleClass="menu-btn active"
+                    onAction="#showDashboard"/>
+
+            <Label text="GESTION" styleClass="sidebar-title"/>
+
+            <!-- FACTURES -->
+            <TitledPane text="📄 Factures" styleClass="menu-group">
+                <VBox>
+                    <Button text="Ajouter Facture"
+                            styleClass="menu-sub-btn"
+                            onAction="#showAjoutFacture"/>
+
+                    <Button text="Liste Factures"
+                            styleClass="menu-sub-btn"
+                            onAction="#showFactures"/>
+                </VBox>
+            </TitledPane>
+
+            <!-- RECOMPENSES -->
+            <TitledPane text="🎁 Recompenses" styleClass="menu-group">
+                <VBox>
+                    <Button text="Ajouter Recompense"
+                            styleClass="menu-sub-btn"
+                            onAction="#showAjoutRecompense"/>
+
+                    <Button text="Liste Recompenses"
+                            styleClass="menu-sub-btn"
+                            onAction="#showRecompenses"/>
+                </VBox>
+            </TitledPane>
+
+            <Label text="STATS" styleClass="sidebar-title"/>
+
+            <Button text="Stats Factures"
+                    styleClass="menu-btn"
+                    onAction="#showFactureStats"/>
+
+            <Button text="Stats Recompenses"
+                    styleClass="menu-btn"
+                    onAction="#showRecompenseStats"/>
+
+        </VBox>
+    </left>
+
+    <!-- CONTENT -->
+    <center>
+        <VBox fx:id="contentArea" styleClass="content">
+
+            <Label text="Welcome PackTrack Admin" styleClass="title"/>
+            <Label text="Select a section from the menu to get started."
+                   styleClass="subtitle"/>
+
+            <HBox spacing="20">
+
+                <VBox styleClass="card" prefWidth="220">
+                    <Label text="Total Factures" styleClass="card-title"/>
+                    <Label text="--" styleClass="card-value"/>
+                </VBox>
+
+                <VBox styleClass="card" prefWidth="220">
+                    <Label text="Total Recompenses" styleClass="card-title"/>
+                    <Label text="--" styleClass="card-value"/>
+                </VBox>
+
+                <VBox styleClass="card" prefWidth="220">
+                    <Label text="Chiffre d'affaires" styleClass="card-title"/>
+                    <Label text="-- DT" styleClass="card-value"/>
+                </VBox>
+
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>

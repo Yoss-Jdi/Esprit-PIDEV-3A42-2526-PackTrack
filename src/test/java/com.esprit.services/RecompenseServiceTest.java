@@ -1,6 +1,6 @@
-package com.gestioncolis.services;
+package com.esprit.services;
 
-import com.gestioncolis.entities.Recompense;
+import com.esprit.entities.Recompense;
 import org.junit.jupiter.api.*;
 
 import java.util.Date;

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.esprit.controllers.RecompenseDialogController"
+      style="-fx-padding: 20; -fx-background-color: #f9fafb;"
+      prefWidth="450">
+
+    <!-- TYPE -->
+    <Label text="Type de récompense" style="-fx-font-weight: bold; -fx-text-fill: #374151;"/>
+    <ComboBox fx:id="typeField"
+              prefWidth="420"
+              promptText="Type de recompense"/>
+
+    <!-- VALEUR -->
+    <Label text="Valeur" style="-fx-font-weight: bold; -fx-text-fill: #374151;"/>
+    <TextField fx:id="valeurField"
+               promptText="Valeur"
+               prefWidth="420"/>
+
+    <!-- SEUIL -->
+    <Label text="Seuil (points)" style="-fx-font-weight: bold; -fx-text-fill: #374151;"/>
+    <TextField fx:id="seuilField"
+               promptText="Seuil de points requis"
+               prefWidth="420"/>
+
+    <!-- LIVREUR -->
+    <Label text="Livreur" style="-fx-font-weight: bold; -fx-text-fill: #374151;"/>
+    <ComboBox fx:id="livreurComboBox"
+              prefWidth="420"
+              promptText="Choisir un livreur"/>
+
+    <!-- FACTURE -->
+    <Label text="Facture" style="-fx-font-weight: bold; -fx-text-fill: #374151;"/>
+    <ComboBox fx:id="factureCombo"
+              prefWidth="420"
+              promptText="Choisir une facture"/>
+
+    <!-- DESCRIPTION -->
+    <Label text="Description" style="-fx-font-weight: bold; -fx-text-fill: #374151;"/>
+
+    <!-- DESCRIPTION + BOUTON IA dans un GridPane pour garantir l'affichage -->
+    <GridPane hgap="8">
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
+            <ColumnConstraints prefWidth="75" minWidth="75" maxWidth="75"/>
+        </columnConstraints>
+
+        <!-- Champ description colonne 0 -->
+        <TextArea fx:id="descriptionField"
+                  promptText="Description de la récompense..."
+                  prefHeight="90"
+                  prefWidth="330"
+                  wrapText="true"
+                  GridPane.columnIndex="0"/>
+
+        <!-- Bouton IA colonne 1 -->
+        <Button fx:id="btnGenererIA"
+                text="✨ IA"
+                onAction="#genererDescriptionIA"
+                prefWidth="70"
+                prefHeight="90"
+                GridPane.columnIndex="1"
+                style="-fx-background-color: #667eea;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;
+                       -fx-font-size: 12px;
+                       -fx-background-radius: 8;
+                       -fx-cursor: hand;">
+            <tooltip>
+                <Tooltip text="Générer une description avec Google Gemini AI"/>
+            </tooltip>
+        </Button>
+
+    </GridPane>
+
+    <!-- Label statut IA -->
+    <Label fx:id="labelIA"
+           text=""
+           style="-fx-font-size: 11px; -fx-font-style: italic; -fx-text-fill: #667eea;"/>
+
+    <!-- BOUTON ENREGISTRER -->
+    <Button text="Enregistrer"
+            onAction="#enregistrer"
+            prefWidth="420"
+            style="-fx-background-color: #667eea;
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-font-size: 13px;
+                   -fx-background-radius: 8;
+                   -fx-padding: 10;
+                   -fx-cursor: hand;"/>
+
+</VBox>

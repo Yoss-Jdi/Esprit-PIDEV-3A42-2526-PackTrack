@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<HBox spacing="20"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.esprit.controllers.RecompenseStatsController"
+      style="-fx-padding:20; -fx-background-color:#f5f6fa;">
+
+    <!-- PANNEAU GAUCHE : Calendrier Heatmap -->
+    <VBox spacing="12" style="-fx-background-color:white; -fx-padding:16;
+                              -fx-background-radius:12;
+                              -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.08),8,0,0,2);"
+          prefWidth="300">
+
+        <!-- Titre -->
+        <Label text="Calendrier des récompenses"
+               style="-fx-font-size:14px; -fx-font-weight:bold; -fx-text-fill:#2d3748;"/>
+
+        <!-- Navigation mois -->
+        <HBox alignment="CENTER_LEFT" spacing="8">
+            <Button fx:id="btnPrevMonth" text="‹"
+                    onAction="#previousMonth"
+                    style="-fx-background-color:#edf2f7; -fx-background-radius:6;
+                           -fx-cursor:hand; -fx-font-size:16px; -fx-padding:2 10;"/>
+            <Label fx:id="lblMonthYear" text="Avril 2025"
+                   style="-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:#4a5568;"
+                   HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnNextMonth" text="›"
+                    onAction="#nextMonth"
+                    style="-fx-background-color:#edf2f7; -fx-background-radius:6;
+                           -fx-cursor:hand; -fx-font-size:16px; -fx-padding:2 10;"/>
+        </HBox>
+
+        <!-- En-têtes jours -->
+        <GridPane fx:id="calendarGrid" hgap="4" vgap="4">
+            <padding><Insets top="4"/></padding>
+        </GridPane>
+
+        <!-- Légende -->
+        <HBox spacing="6" alignment="CENTER_LEFT" style="-fx-padding:8 0 0 0;">
+            <Label text="Moins" style="-fx-font-size:11px; -fx-text-fill:#718096;"/>
+            <HBox fx:id="legendBox" spacing="3"/>
+            <Label text="Plus" style="-fx-font-size:11px; -fx-text-fill:#718096;"/>
+        </HBox>
+
+        <!-- Filtre actif -->
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <Label fx:id="lblSelectedDate" text="Toutes les dates"
+                   style="-fx-font-size:12px; -fx-text-fill:#718096;"/>
+            <Button fx:id="btnClearDate" text="✕ Réinitialiser"
+                    onAction="#clearDateFilter"
+                    visible="false"
+                    style="-fx-background-color:#fff5f5; -fx-text-fill:#e53e3e;
+                           -fx-background-radius:6; -fx-cursor:hand; -fx-font-size:11px;"/>
+        </HBox>
+
+    </VBox>
+
+    <!-- PANNEAU DROIT : Graphique -->
+    <VBox spacing="12" HBox.hgrow="ALWAYS"
+          style="-fx-background-color:white; -fx-padding:16;
+                 -fx-background-radius:12;
+                 -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.08),8,0,0,2);">
+
+        <Label fx:id="lblChartTitle" text="Récompenses — Toutes les dates"
+               style="-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#2d3748;"/>
+
+        <!-- Résumé statistique -->
+        <HBox spacing="16">
+            <VBox style="-fx-background-color:#ebf8ff; -fx-padding:8 14;
+                         -fx-background-radius:8;" alignment="CENTER">
+                <Label fx:id="lblTotalCount" text="0"
+                       style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#2b6cb0;"/>
+                <Label text="Total récompenses"
+                       style="-fx-font-size:11px; -fx-text-fill:#4299e1;"/>
+            </VBox>
+            <VBox style="-fx-background-color:#f0fff4; -fx-padding:8 14;
+                         -fx-background-radius:8;" alignment="CENTER">
+                <Label fx:id="lblLivreurCount" text="0"
+                       style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#276749;"/>
+                <Label text="Livreurs actifs"
+                       style="-fx-font-size:11px; -fx-text-fill:#48bb78;"/>
+            </VBox>
+        </HBox>
+
+        <BarChart fx:id="barChart" prefHeight="350" VBox.vgrow="ALWAYS"
+                  animated="true">
+            <xAxis><CategoryAxis label="Livreurs"/></xAxis>
+            <yAxis><NumberAxis label="Nombre de récompenses"/></yAxis>
+        </BarChart>
+
+    </VBox>
+</HBox>

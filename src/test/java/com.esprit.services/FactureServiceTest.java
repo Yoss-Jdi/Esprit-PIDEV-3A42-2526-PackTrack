@@ -1,4 +1,4 @@
-package com.gestioncolis.services;
+package com.esprit.services;
 
 // ===== Imports JUnit 5 =====
 import org.junit.jupiter.api.AfterEach;
@@ -25,8 +25,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 // ===== Imports projet =====
-import com.gestioncolis.entities.Facture;
-import com.gestioncolis.utils.MyDataBase;
+import com.esprit.entities.Facture;
+import com.esprit.utils.MyDataBase;
 
 // ===== Imports Java =====
 import java.sql.Connection;
